@@ -42,7 +42,8 @@ const AppContainer = styled.div`
 const NavBar = styled.nav`
   width: 100%;
   height: 2.5rem;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
 
   > div {
     display: flex;

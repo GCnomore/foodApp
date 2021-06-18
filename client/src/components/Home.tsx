@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchResult from "./search/SearchResult";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
 
 import styled from "styled-components/macro";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
@@ -12,12 +13,47 @@ import main_bg3 from "../assets/img/main_bg/main_bg3.webp";
 import main_bg4 from "../assets/img/main_bg/main_bg4.webp";
 import main_bg5 from "../assets/img/main_bg/main_bg5.webp";
 
-export default function Home() {
-  const [searchBy, setSearchBy] = useState("ingredients");
-  const [search, setSeacrh] = useState("");
+export const Home: React.FC = () => {
+  const [searchBy, setSearchBy] = useState<string>("ingredients");
+  const [search, setSeacrh] = useState<string>("");
   const [ingredients, setIngredients] = useState<string[]>([]);
+  const [foodTrivia, setFoodTrivia] = useState<string | null>();
+  const [ingredientsDelete, setIngredientsDelete] = useState<{
+    show: boolean;
+    index: number;
+  }>({
+    show: false,
+    index: 0,
+  });
 
-  console.log(searchBy);
+  // TODO: limit ingredients to 20
+
+  const deleteIngredient = (ingredient: string): void => {
+    const update: string[] = ingredients.filter(
+      (item: string) => item !== ingredient
+    );
+    setIngredients(update);
+  };
+
+  const getFoodTrivia = async () => {
+    const trivia: AxiosResponse = await axios({
+      method: "GET",
+      url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random",
+      headers: {
+        "x-rapidapi-key": "80c5024537mshda9eb5674d6ffbcp1cd8a6jsn7de3a31beb98",
+        "x-rapidapi-host":
+          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      },
+    }).then((res) => res.data.text);
+    sessionStorage.setItem("trivia", trivia.toString());
+    console.log("getFoodTrivia");
+  };
+
+  useEffect(() => {
+    sessionStorage.getItem("trivia") === null
+      ? getFoodTrivia()
+      : setFoodTrivia(sessionStorage.getItem("trivia")?.toString());
+  }, []);
 
   return (
     <HomeContainer>
@@ -28,6 +64,9 @@ export default function Home() {
       </Router>
       <ContentsContainer>
         <TopSection>
+          <TitleContainer>
+            <h1>App Title</h1>
+          </TitleContainer>
           <SearchContainer>
             <Dropdown drop="up">
               <DropDownToggle variant="secondary" id="dropdown-basic">
@@ -72,8 +111,12 @@ export default function Home() {
                   setSeacrh(e.target.value);
                 }}
                 onKeyDown={(e) => {
-                  e.key === "Enter" &&
-                    setIngredients((prev) => [...prev, search]);
+                  if (e.key === "Enter") {
+                    if (!ingredients.includes(search)) {
+                      setIngredients((prev) => [...prev, search]);
+                    }
+                    setSeacrh("");
+                  }
                 }}
               />
               {searchBy === "name" ? (
@@ -81,7 +124,9 @@ export default function Home() {
               ) : (
                 <button
                   onClick={(e) => {
-                    setIngredients((prev) => [...prev, search]);
+                    if (!ingredients.includes(search)) {
+                      setIngredients((prev) => [...prev, search]);
+                    }
                     setSeacrh("");
                   }}
                 >
@@ -94,7 +139,31 @@ export default function Home() {
             ) : (
               <IngredientsContainer>
                 <span>Your ingredients:</span>
-                <span>{`${ingredients.join(", ")}`}</span>
+                <ul>
+                  {ingredients.map((item, index) => (
+                    <li
+                      key={index}
+                      onMouseEnter={() => {
+                        setIngredientsDelete({ show: true, index });
+                      }}
+                      onMouseLeave={() => {
+                        setIngredientsDelete({ show: false, index: 0 });
+                      }}
+                    >
+                      {ingredientsDelete.show === true &&
+                      ingredientsDelete.index === index ? (
+                        <DeleteIngredButtonContainer
+                          onClick={(e) => deleteIngredient(item)}
+                        >
+                          <span>x</span>
+                        </DeleteIngredButtonContainer>
+                      ) : (
+                        <></>
+                      )}
+                      <span>{item.toLowerCase()}</span>
+                    </li>
+                  ))}
+                </ul>
               </IngredientsContainer>
             )}
             <Link to={`/search?ingredients=${ingredients.join("&")}`}>
@@ -104,12 +173,27 @@ export default function Home() {
             </Link>
             <button>Get random</button>
           </SearchContainer>
+          <FoodTriviaContainer>
+            <h2>Did you know?</h2>
+            <span>{`"${foodTrivia}"`}</span>
+          </FoodTriviaContainer>
         </TopSection>
-        <BottomSection></BottomSection>
+        <BottomSection>
+          <RankingContainer>
+            <div>
+              <h3>Most searched ingredients this week</h3>
+            </div>
+            <div>
+              <h3>Most viewed recipes this week</h3>
+            </div>
+          </RankingContainer>
+        </BottomSection>
       </ContentsContainer>
     </HomeContainer>
   );
-}
+};
+
+export default Home;
 
 const HomeContainer = styled.div``;
 
@@ -124,22 +208,52 @@ const TopSection = styled.section`
   background-color: darkslategrey;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+`;
+
+const TitleContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 5rem;
+
+  /* margin-top: 1rem; */
+  font-size: 4rem;
+  color: white;
+
+  > h1 {
+    margin: 0;
+  }
+`;
+
+const FoodTriviaContainer = styled.div`
+  color: white;
+  font-size: 1.2rem;
+  font-family: cursive;
+  margin-bottom: -10rem;
+  margin-top: 2rem;
+  text-shadow: 2px 2px 8px black;
+  text-align: center;
+
+  > span {
+    font-size: 1.5rem;
+  }
 `;
 
 const BottomSection = styled.section``;
 
 const SearchContainer = styled.div`
   width: 40vw;
-  min-width: 40rem;
-  height: 15rem;
+  min-width: 45rem;
+  height: fit-content;
+  max-height: 20rem;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
 
   margin-top: 10rem;
   padding: 0.5rem 1rem;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
   text-align: center;
@@ -201,4 +315,44 @@ const DropDownMenu = styled(Dropdown.Menu)`
 const IngredientsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  text-shadow: 2px 2px 8px black;
+
+  > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+
+    > li {
+      padding-top: 1rem;
+      margin: 0 0.5rem;
+    }
+  }
+`;
+
+const RankingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
+  > div {
+    margin: 1rem 10rem;
+  }
+`;
+
+const DeleteIngredButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > span {
+    position: fixed;
+    margin-bottom: 0.8rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;

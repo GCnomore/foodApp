@@ -6,6 +6,8 @@ import Home from "./components/Home";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
 
 export default function App() {
   return (
@@ -16,6 +18,9 @@ export default function App() {
             <Link to="/">Home</Link>
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
+            <Link to="/saveearth">
+              Save <FontAwesomeIcon icon={faGlobeAmericas} />{" "}
+            </Link>
           </div>
         </NavBar>
         <Switch>

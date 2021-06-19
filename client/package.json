@@ -10,7 +10,6 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "@types/bootstrap": "^5.0.16",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.20.15",
     "@types/react": "^17.0.11",
@@ -21,7 +20,6 @@
     "axios": "^0.21.1",
     "mysql": "^2.18.1",
     "react": "^17.0.2",
-    "react-bootstrap": "^1.6.1",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -53,5 +51,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^5.0.16",
+    "@types/react-bootstrap": "^0.32.25",
+    "bootstrap": "^5.0.1",
+    "react-bootstrap": "^1.6.1"
   }
 }

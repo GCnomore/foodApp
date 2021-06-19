@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SearchResult from "./search/SearchResult";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
+import { OpenFilterModal } from "./Modals";
 
 import styled from "styled-components/macro";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
@@ -13,18 +14,22 @@ import main_bg3 from "../assets/img/main_bg/main_bg3.webp";
 import main_bg4 from "../assets/img/main_bg/main_bg4.webp";
 import main_bg5 from "../assets/img/main_bg/main_bg5.webp";
 
-export const Home: React.FC = () => {
-  const [searchBy, setSearchBy] = useState<string>("ingredients");
-  const [search, setSeacrh] = useState<string>("");
+const Home: React.FC = () => {
+  const [searchBy, setSearchBy] = useState("ingredients");
+  const [search, setSeacrh] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [foodTrivia, setFoodTrivia] = useState<string | null>();
-  const [ingredientsDelete, setIngredientsDelete] = useState<{
-    show: boolean;
-    index: number;
-  }>({
+  const [foodTrivia, setFoodTrivia] = useState<string | null>("");
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+  const [ingredientsDelete, setIngredientsDelete] = useState({
     show: false,
     index: 0,
   });
+
+  useEffect(() => {
+    sessionStorage.getItem("trivia") === null
+      ? getFoodTrivia()
+      : setFoodTrivia(sessionStorage.getItem("trivia"));
+  }, []);
 
   // TODO: limit ingredients to 20
 
@@ -36,7 +41,7 @@ export const Home: React.FC = () => {
   };
 
   const getFoodTrivia = async () => {
-    const trivia: AxiosResponse = await axios({
+    const trivia: string = await axios({
       method: "GET",
       url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random",
       headers: {
@@ -45,23 +50,13 @@ export const Home: React.FC = () => {
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       },
     }).then((res) => res.data.text);
-    sessionStorage.setItem("trivia", trivia.toString());
+    sessionStorage.setItem("trivia", trivia);
+    setFoodTrivia(trivia);
     console.log("getFoodTrivia");
   };
 
-  useEffect(() => {
-    sessionStorage.getItem("trivia") === null
-      ? getFoodTrivia()
-      : setFoodTrivia(sessionStorage.getItem("trivia")?.toString());
-  }, []);
-
   return (
     <HomeContainer>
-      <Router>
-        <Switch>
-          <Route exact path="/search" render={() => <SearchResult />} />
-        </Switch>
-      </Router>
       <ContentsContainer>
         <TopSection>
           <TitleContainer>
@@ -71,13 +66,9 @@ export const Home: React.FC = () => {
             <Dropdown drop="up">
               <DropDownToggle variant="secondary" id="dropdown-basic">
                 {searchBy === "" ? (
-                  <span>
-                    Search By <FontAwesomeIcon icon={faChevronUp} />
-                  </span>
+                  <span>Search By</span>
                 ) : (
-                  <span>
-                    Search by {searchBy} <FontAwesomeIcon icon={faChevronUp} />
-                  </span>
+                  <span>Search by {searchBy}</span>
                 )}
               </DropDownToggle>
 
@@ -122,15 +113,12 @@ export const Home: React.FC = () => {
               {searchBy === "name" ? (
                 <></>
               ) : (
-                <button
-                  onClick={(e) => {
-                    if (!ingredients.includes(search)) {
-                      setIngredients((prev) => [...prev, search]);
-                    }
-                    setSeacrh("");
-                  }}
-                >
-                  Add ingredient
+                <button onClick={(e) => setShowFilter(true)}>
+                  <OpenFilterModal
+                    show={showFilter}
+                    onHide={() => setShowFilter(false)}
+                  />
+                  Filter
                 </button>
               )}
             </div>
@@ -166,8 +154,14 @@ export const Home: React.FC = () => {
                 </ul>
               </IngredientsContainer>
             )}
-            <Link to={`/search?ingredients=${ingredients.join("&")}`}>
-              <button disabled={ingredients.length === 0 ? true : false}>
+            <Link to={`/search/${ingredients.join("&")}`}>
+              <button
+                disabled={ingredients.length === 0 ? true : false}
+                onClick={() => {
+                  setIngredients([]);
+                  setSeacrh("");
+                }}
+              >
                 Search
               </button>
             </Link>
@@ -175,7 +169,7 @@ export const Home: React.FC = () => {
           </SearchContainer>
           <FoodTriviaContainer>
             <h2>Did you know?</h2>
-            <span>{`"${foodTrivia}"`}</span>
+            <span>{foodTrivia === undefined ? "..." : `"${foodTrivia}"`}</span>
           </FoodTriviaContainer>
         </TopSection>
         <BottomSection>
@@ -195,14 +189,18 @@ export const Home: React.FC = () => {
 
 export default Home;
 
-const HomeContainer = styled.div``;
+const HomeContainer = styled.main``;
 
 const ContentsContainer = styled.main``;
 
+const bg1 = `background-image: url(${main_bg1}); background-size: cover; background-position: top;`;
+const bg2 = `background-image: url(${main_bg2}); background-size: cover; background-position: bottom;`;
+const bg3 = `background-image: url(${main_bg3}); background-size: cover; background-position: center;`;
+const bg4 = `background-image: url(${main_bg4}); background-size: cover; background-position: bottom;`;
+const bg5 = `background-image: url(${main_bg5}); background-size: cover; background-position: bottom;`;
+
 const TopSection = styled.section`
-  background-image: url(${main_bg1});
-  background-size: cover;
-  background-position: top;
+  ${bg2}
   height: 90vh;
   min-height: 30rem;
   background-color: darkslategrey;
@@ -216,8 +214,6 @@ const TitleContainer = styled.div`
   width: 100%;
   text-align: center;
   margin-top: 5rem;
-
-  /* margin-top: 1rem; */
   font-size: 4rem;
   color: white;
 
@@ -230,9 +226,8 @@ const FoodTriviaContainer = styled.div`
   color: white;
   font-size: 1.2rem;
   font-family: cursive;
-  margin-bottom: -10rem;
-  margin-top: 2rem;
-  text-shadow: 2px 2px 8px black;
+  margin: 2rem 20rem -10rem 20rem;
+  text-shadow: 2px 2px 4px black;
   text-align: center;
 
   > span {
@@ -301,7 +296,9 @@ const DropDownMenu = styled(Dropdown.Menu)`
   text-align: center;
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(1.2px);
-  width: 70vw;
+  width: 40vw;
+  min-width: 45rem;
+  margin-bottom: 1rem;
 
   > a {
     text-decoration: none;

@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import SearchResult from "./search/SearchResult";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { OpenFilterModal } from "./Modals";
 
 import styled from "styled-components/macro";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown } from "react-bootstrap";
 import main_bg1 from "../assets/img/main_bg/main_bg1.webp";
 import main_bg2 from "../assets/img/main_bg/main_bg2.webp";
@@ -113,14 +110,12 @@ const Home: React.FC = () => {
               {searchBy === "name" ? (
                 <></>
               ) : (
-                <button onClick={(e) => setShowFilter(true)}>
-                  <OpenFilterModal
-                    show={showFilter}
-                    onHide={() => setShowFilter(false)}
-                  />
-                  Filter
-                </button>
+                <button onClick={(e) => setShowFilter(true)}>Filter</button>
               )}
+              <OpenFilterModal
+                show={showFilter}
+                onHide={() => setShowFilter(false)}
+              />
             </div>
             {searchBy === "name" ? (
               <></>
@@ -156,7 +151,9 @@ const Home: React.FC = () => {
             )}
             <Link to={`/search/${ingredients.join("&")}`}>
               <button
-                disabled={ingredients.length === 0 ? true : false}
+                disabled={
+                  ingredients.length === 0 && search === "" ? true : false
+                }
                 onClick={() => {
                   setIngredients([]);
                   setSeacrh("");
@@ -279,6 +276,8 @@ const SearchContainer = styled.div`
     height: 2.5rem;
     > input {
       flex: 3;
+      padding: 0.5rem;
+      outline: none;
     }
     > button {
       flex: 1;
@@ -324,7 +323,7 @@ const IngredientsContainer = styled.div`
     flex-wrap: wrap;
 
     > li {
-      padding-top: 1rem;
+      padding: 1rem 0.25rem 0 0.25rem;
       margin: 0 0.5rem;
     }
   }

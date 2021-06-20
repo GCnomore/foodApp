@@ -10,6 +10,7 @@ import main_bg2 from "../assets/img/main_bg/main_bg2.webp";
 import main_bg3 from "../assets/img/main_bg/main_bg3.webp";
 import main_bg4 from "../assets/img/main_bg/main_bg4.webp";
 import main_bg5 from "../assets/img/main_bg/main_bg5.webp";
+import { Set } from "typescript";
 
 const Home: React.FC = () => {
   const [searchBy, setSearchBy] = useState("ingredients");
@@ -22,6 +23,39 @@ const Home: React.FC = () => {
     index: 0,
   });
 
+  const [exclude, setExclude] = useState<string[]>([]);
+  const [filterUserInput, setFilterUserInput] = useState("");
+  const [checked, setChecked] = useState<{ name: string; checked: boolean }[]>([
+    {
+      name: "Vegan",
+      checked: false,
+    },
+    {
+      name: "Vegitarian",
+      checked: false,
+    },
+    {
+      name: "Gluten Free",
+      checked: false,
+    },
+    {
+      name: "Dairy Free",
+      checked: false,
+    },
+    {
+      name: "No Missing Ingredients",
+      checked: false,
+    },
+    {
+      name: "Cuisine",
+      checked: false,
+    },
+    {
+      name: "Dish Type",
+      checked: false,
+    },
+  ]);
+
   useEffect(() => {
     sessionStorage.getItem("trivia") === null
       ? getFoodTrivia()
@@ -29,6 +63,23 @@ const Home: React.FC = () => {
   }, []);
 
   // TODO: limit ingredients to 20
+
+  const getFilters = (): string => {
+    const filterQuery: string[] = [];
+    checked.filter((item) => {
+      if (item.checked && filterQuery.length === 0) {
+        filterQuery.push(item.name.replace(/\s+/g, ""), "=", `${item.checked}`);
+      } else if (item.checked && filterQuery.length > 2) {
+        filterQuery.push(
+          "&",
+          item.name.replace(/\s+/g, ""),
+          "=",
+          `${item.checked}`
+        );
+      }
+    });
+    return filterQuery.join("").trim().toLowerCase();
+  };
 
   const deleteIngredient = (ingredient: string): void => {
     const update: string[] = ingredients.filter(
@@ -115,6 +166,12 @@ const Home: React.FC = () => {
               <OpenFilterModal
                 show={showFilter}
                 onHide={() => setShowFilter(false)}
+                exclude={exclude}
+                setExclude={setExclude}
+                filterUserInput={filterUserInput}
+                setFilterUserInput={setFilterUserInput}
+                checked={checked}
+                setChecked={setChecked}
               />
             </div>
             {searchBy === "name" ? (
@@ -149,7 +206,12 @@ const Home: React.FC = () => {
                 </ul>
               </IngredientsContainer>
             )}
-            <Link to={`/search/${ingredients.join("&")}`}>
+            <Link
+              to={{
+                pathname: `/search/${ingredients.join("&")}`,
+                search: `?${getFilters()}`,
+              }}
+            >
               <button
                 disabled={
                   ingredients.length === 0 && search === "" ? true : false

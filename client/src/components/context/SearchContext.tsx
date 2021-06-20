@@ -1,27 +1,29 @@
-import React, { SetStateAction } from "react";
-import { useState } from "react";
+export {};
 
-interface SearchQuery {
-  name?: string;
-  ingredients?: string[];
-  filter?: {};
-  sortBy?: {};
-}
+// import React, { SetStateAction } from "react";
+// import { useState } from "react";
 
-export const Search = React.createContext<SearchQuery>({});
-export const SearchUpdate = React.createContext<any>(null);
+// interface SearchQuery {
+//   name?: string;
+//   ingredients?: string[];
+//   filter?: {};
+//   sortBy?: {};
+// }
 
-export const SearchContextProvider: React.FC = ({ children }) => {
-  const [searchData, setSearchData] = useState<SearchQuery>({});
-  const updateSearch = (update: SearchQuery) => {
-    setSearchData(update);
-  };
+// export const Search = React.createContext<SearchQuery>({});
+// export const SearchUpdate = React.createContext<any>(null);
 
-  return (
-    <Search.Provider value={searchData}>
-      <SearchUpdate.Provider value={updateSearch}>
-        {children}
-      </SearchUpdate.Provider>
-    </Search.Provider>
-  );
-};
+// export const SearchContextProvider: React.FC = ({ children }) => {
+//   const [searchData, setSearchData] = useState<SearchQuery>({});
+//   const updateSearch = (update: SearchQuery) => {
+//     setSearchData(update);
+//   };
+
+//   return (
+//     <Search.Provider value={searchData}>
+//       <SearchUpdate.Provider value={updateSearch}>
+//         {children}
+//       </SearchUpdate.Provider>
+//     </Search.Provider>
+//   );
+// };

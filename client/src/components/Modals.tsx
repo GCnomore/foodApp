@@ -10,41 +10,25 @@ import { ToggleButton } from "react-bootstrap";
 interface FilterModalProps {
   show: boolean;
   onHide(): void;
+  exclude: string[];
+  setExclude: (exclude: string[]) => void;
+  filterUserInput: string;
+  setFilterUserInput: (filterUserInput: string) => void;
+  checked: { name: string; checked: boolean }[];
+  setChecked: (checked: { name: string; checked: boolean }[]) => void;
 }
 
 export const OpenFilterModal = (props: FilterModalProps) => {
-  const [exclude, setExclude] = useState<string[]>([]);
-  const [userInput, setUserInput] = useState("");
-  const [checked, setChecked] = useState<{ name: string; checked: boolean }[]>([
-    {
-      name: "Vegan",
-      checked: false,
-    },
-    {
-      name: "Vegitarian",
-      checked: false,
-    },
-    {
-      name: "Gluten Free",
-      checked: false,
-    },
-    {
-      name: "Dairy Free",
-      checked: false,
-    },
-    {
-      name: "No Missing Ingredients",
-      checked: false,
-    },
-    {
-      name: "Cuisine",
-      checked: false,
-    },
-    {
-      name: "Dish Type",
-      checked: false,
-    },
-  ]);
+  const {
+    show,
+    onHide,
+    exclude,
+    setExclude,
+    filterUserInput,
+    setFilterUserInput,
+    checked,
+    setChecked,
+  } = props;
   const [ingredientsDelete, setIngredientsDelete] = useState({
     show: false,
     index: 0,
@@ -83,7 +67,8 @@ export const OpenFilterModal = (props: FilterModalProps) => {
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -98,15 +83,15 @@ export const OpenFilterModal = (props: FilterModalProps) => {
           <section>
             <span>Exclude</span>
             <input
-              value={userInput}
+              value={filterUserInput}
               placeholder="Ingredients"
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
-                  setExclude([...exclude, userInput]);
-                  setUserInput("");
+                  setExclude([...exclude, filterUserInput]);
+                  setFilterUserInput("");
                 }
               }}
-              onChange={(e) => setUserInput(e.target.value)}
+              onChange={(e) => setFilterUserInput(e.target.value)}
             />
             <ul>
               {exclude?.map((item, index) => (
@@ -148,7 +133,7 @@ export const OpenFilterModal = (props: FilterModalProps) => {
         </FilterContainer>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

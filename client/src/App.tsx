@@ -1,10 +1,8 @@
-import React from "react";
 import "./App.css";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Home from "./components/Home";
 import SearchResult from "./components/search/SearchResult";
-// import { SearchContextProvider } from "./components/context/SearchContext";
 import {
   BrowserRouter as Router,
   Route,
@@ -20,7 +18,6 @@ import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
 export default function App() {
   return (
     <AppContainer className="App">
-      {/* <SearchContextProvider> */}
       <Router>
         <NavBar>
           <div>
@@ -50,7 +47,6 @@ export default function App() {
           />
         </Switch>
       </Router>
-      {/* </SearchContextProvider> */}
     </AppContainer>
   );
 }

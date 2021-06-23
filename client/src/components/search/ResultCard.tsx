@@ -1,46 +1,25 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { Props } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 import styled from "styled-components";
 import { SearchResultInterface } from "./SearchResult";
 
 interface ResultCardProps {
-  searchResult: SearchResultInterface[] | undefined;
+  searchResult: SearchResultInterface | undefined;
 }
 
 const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
-  console.log(searchResult);
-
-  const renderCard = () => {
-    return searchResult?.map((item, index) => {
-      return (
-        <Card key={index} style={{ width: "18rem" }}>
-          <Card.Img variant="top" src={item.image} />
-          <Card.Body>
-            <Card.Title>{item.title}</Card.Title>
-            <CardBody>
-              {item.missedIngredientCount === 0
-                ? "You've got all you need!"
-                : renderMissingIngreds(item)}
-            </CardBody>
-            <Button variant="primary">Go somewhere</Button>
-          </Card.Body>
-        </Card>
-      );
-    });
-  };
-
-  const renderMissingIngreds = (item: SearchResultInterface) => {
+  const renderMissingIngreds = (item: SearchResultInterface | undefined) => {
     return (
       <MissingIngredientsContainer>
         <span>Missing ingredients</span>
         <ul>
-          {item.missedIngredients.map((ingred, index) => (
+          {item?.missedIngredients.map((ingred, index) => (
             <li key={index}>
               <FontAwesomeIcon icon={faTimes} />
               &nbsp;
-              {ingred.name}
+              {`${ingred.name.charAt(0).toUpperCase()}` +
+                `${ingred.name.slice(1)}`}
             </li>
           ))}
         </ul>
@@ -48,24 +27,23 @@ const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
     );
   };
 
-  if (searchResult) {
-    return <ResultCardContaier>{renderCard()}</ResultCardContaier>;
-  } else {
-    return (
-      <div>
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  }
+  return (
+    <Card style={{ width: "18rem" }}>
+      <Card.Img variant="top" src={searchResult?.image} />
+      <Card.Body>
+        <Card.Title>{searchResult?.title}</Card.Title>
+        <CardBody>
+          {searchResult?.missedIngredientCount === 0
+            ? "You've got all you need!"
+            : renderMissingIngreds(searchResult)}
+        </CardBody>
+        <Button variant="primary">See details</Button>
+      </Card.Body>
+    </Card>
+  );
 };
 
 export default ResultCard;
-
-const ResultCardContaier = styled.div`
-  display: flex;
-`;
 
 const CardBody = styled(Card.Body)`
   display: flex;

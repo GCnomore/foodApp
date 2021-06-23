@@ -10,7 +10,6 @@ import main_bg2 from "../assets/img/main_bg/main_bg2.webp";
 import main_bg3 from "../assets/img/main_bg/main_bg3.webp";
 import main_bg4 from "../assets/img/main_bg/main_bg4.webp";
 import main_bg5 from "../assets/img/main_bg/main_bg5.webp";
-import { Set } from "typescript";
 
 const Home: React.FC = () => {
   const [searchBy, setSearchBy] = useState("ingredients");

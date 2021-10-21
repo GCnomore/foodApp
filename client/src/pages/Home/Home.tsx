@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { OpenFilterModal } from "../../Modals";
 import {
   BottomSection,
   ContentsContainer,
@@ -15,7 +14,7 @@ import {
   SearchContainer,
   TitleContainer,
   TopSection,
-} from "./Home_Styled_Component";
+} from "./Home_Styled";
 import { Dropdown } from "react-bootstrap";
 import { HomeState } from "../../redux/reducer/reducer_interface";
 import {
@@ -28,6 +27,7 @@ import {
   setShowFilter,
 } from "../../redux/actions/actions";
 import { connect } from "react-redux";
+import { OpenFilterModal } from "../../components/Modals";
 
 interface HomeProps {
   SET_SEARCH_BY: (searchBy: string) => void;
@@ -37,7 +37,7 @@ interface HomeProps {
   SET_SHOW_FILTER: (showFilter: boolean) => void;
   SET_CHECKED: (check: { name: string; checked: boolean }[]) => void;
   SET_EXCLUDE: (exclude: string[]) => void;
-  state: HomeState;
+  state: any;
 }
 
 const Home: React.FC<HomeProps> = (props) => {
@@ -49,45 +49,41 @@ const Home: React.FC<HomeProps> = (props) => {
     SET_SHOW_FILTER,
     SET_CHECKED,
     SET_EXCLUDE,
-    state,
   } = props;
-  // const [searchBy, setSearchBy] = useState("ingredients");
-  // const [search, setSeacrh] = useState("");
-  // const [ingredients, setIngredients] = useState<string[]>([]);
-  // const [foodTrivia, setFoodTrivia] = useState<string | null>("");
-  // const [showFilter, setShowFilter] = useState<boolean>(false);
+  const state: HomeState = props.state.homeReducer;
+
+  const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [ingredientsDelete, setIngredientsDelete] = useState({
     show: false,
     index: 0,
   });
 
-  // const [exclude, setExclude] = useState<string[]>([]);
   const [filterUserInput, setFilterUserInput] = useState("");
-  // const [checked, setChecked] = useState<{ name: string; checked: boolean }[]>();
 
   useEffect(() => {
+    console.log("state", state);
     const foodTrivia = sessionStorage.getItem("trivia");
     foodTrivia ? SET_FOOD_TRIVIA(foodTrivia) : getFoodTrivia();
   }, []);
 
   // TODO: limit ingredients to 20
 
-  const getFilters = (): string => {
-    const filterQuery: string[] = [];
-    state.checked.filter((item) => {
-      if (item.checked && filterQuery.length === 0) {
-        filterQuery.push(item.name.replace(/\s+/g, ""), "=", `${item.checked}`);
-      } else if (item.checked && filterQuery.length > 2) {
-        filterQuery.push(
-          "&",
-          item.name.replace(/\s+/g, ""),
-          "=",
-          `${item.checked}`
-        );
-      }
-    });
-    return filterQuery.join("").trim().toLowerCase();
-  };
+  // const getFilters = (): string => {
+  //   const filterQuery: string[] = [];
+  //   state.checked.filter((item) => {
+  //     if (item.checked && filterQuery.length === 0) {
+  //       filterQuery.push(item.name.replace(/\s+/g, ""), "=", `${item.checked}`);
+  //     } else if (item.checked && filterQuery.length > 2) {
+  //       filterQuery.push(
+  //         "&",
+  //         item.name.replace(/\s+/g, ""),
+  //         "=",
+  //         `${item.checked}`
+  //       );
+  //     }
+  //   });
+  //   return filterQuery.join("").trim().toLowerCase();
+  // };
 
   const deleteIngredient = (ingredient: string): void => {
     if (state.ingredients) {
@@ -152,21 +148,23 @@ const Home: React.FC<HomeProps> = (props) => {
 
             <div>
               <input
-                value={state.search}
+                ref={searchInputRef}
                 placeholder={
                   state.searchBy === "ingredients"
                     ? "Add your ingredients"
                     : "Search"
                 }
-                onChange={(e) => {
-                  SET_SEARCH(e.target.value);
-                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    if (!state.ingredients.includes(state.search)) {
-                      SET_INGREDIENTS((prev) => [...prev, state.search]);
-                    }
-                    SET_SEARCH("");
+                    console.log(searchInputRef.current.value);
+                    searchInputRef.current.value = "";
+                    // if (
+                    //   state.ingredients &&
+                    //   !state.ingredients.includes(state.search)
+                    // ) {
+                    //   SET_INGREDIENTS((prev) => [...prev, state.search]);
+                    // }
+                    // SET_SEARCH("");
                   }
                 }}
               />
@@ -175,7 +173,7 @@ const Home: React.FC<HomeProps> = (props) => {
               ) : (
                 <button onClick={() => setShowFilter(true)}>Filter</button>
               )}
-              <OpenFilterModal
+              {/* <OpenFilterModal
                 show={state.showFilter}
                 onHide={() => setShowFilter(false)}
                 exclude={state.exclude}
@@ -185,7 +183,7 @@ const Home: React.FC<HomeProps> = (props) => {
                 setFilterUserInput={setFilterUserInput}
                 checked={state.checked}
                 setChecked={setChecked}
-              />
+              /> */}
             </div>
             {state.searchBy === "name" ? (
               <></>
@@ -193,7 +191,7 @@ const Home: React.FC<HomeProps> = (props) => {
               <IngredientsContainer>
                 <span>Your ingredients:</span>
                 <ul>
-                  {state.ingredients.map((item, index) => (
+                  {state.ingredients?.map((item, index) => (
                     <li
                       key={index}
                       onMouseEnter={() => {
@@ -221,13 +219,13 @@ const Home: React.FC<HomeProps> = (props) => {
             )}
             <Link
               to={{
-                pathname: `/search/${state.ingredients.join("&")}`,
-                search: `?${getFilters()}`,
+                pathname: `/search/${state.ingredients?.join("&")}`,
+                // search: `?${getFilters()}`,
               }}
             >
               <button
                 disabled={
-                  state.ingredients.length === 0 && state.search === ""
+                  state.ingredients?.length === 0 && state.search === ""
                     ? true
                     : false
                 }
@@ -248,7 +246,8 @@ const Home: React.FC<HomeProps> = (props) => {
             </span>
           </FoodTriviaContainer>
         </TopSection>
-        <BottomSection>
+        {/*//! Need DB to implement this  */}
+        {/* <BottomSection>
           <RankingContainer>
             <div>
               <h3>Most searched ingredients this week</h3>
@@ -257,7 +256,7 @@ const Home: React.FC<HomeProps> = (props) => {
               <h3>Most viewed recipes this week</h3>
             </div>
           </RankingContainer>
-        </BottomSection>
+        </BottomSection> */}
       </ContentsContainer>
     </HomeContainer>
   );

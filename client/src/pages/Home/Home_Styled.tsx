@@ -1,11 +1,11 @@
 import { Dropdown } from "react-bootstrap";
 import styled from "styled-components/macro";
 
-import main_bg1 from "../assets/img/main_bg/main_bg1.webp";
-import main_bg2 from "../assets/img/main_bg/main_bg2.webp";
-import main_bg3 from "../assets/img/main_bg/main_bg3.webp";
-import main_bg4 from "../assets/img/main_bg/main_bg4.webp";
-import main_bg5 from "../assets/img/main_bg/main_bg5.webp";
+import main_bg1 from "../../assets/img/main_bg/main_bg1.webp";
+import main_bg2 from "../../assets/img/main_bg/main_bg2.webp";
+import main_bg3 from "../../assets/img/main_bg/main_bg3.webp";
+import main_bg4 from "../../assets/img/main_bg/main_bg4.webp";
+import main_bg5 from "../../assets/img/main_bg/main_bg5.webp";
 
 export const HomeContainer = styled.main``;
 
@@ -19,7 +19,7 @@ const bg5 = `background-image: url(${main_bg5}); background-size: cover; backgro
 
 export const TopSection = styled.section`
   ${bg2}
-  height: 90vh;
+  height: 100vh;
   min-height: 30rem;
   background-color: darkslategrey;
 

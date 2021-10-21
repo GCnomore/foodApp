@@ -6,7 +6,7 @@ import {
   SEARCH,
   SEARCH_BY,
   SHOW_FILTER,
-} from "../actions/action_types";
+} from "../../actions/action_types";
 import { HomeState } from "./reducer_interface";
 
 const initialState: HomeState = {

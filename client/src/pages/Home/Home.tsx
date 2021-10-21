@@ -16,7 +16,7 @@ import {
   TopSection,
 } from "./Home_Styled";
 import { Dropdown } from "react-bootstrap";
-import { HomeState } from "../../redux/reducer/reducer_interface";
+import { HomeState } from "../../redux/reducer/Home_Reducer/reducer_interface";
 import {
   setChecked,
   setExclude,
@@ -63,7 +63,6 @@ const Home: React.FC<HomeProps> = (props) => {
   useEffect(() => {
     console.log("state", state);
     const foodTrivia = sessionStorage.getItem("trivia");
-    foodTrivia ? SET_FOOD_TRIVIA(foodTrivia) : getFoodTrivia();
   }, []);
 
   // TODO: limit ingredients to 20
@@ -92,21 +91,6 @@ const Home: React.FC<HomeProps> = (props) => {
       );
       setIngredients(update);
     }
-  };
-
-  const getFoodTrivia = async () => {
-    const trivia: string = await axios({
-      method: "GET",
-      url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random",
-      headers: {
-        "x-rapidapi-key": "80c5024537mshda9eb5674d6ffbcp1cd8a6jsn7de3a31beb98",
-        "x-rapidapi-host":
-          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-      },
-    }).then((res) => res.data.text);
-    sessionStorage.setItem("trivia", trivia);
-    setFoodTrivia(trivia);
-    console.log("getFoodTrivia");
   };
 
   return (

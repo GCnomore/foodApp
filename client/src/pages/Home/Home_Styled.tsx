@@ -9,6 +9,8 @@ import main_bg5 from "../assets/img/main_bg/main_bg5.webp";
 
 export const HomeContainer = styled.main``;
 
+export const ContentsContainer = styled.div``;
+
 const bg1 = `background-image: url(${main_bg1}); background-size: cover; background-position: top;`;
 const bg2 = `background-image: url(${main_bg2}); background-size: cover; background-position: bottom;`;
 const bg3 = `background-image: url(${main_bg3}); background-size: cover; background-position: center;`;

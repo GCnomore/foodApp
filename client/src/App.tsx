@@ -1,7 +1,6 @@
 import "./App.css";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Home from "./components/pages/Home/Home";
 import SearchResult from "./components/search/SearchResult";
 import {
   BrowserRouter as Router,
@@ -13,9 +12,10 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
-import { AppContainer, NavBar } from "./App_Styled_Component";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { AppContainer, NavBar } from "./App_Styled";
+import Home from "./pages/Home/Home";
 
 export default function App() {
   return (

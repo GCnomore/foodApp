@@ -1,8 +1,7 @@
 import "./App.css";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Home from "./components/Home";
-import SearchResult from "./components/search/SearchResult";
+import SearchResult from "./pages/Result/Search_Result";
 import {
   BrowserRouter as Router,
   Route,
@@ -11,9 +10,10 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import styled from "styled-components/macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
+import { AppContainer, NavBar } from "./App_Styled";
+import Home from "./pages/Home/Home";
 
 export default function App() {
   return (
@@ -50,30 +50,3 @@ export default function App() {
     </AppContainer>
   );
 }
-
-const AppContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.3);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const NavBar = styled.nav`
-  width: 100%;
-  height: 2.5rem;
-  background-color: rgba(0, 0, 0, 0.6);
-  position: absolute;
-
-  > div {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 100%;
-    > * {
-      color: white;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 0 1rem;
-    }
-  }
-`;

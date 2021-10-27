@@ -1,54 +1,47 @@
 import "./App.css";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import SearchResult from "./components/search/SearchResult";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  useLocation,
-} from "react-router-dom";
-
+import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { AppContainer, NavBar } from "./App_Styled";
-import Home from "./pages/Home/Home";
+import HomePage from "./pages/Home/Home_Page";
+import SearchResult from "./components/search/SearchResult";
+import RecipePage from "./pages/Recipe_Page/Recipe_Page";
+import ProfilePage from "./pages/Profile/Profile_Page";
+import LoginPage from "./pages/Login/Login_Page";
+import ROUTES from "./routers/Routers";
+import RegisterPage from "./pages/Register/Register_Page";
+import SaveEarth from "./pages/Save_Earth/Save_Earth";
 
 export default function App() {
   return (
     <Provider store={store}>
       <AppContainer className="App">
         <Router>
+          <Switch>
+            <Route path={ROUTES.HOME_PAGE} exact component={HomePage} />
+            <Route
+              path={ROUTES.SEARCH_RESULT_PAGE}
+              exact
+              component={SearchResult}
+            />
+            <Route path={ROUTES.RECIPE_PAGE} exact component={RecipePage} />
+            <Route path={ROUTES.PROFILE_PAGE} exact component={ProfilePage} />
+            <Route path={ROUTES.LOGIN_PAGE} exact component={LoginPage} />
+            <Route path={ROUTES.REGISTER_PAGE} exact component={RegisterPage} />
+            <Route path={ROUTES.SAVE_EARTH} exact component={SaveEarth} />
+          </Switch>
           <NavBar>
             <div>
-              <Link to="/">Home</Link>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
-              <Link to="/saveearth">
-                Save <FontAwesomeIcon icon={faGlobeAmericas} />{" "}
+              <Link to={ROUTES.HOME_PAGE}>Home</Link>
+              <Link to={ROUTES.REGISTER_PAGE}>Register</Link>
+              <Link to={ROUTES.LOGIN_PAGE}>Login</Link>
+              <Link to={ROUTES.SAVE_EARTH}>
+                Save <FontAwesomeIcon icon={faGlobeAmericas} />
               </Link>
             </div>
           </NavBar>
-          <Switch>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route
-              path="/search/:Ingredients"
-              render={({ match }) => {
-                return <SearchResult />;
-              }}
-            />
-          </Switch>
         </Router>
       </AppContainer>
     </Provider>

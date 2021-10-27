@@ -2,7 +2,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Spinner } from "react-bootstrap";
 import styled from "styled-components";
-import { SearchResultInterface } from "../pages/Result/Search_Result";
+import { SearchResultInterface } from "../pages/Result/Search_Result_Page";
 
 interface ResultCardProps {
   searchResult: SearchResultInterface | undefined;

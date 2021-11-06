@@ -5,11 +5,24 @@ import {
   INGREDIENTS,
   SEARCH,
   SEARCH_BY,
+  SEARCH_RECIPE_BY_INGREDIENTS,
   SHOW_FILTER,
-} from "../../actions/action_types";
-import { HomeState } from "./reducer_interface";
+} from "../../actions/actions";
 
-const initialState: HomeState = {
+export interface AppState {
+  searchBy: string;
+  search: null | string;
+  ingredients: string[] | null;
+  foodTrivia: null | string;
+  showFilter: boolean;
+  exclude: string[] | null;
+  checked: {
+    name: string;
+    checked: boolean;
+  }[];
+}
+
+const initialState: AppState = {
   searchBy: "ingredients",
   search: null,
   ingredients: [],
@@ -51,7 +64,7 @@ const initialState: HomeState = {
 export function homeReducer(
   state = initialState,
   action: { type: string; payload: any }
-): HomeState {
+): AppState {
   switch (action.type) {
     case SEARCH_BY:
       return {
@@ -87,6 +100,11 @@ export function homeReducer(
       return {
         ...state,
         checked: action.payload,
+      };
+    case SEARCH_RECIPE_BY_INGREDIENTS:
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import {
   BottomSection,
@@ -16,19 +16,11 @@ import {
   TopSection,
 } from "./Home_Styled";
 import { Dropdown } from "react-bootstrap";
-import { HomeState } from "../../redux/reducer/Home_Reducer/reducer_interface";
-import {
-  setChecked,
-  setExclude,
-  setFoodTrivia,
-  setIngredients,
-  setSearch,
-  setSearchBy,
-  setShowFilter,
-} from "../../redux/actions/actions";
+import { AppActions } from "../../redux/actions/actions";
 import { connect } from "react-redux";
 import { OpenFilterModal } from "../../components/Modals";
 import ROUTES from "../../routers/Routers";
+import { AppState } from "../../redux/reducer/Home_Reducer/reducer";
 
 interface HomeProps {
   SET_SEARCH_BY: (searchBy: string) => void;
@@ -38,10 +30,10 @@ interface HomeProps {
   SET_SHOW_FILTER: (showFilter: boolean) => void;
   SET_CHECKED: (check: { name: string; checked: boolean }[]) => void;
   SET_EXCLUDE: (exclude: string[]) => void;
-  state: any;
+  state: AppState;
 }
 
-const HomePage: React.FC<HomeProps> = (props) => {
+const HomePage: React.FC<HomeProps> = (props: HomeProps) => {
   const {
     SET_SEARCH_BY,
     SET_SEARCH,
@@ -51,15 +43,15 @@ const HomePage: React.FC<HomeProps> = (props) => {
     SET_CHECKED,
     SET_EXCLUDE,
   } = props;
-  const state: HomeState = props.state.homeReducer;
-
+  const state: AppState = props.state;
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const [filterUserInput, setFilterUserInput] = useState("");
   const [ingredientsDelete, setIngredientsDelete] = useState({
     show: false,
     index: 0,
   });
 
-  const [filterUserInput, setFilterUserInput] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     console.log("state", state);
@@ -90,9 +82,18 @@ const HomePage: React.FC<HomeProps> = (props) => {
       const update = state.ingredients.filter(
         (item: string) => item !== ingredient
       );
-      setIngredients(update);
+      SET_INGREDIENTS(update);
     }
   };
+
+  const handleSearch = () => {
+    history.push("/result");
+    // SET_INGREDIENTS([]);
+    // SET_SEARCH("");
+  };
+
+  const isSearchDisabled =
+    state.ingredients?.length === 0 && state.search === "" ? true : false;
 
   return (
     <HomeContainer>
@@ -115,7 +116,7 @@ const HomePage: React.FC<HomeProps> = (props) => {
                 <Dropdown.Item
                   href="#/ingredients"
                   onSelect={(e) => {
-                    setSearchBy(e?.substring(2) || "");
+                    SET_SEARCH_BY(e?.substring(2) || "");
                   }}
                 >
                   by Ingredient
@@ -123,7 +124,7 @@ const HomePage: React.FC<HomeProps> = (props) => {
                 <Dropdown.Item
                   href="#/name"
                   onSelect={(e) => {
-                    setSearchBy(e?.substring(2) || "");
+                    SET_SEARCH_BY(e?.substring(2) || "");
                   }}
                 >
                   by Name
@@ -156,7 +157,7 @@ const HomePage: React.FC<HomeProps> = (props) => {
               {state.searchBy === "name" ? (
                 <></>
               ) : (
-                <button onClick={() => setShowFilter(true)}>Filter</button>
+                <button onClick={() => SET_SHOW_FILTER(true)}>Filter</button>
               )}
               {/* <OpenFilterModal
                 show={state.showFilter}
@@ -202,28 +203,18 @@ const HomePage: React.FC<HomeProps> = (props) => {
                 </ul>
               </IngredientsContainer>
             )}
-            <Link
+            {/* <Link
               to={{
-                pathname: `${
-                  ROUTES.SEARCH_RESULT_PAGE
-                }${state.ingredients?.join("&")}`,
+                pathname: `${ROUTES.RESULT_PAGE}${state.ingredients?.join(
+                  "&"
+                )}`,
                 // search: `?${getFilters()}`,
               }}
-            >
-              <button
-                disabled={
-                  state.ingredients?.length === 0 && state.search === ""
-                    ? true
-                    : false
-                }
-                onClick={() => {
-                  setIngredients([]);
-                  SET_SEARCH("");
-                }}
-              >
-                Search
-              </button>
-            </Link>
+            > */}
+            <button disabled={isSearchDisabled} onClick={handleSearch}>
+              Search
+            </button>
+            {/* </Link> */}
             <button>Get random</button>
           </SearchContainer>
           <FoodTriviaContainer>
@@ -249,31 +240,31 @@ const HomePage: React.FC<HomeProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: HomeState) => ({
+const mapStateToProps = (state: AppState) => ({
   state,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   SET_SEARCH_BY: (searchBy: string) => {
-    dispatch(setSearchBy(searchBy));
+    dispatch(AppActions.setSearchBy(searchBy));
   },
   SET_SEARCH: (search: string) => {
-    dispatch(setSearch(search));
+    dispatch(AppActions.setSearch(search));
   },
   SET_INGREDIENTS: (ingredients: string[]) => {
-    dispatch(setIngredients(ingredients));
+    dispatch(AppActions.setIngredients(ingredients));
   },
   SET_FOOD_TRIVIA: (foodTrivia: string) => {
-    dispatch(setFoodTrivia(foodTrivia));
+    dispatch(AppActions.setFoodTrivia(foodTrivia));
   },
   SET_SHOW_FILTER: (showFilter: boolean) => {
-    dispatch(setShowFilter(showFilter));
+    dispatch(AppActions.setShowFilter(showFilter));
   },
   SET_CHECKED: (check: { name: string; checked: boolean }[]) => {
-    dispatch(setChecked(check));
+    dispatch(AppActions.setChecked(check));
   },
   SET_EXCLUDE: (exclude: string[]) => {
-    dispatch(setExclude(exclude));
+    dispatch(AppActions.setExclude(exclude));
   },
 });
 

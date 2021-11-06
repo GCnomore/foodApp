@@ -1,44 +1,73 @@
-import {
-  CHECKED,
-  EXCLUDE,
-  FOOD_TRIVIA,
-  INGREDIENTS,
-  SEARCH,
-  SEARCH_BY,
-  SHOW_FILTER,
-} from "./action_types";
+import ApiUtil from "../../data/api/apiUtil";
+import { AppDispatch } from "../store";
 
-export const setSearchBy = (searchBy: string) => ({
-  type: SEARCH_BY,
-  payload: searchBy,
-});
+export const SEARCH_BY = "SET_SEARCH_BY";
+export const SEARCH = "SET_SEARCH";
+export const INGREDIENTS = "SET_INGREDIENTS";
+export const FOOD_TRIVIA = "SET_FOOD_TRIVIA";
+export const SHOW_FILTER = "SET_SHOW_FILTER";
+export const EXCLUDE = "SET_EXCLUDE";
+export const CHECKED = "SET_CHECKED";
+export const SEARCH_RECIPE_BY_INGREDIENTS = "SEARCH_RECIPE_BY_INGREDIENTS";
 
-export const setSearch = (search: string) => ({
-  type: SEARCH,
-  payload: search,
-});
+export const AppActions = {
+  setSearchBy: (searchBy: string) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: SEARCH_BY,
+      payload: searchBy,
+    });
+  },
 
-export const setIngredients = (ingredients: string[]) => ({
-  type: INGREDIENTS,
-  payload: ingredients,
-});
+  setSearch: (search: string) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: SEARCH,
+      payload: search,
+    });
+  },
 
-export const setFoodTrivia = (foodTrivia: string) => ({
-  type: FOOD_TRIVIA,
-  payload: foodTrivia,
-});
+  setIngredients: (ingredients: string[]) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: INGREDIENTS,
+      payload: ingredients,
+    });
+  },
 
-export const setShowFilter = (showFilter: boolean) => ({
-  type: SHOW_FILTER,
-  payload: showFilter,
-});
+  setFoodTrivia: (foodTrivia: string) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: FOOD_TRIVIA,
+      payload: foodTrivia,
+    });
+  },
 
-export const setExclude = (exclude: string[]) => ({
-  type: EXCLUDE,
-  payload: exclude,
-});
+  setShowFilter: (showFilter: boolean) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: SHOW_FILTER,
+      payload: showFilter,
+    });
+  },
 
-export const setChecked = (check: { name: string; checked: boolean }[]) => ({
-  type: CHECKED,
-  payload: check,
-});
+  setExclude: (exclude: string[]) => (dispatch: AppDispatch) => {
+    dispatch({
+      type: EXCLUDE,
+      payload: exclude,
+    });
+  },
+
+  setChecked:
+    (check: { name: string; checked: boolean }[]) =>
+    (dispatch: AppDispatch) => {
+      dispatch({
+        type: CHECKED,
+        payload: check,
+      });
+    },
+
+  searchRecipeByIngredients:
+    (ingredients: string[]) => (dispatch: AppDispatch) => {
+      ApiUtil.searchRecipeByIngredients(ingredients);
+      dispatch({
+        type: SEARCH_RECIPE_BY_INGREDIENTS,
+        payload: ingredients,
+      });
+    },
+};

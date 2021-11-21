@@ -7,7 +7,7 @@ import {
 const ApiUtil = {
   searchRecipeByIngredients: async (
     ingredients: string[]
-  ): Promise<SearchByRecipe> => {
+  ): Promise<SearchByRecipe[]> => {
     const options: AxiosRequestConfig = {
       method: "GET",
       url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients",
@@ -18,23 +18,26 @@ const ApiUtil = {
         ranking: "1",
       },
       headers: {
-        "x-rapidapi-key": "80c5024537mshda9eb5674d6ffbcp1cd8a6jsn7de3a31beb98",
+        "x-rapidapi-key": process.env.REACT_APP_KEY ?? "",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       },
     };
     const result = await axios.request(options);
-    localStorage.setItem("searchbyingredients", JSON.stringify(result.data));
+    const searchByRecipe = result.data.map((item: SearchByRecipe) =>
+      asSearchByRecipe(item)
+    );
 
-    return asSearchByRecipe(result.data);
+    return searchByRecipe;
   },
 
   getFoodTrivia: async () => {
+    console.log("getfood");
     const trivia: string = await axios({
       method: "GET",
       url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random",
       headers: {
-        "x-rapidapi-key": "80c5024537mshda9eb5674d6ffbcp1cd8a6jsn7de3a31beb98",
+        "x-rapidapi-key": process.env.REACT_APP_KEY ?? "",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       },

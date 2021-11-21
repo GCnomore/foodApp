@@ -13,12 +13,12 @@ import {
   removeExcludes,
   setCheckFilters,
   setShowFilter,
-} from "../../redux/slice/homeSlice";
+} from "../../redux/slice/searchSlice";
 
 const FilterModal: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { showFilter, excludes, checkFilters } = useSelector(
-    (state: RootState) => state.home
+    (state: RootState) => state.search
   );
   const excludesRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [ingredientsDelete, setIngredientsDelete] = useState({

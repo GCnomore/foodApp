@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ApiUtil from "../../data/api/apiUtil";
 
-export interface HomeState {
+export interface SearchState {
   searchBy: string;
   search: string;
   ingredients: string[];
@@ -11,7 +11,7 @@ export interface HomeState {
   foodTrivia: null | string;
 }
 
-const initialState: HomeState = {
+const initialState: SearchState = {
   searchBy: "ingredients",
   search: "",
   ingredients: [],
@@ -51,15 +51,15 @@ const initialState: HomeState = {
 };
 
 export const getFoodTrivia = createAsyncThunk(
-  "home/getFoodTriviaStatus",
+  "search/getFoodTriviaStatus",
   async () => {
     const response = await ApiUtil.getFoodTrivia();
     return response;
   }
 );
 
-export const homeSlice = createSlice({
-  name: "home",
+export const searchSlice = createSlice({
+  name: "search",
   initialState,
   reducers: {
     setSearchBy: (state, action) => {
@@ -90,7 +90,6 @@ export const homeSlice = createSlice({
     removeExcludes: (state, action) => {
       state.excludes = state.excludes.filter((item) => item !== action.payload);
     },
-    // TODO: need to fix below when creating filter feature
     setCheckFilters: (state, action) => {
       state.checkFilters.map((item) => {
         if (item.name === action.payload.name) {
@@ -116,6 +115,6 @@ export const {
   removeIngredients,
   setFoodTrivia,
   setShowFilter,
-} = homeSlice.actions;
+} = searchSlice.actions;
 
-export default homeSlice.reducer;
+export default searchSlice.reducer;

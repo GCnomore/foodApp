@@ -17,7 +17,7 @@ import { SearchResultInterface } from "../../data/interfaces/Search_Result";
 import LoadingComponent from "../../components/Loading_Component";
 import { DietFilters, DIET_FILTERS } from "../../constants";
 import { connect, useSelector } from "react-redux";
-import { HomeState, removeIngredients } from "../../redux/slice/homeSlice";
+import { SearchState, removeIngredients } from "../../redux/slice/searchSlice";
 // import { AppState } from "../../redux/reducer/Home_Reducer/reducer";
 // import { AppActions } from "../../redux/actions/actions";
 
@@ -31,7 +31,7 @@ const ResultPage: React.FC = () => {
   });
   const [showFilter, setShowFilter] = useState(false);
   const [toggleDietFilter, setToggleDietFilter] = useState(DIET_FILTERS);
-  const { ingredients } = useSelector((state: HomeState) => state);
+  const { ingredients } = useSelector((state: SearchState) => state);
 
   useEffect(() => {}, []);
 

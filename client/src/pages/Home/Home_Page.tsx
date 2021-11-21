@@ -21,12 +21,12 @@ import ROUTES from "../../routers/Routers";
 import {
   addIngredients,
   getFoodTrivia,
-  HomeState,
+  SearchState,
   removeIngredients,
   setFoodTrivia,
   setSearchBy,
   setShowFilter,
-} from "../../redux/slice/homeSlice";
+} from "../../redux/slice/searchSlice";
 import _ from "lodash";
 import { AppDispatch, RootState } from "../../redux/store";
 
@@ -46,7 +46,7 @@ const HomePage: React.FC = () => {
     checkFilters,
     excludes,
     foodTrivia,
-  } = useSelector((state: RootState) => state.home);
+  } = useSelector((state: RootState) => state.search);
 
   const history = useHistory();
 

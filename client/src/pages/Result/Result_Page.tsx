@@ -1,4 +1,4 @@
-import ResultCard from "../../components/ResultCard";
+import ResultCard from "../../components/Result_Card/ResultCard";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -18,8 +18,7 @@ import LoadingComponent from "../../components/Loading_Component";
 import { DietFilters, DIET_FILTERS } from "../../constants";
 import { connect, useSelector } from "react-redux";
 import { SearchState, removeIngredients } from "../../redux/slice/searchSlice";
-// import { AppState } from "../../redux/reducer/Home_Reducer/reducer";
-// import { AppActions } from "../../redux/actions/actions";
+import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 
 const ResultPage: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
@@ -75,10 +74,7 @@ const ResultPage: React.FC = () => {
 
   return (
     <SearchResultContainer>
-      <Modal show={showFilter} onHide={() => setShowFilter(false)}>
-        <ModalTitle>Filters</ModalTitle>
-        <ModalBody>filtersssssssssssssssssssss</ModalBody>
-      </Modal>
+      <FilterModal />
 
       <SearchBarSection>
         <div>

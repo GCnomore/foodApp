@@ -1,8 +1,8 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Spinner } from "react-bootstrap";
-import styled from "styled-components";
-import { SearchResultInterface } from "./SearchResult";
+import { SearchResultInterface } from "../../data/interfaces/Search_Result";
+import { CardBody, MissingIngredientsContainer } from "./Result_Card_Styled";
 
 interface ResultCardProps {
   searchResult: SearchResultInterface | undefined;
@@ -10,6 +10,7 @@ interface ResultCardProps {
 
 const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
   const renderMissingIngreds = (item: SearchResultInterface | undefined) => {
+    console.log(item?.missedIngredients);
     return (
       <MissingIngredientsContainer>
         <span>Missing ingredients</span>
@@ -18,8 +19,7 @@ const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
             <li key={index}>
               <FontAwesomeIcon icon={faTimes} />
               &nbsp;
-              {`${ingred.name.charAt(0).toUpperCase()}` +
-                `${ingred.name.slice(1)}`}
+              {`${ingred.name[0].toUpperCase()}` + `${ingred.name.slice(1)}`}
             </li>
           ))}
         </ul>
@@ -44,28 +44,3 @@ const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
 };
 
 export default ResultCard;
-
-const CardBody = styled(Card.Body)`
-  display: flex;
-  flex-direction: column;
-`;
-
-const MissingIngredientsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  > ul {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    > li {
-      margin: 0.5rem 1rem 0 0;
-
-      > svg {
-        color: red;
-      }
-    }
-  }
-`;

@@ -7,16 +7,20 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.177",
     "@types/node": "^16.11.6",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@types/react-redux": "^7.1.20",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.2",
+    "@types/redux": "^3.6.0",
+    "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^5.1.15",
     "axios": "^0.24.0",
     "http-proxy-middleware": "^2.0.1",
@@ -58,6 +62,6 @@
     "@types/bootstrap": "^5.0.16",
     "@types/react-bootstrap": "^0.32.25",
     "bootstrap": "^5.0.1",
-    "react-bootstrap": "^1.6.1"
+    "react-bootstrap": "^1.6.4"
   }
 }

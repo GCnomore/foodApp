@@ -16,28 +16,12 @@ import {
 import { SearchResultInterface } from "../../data/interfaces/Search_Result";
 import LoadingComponent from "../../components/Loading_Component";
 import { DietFilters, DIET_FILTERS } from "../../constants";
-import { connect } from "react-redux";
-import { AppState } from "../../redux/reducer/Home_Reducer/reducer";
-import { AppActions } from "../../redux/actions/actions";
+import { connect, useSelector } from "react-redux";
+import { HomeState, removeIngredients } from "../../redux/slice/homeSlice";
+// import { AppState } from "../../redux/reducer/Home_Reducer/reducer";
+// import { AppActions } from "../../redux/actions/actions";
 
-interface ResultProps {
-  SET_SEARCH_BY: (searchBy: string) => void;
-  SET_SEARCH: (search: string) => void;
-  SET_INGREDIENTS: (ingredients: string[]) => void;
-  SET_CHECKED: (check: { name: string; checked: boolean }[]) => void;
-  SET_EXCLUDE: (exclude: string[]) => void;
-  state: AppState;
-}
-
-const ResultPage: React.FC<ResultProps> = (props: ResultProps) => {
-  const {
-    SET_SEARCH_BY,
-    SET_SEARCH,
-    SET_INGREDIENTS,
-    SET_CHECKED,
-    SET_EXCLUDE,
-  } = props;
-  const state: AppState = props.state;
+const ResultPage: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [userInput, setUserInput] = useState<string>("");
   const [toggleNoMissingIngreds, setToggleNoMissingIngreds] = useState(false);
@@ -47,17 +31,18 @@ const ResultPage: React.FC<ResultProps> = (props: ResultProps) => {
   });
   const [showFilter, setShowFilter] = useState(false);
   const [toggleDietFilter, setToggleDietFilter] = useState(DIET_FILTERS);
+  const { ingredients } = useSelector((state: HomeState) => state);
 
   useEffect(() => {}, []);
 
   const renderIngredients = () => {
-    return state.ingredients?.map((item) => (
+    return ingredients?.map((item) => (
       <li
         onClick={() => {
-          const newIngredients = state.ingredients?.filter(
+          const newIngredients = ingredients?.filter(
             (ingred) => ingred !== item
           );
-          newIngredients && SET_INGREDIENTS(newIngredients);
+          newIngredients && removeIngredients(newIngredients[0]);
         }}
       >
         {`${item.charAt(0).toUpperCase()}` + `${item.slice(1)}`}
@@ -84,7 +69,7 @@ const ResultPage: React.FC<ResultProps> = (props: ResultProps) => {
   };
 
   const addIngredients = (userInput: string) => {
-    state.ingredients && SET_INGREDIENTS([...state.ingredients, userInput]);
+    ingredients && addIngredients(userInput);
     setUserInput("");
   };
 
@@ -146,29 +131,7 @@ const ResultPage: React.FC<ResultProps> = (props: ResultProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  state,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  SET_SEARCH_BY: (searchBy: string) => {
-    dispatch(AppActions.setSearchBy(searchBy));
-  },
-  SET_SEARCH: (search: string) => {
-    dispatch(AppActions.setSearch(search));
-  },
-  SET_INGREDIENTS: (ingredients: string[]) => {
-    dispatch(AppActions.setIngredients(ingredients));
-  },
-  SET_CHECKED: (check: { name: string; checked: boolean }[]) => {
-    dispatch(AppActions.setChecked(check));
-  },
-  SET_EXCLUDE: (exclude: string[]) => {
-    dispatch(AppActions.setExclude(exclude));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ResultPage);
+export default ResultPage;
 
 const TTT: SearchResultInterface[] = [
   {

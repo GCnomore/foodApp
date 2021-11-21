@@ -3,8 +3,6 @@ import React from "react";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Provider } from "react-redux";
-import store from "./redux/store";
 import { AppContainer, NavBar } from "./App_Styled";
 import HomePage from "./pages/Home/Home_Page";
 import RecipePage from "./pages/Recipe_Page/Recipe_Page";
@@ -17,7 +15,6 @@ import ResultPage from "./pages/Result/Result_Page";
 
 export default function App() {
   return (
-    <Provider store={store}>
       <AppContainer className="App">
         <Router>
           <Switch>
@@ -45,6 +42,5 @@ export default function App() {
           </NavBar>
         </Router>
       </AppContainer>
-    </Provider>
   );
 }

@@ -1,21 +1,30 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Spinner } from "react-bootstrap";
-import { SearchResultInterface } from "../../data/interfaces/Search_Result";
-import { CardBody, MissingIngredientsContainer } from "./Result_Card_Styled";
+import { RecipeInformation } from "../../data/interfaces/Recipe_Information";
+import { SearchByRecipe } from "../../data/interfaces/Search_By_Recipe";
+import {
+  CardBody,
+  MissingIngredientsContainer,
+  ResultCardContainer,
+} from "./Result_Card_Styled";
 
 interface ResultCardProps {
-  searchResult: SearchResultInterface | undefined;
+  recipeByIngredient: SearchByRecipe;
+  recipeInformation: RecipeInformation;
 }
 
-const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
-  const renderMissingIngreds = (item: SearchResultInterface | undefined) => {
-    console.log(item?.missedIngredients);
+const ResultCard = ({
+  recipeByIngredient,
+  recipeInformation,
+}: ResultCardProps): JSX.Element => {
+  const renderMissingIngreds = () => {
+    console.log(recipeByIngredient?.missedIngredients);
     return (
       <MissingIngredientsContainer>
         <span>Missing ingredients</span>
         <ul>
-          {item?.missedIngredients.map((ingred, index) => (
+          {recipeByIngredient?.missedIngredients.map((ingred, index) => (
             <li key={index}>
               <FontAwesomeIcon icon={faTimes} />
               &nbsp;
@@ -28,18 +37,21 @@ const ResultCard = ({ searchResult }: ResultCardProps): JSX.Element => {
   };
 
   return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Img variant="top" src={searchResult?.image} />
+    <ResultCardContainer>
+      <Card.Img variant="top" src={recipeByIngredient?.image} />
       <Card.Body>
-        <Card.Title>{searchResult?.title}</Card.Title>
+        <Card.Title>{recipeByIngredient?.title}</Card.Title>
         <CardBody>
-          {searchResult?.missedIngredientCount === 0
-            ? "You've got all you need!"
-            : renderMissingIngreds(searchResult)}
+          <section>{recipeInformation.dishTypes[0]}</section>
+          <section>
+            {recipeByIngredient?.missedIngredients.length === 0
+              ? "You've got all you need!"
+              : renderMissingIngreds()}
+          </section>
         </CardBody>
         <Button variant="primary">See details</Button>
       </Card.Body>
-    </Card>
+    </ResultCardContainer>
   );
 };
 

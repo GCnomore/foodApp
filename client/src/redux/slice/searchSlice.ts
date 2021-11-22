@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ApiUtil from "../../data/api/apiUtil";
+import { RecipeInformation } from "../../data/interfaces/Recipe_Information";
+import { SearchByRecipe } from "../../data/interfaces/Search_By_Recipe";
 
 export interface SearchState {
   searchBy: string;
@@ -9,6 +11,9 @@ export interface SearchState {
   checkFilters: { name: string; checked: boolean }[];
   excludes: string[];
   foodTrivia: null | string;
+  showLoading: boolean;
+  recipeByIngredient: null | SearchByRecipe[];
+  recipeInformation: null | RecipeInformation[];
 }
 
 const initialState: SearchState = {
@@ -18,6 +23,9 @@ const initialState: SearchState = {
   showFilter: false,
   excludes: [],
   foodTrivia: null,
+  showLoading: false,
+  recipeByIngredient: null,
+  recipeInformation: null,
   checkFilters: [
     {
       name: "Vegan",
@@ -53,8 +61,24 @@ const initialState: SearchState = {
 export const getFoodTrivia = createAsyncThunk(
   "search/getFoodTriviaStatus",
   async () => {
-    const response = await ApiUtil.getFoodTrivia();
-    return response;
+    const result = await ApiUtil.getFoodTrivia();
+    return result;
+  }
+);
+
+export const getRecipeByIngredients = createAsyncThunk(
+  "search/getRecipeByIngredientsStatus",
+  async (ingredients: string[]) => {
+    const result = await ApiUtil.searchRecipeByIngredients(ingredients);
+    return result;
+  }
+);
+
+export const getRecipeInformation = createAsyncThunk(
+  "search/getRecipeInformationStatus",
+  async (id: string[]) => {
+    const result = await ApiUtil.getRecipeInformation(id);
+    return result;
   }
 );
 
@@ -97,11 +121,21 @@ export const searchSlice = createSlice({
         }
       });
     },
+    setShowLoading: (state, action) => {
+      state.showLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getFoodTrivia.fulfilled, (state, action) => {
-      state.foodTrivia = action.payload;
-    });
+    builder
+      .addCase(getFoodTrivia.fulfilled, (state, action) => {
+        state.foodTrivia = action.payload;
+      })
+      .addCase(getRecipeByIngredients.fulfilled, (state, action) => {
+        state.recipeByIngredient = action.payload;
+      })
+      .addCase(getRecipeInformation.fulfilled, (state, action) => {
+        state.recipeInformation = action.payload;
+      });
   },
 });
 
@@ -115,6 +149,7 @@ export const {
   removeIngredients,
   setFoodTrivia,
   setShowFilter,
+  setShowLoading,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

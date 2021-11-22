@@ -1,75 +1,64 @@
 import ResultCard from "../../components/Result_Card/ResultCard";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { UrlObject } from "url";
 import { Button, Modal, ModalBody, ModalTitle } from "react-bootstrap";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import {
   FilterButton,
-  ToggleFilterContainer,
-  IngredientsContainer,
   ResultSection,
   SearchBarSection,
   SearchResultContainer,
-} from "./Result_Styled";
+  ResultIngredientsContainer,
+} from "./Result_Page_Styled";
 import { SearchResultInterface } from "../../data/interfaces/Search_Result";
 import LoadingComponent from "../../components/Loading_Component";
-import { DietFilters, DIET_FILTERS } from "../../constants";
-import { connect, useSelector } from "react-redux";
-import { SearchState, removeIngredients } from "../../redux/slice/searchSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SearchState,
+  removeIngredients,
+  setShowFilter,
+  addIngredients,
+  getRecipeByIngredients,
+  getRecipeInformation,
+} from "../../redux/slice/searchSlice";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
+import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
+import { AppDispatch, RootState } from "../../redux/store";
 
 const ResultPage: React.FC = () => {
-  const [showLoading, setShowLoading] = useState(false);
-  const [userInput, setUserInput] = useState<string>("");
-  const [toggleNoMissingIngreds, setToggleNoMissingIngreds] = useState(false);
-  const [filter, setFilter] = useState({
-    cuisine: [],
-    dishType: [],
-  });
-  const [showFilter, setShowFilter] = useState(false);
-  const [toggleDietFilter, setToggleDietFilter] = useState(DIET_FILTERS);
-  const { ingredients } = useSelector((state: SearchState) => state);
+  const dispatch: AppDispatch = useDispatch();
+  const { ingredients, showLoading, recipeByIngredient, recipeInformation } =
+    useSelector((state: RootState) => state.search);
+
+  const userInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   useEffect(() => {}, []);
 
-  const renderIngredients = () => {
-    return ingredients?.map((item) => (
-      <li
-        onClick={() => {
-          const newIngredients = ingredients?.filter(
-            (ingred) => ingred !== item
-          );
-          newIngredients && removeIngredients(newIngredients[0]);
-        }}
-      >
-        {`${item.charAt(0).toUpperCase()}` + `${item.slice(1)}`}
-      </li>
-    ));
-  };
-
   const renderResult = () => {
-    // return searchResult?.map((item, index) => (
+    if (recipeByIngredient && recipeInformation) {
+      for (let i = 0; recipeInformation!.length > i; i++) {
+        return (
+          <ResultCard
+            key={`resultC${i}`}
+            recipeByIngredient={recipeByIngredient[i]}
+            recipeInformation={recipeInformation[i]}
+          />
+        );
+      }
+    }
+    // return TTT.map((item, index) => (
     //   <ResultCard key={index} searchResult={item} />
     // ));
-    return TTT.map((item, index) => (
-      <ResultCard key={index} searchResult={item} />
-    ));
   };
 
-  const handleToggleFilter = (item: DietFilters) => {
-    setToggleDietFilter(
-      toggleDietFilter.map((i) =>
-        i.name === item.name ? { ...i, selected: !i.selected } : i
-      )
-    );
-    console.log(toggleDietFilter);
-  };
-
-  const addIngredients = (userInput: string) => {
-    ingredients && addIngredients(userInput);
-    setUserInput("");
+  const handleAddIngredients = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      e.key === "Enter" &&
+      !ingredients.includes(userInputRef.current.value)
+    ) {
+      userInputRef.current?.value &&
+        dispatch(addIngredients(userInputRef.current.value));
+      userInputRef.current.value = "";
+    }
   };
 
   return (
@@ -79,49 +68,28 @@ const ResultPage: React.FC = () => {
       <SearchBarSection>
         <div>
           <input
+            ref={userInputRef}
             placeholder="Add ingredients"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
             onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                addIngredients(userInput);
-              }
+              handleAddIngredients(e);
             }}
           />
-          <Button onClick={() => addIngredients(userInput)}>Add</Button>
-          <Button onClick={() => setShowFilter(true)}>Filter</Button>
+          <Button onClick={() => dispatch(setShowFilter(true))}>Filter</Button>
         </div>
-        <IngredientsContainer>
+        <ResultIngredientsContainer>
+          <span>Your ingredients:</span>
           <ul>
-            {renderIngredients()}
-            <li>potato</li>
-            <li>potato</li>
-            <li>potato</li>
-            <li>potato</li>
-            <li>potato</li>
-            <li>potato</li>
+            {ingredients?.map((item, index) => (
+              <IngredientBox key={`r${index}`} index={index} item={item} />
+            ))}
           </ul>
-        </IngredientsContainer>
-
-        <ToggleFilterContainer>
-          {toggleDietFilter.map((item) => {
-            return (
-              <FilterButton
-                key={`${item.name}FilterButton`}
-                $selected={item.selected}
-                onClick={() => handleToggleFilter(item)}
-              >
-                {item.name}
-              </FilterButton>
-            );
-          })}
-        </ToggleFilterContainer>
+        </ResultIngredientsContainer>
 
         <Button variant="primary">Search</Button>
       </SearchBarSection>
 
       <ResultSection>
-        {showLoading ? <LoadingComponent /> : renderResult()}
+        {recipeByIngredient ? renderResult() : <LoadingComponent />}
       </ResultSection>
     </SearchResultContainer>
   );
@@ -186,3 +154,5 @@ const TTT: SearchResultInterface[] = [
     usedIngredients: [],
   },
 ];
+
+const INGRE = ["potato", "tomato", "oninon", "salt"];

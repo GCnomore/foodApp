@@ -31,3 +31,5 @@ connection.query("SELECT * FROM user", (error, results, fields) => {
 });
 
 connection.end();
+
+console.log("test");

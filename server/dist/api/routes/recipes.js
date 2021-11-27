@@ -35,29 +35,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var constants_1 = require("./constants");
-var index_1 = __importDefault(require("./loaders/index"));
-function startServer() {
-    return __awaiter(this, void 0, void 0, function () {
-        var app;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    app = express_1.default();
-                    return [4 /*yield*/, index_1.default({ expressApp: app })];
-                case 1:
-                    _a.sent();
-                    app.listen(constants_1.CONST.PORT, function () {
-                        console.log("\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    Server is listening to port: " + constants_1.CONST.PORT + "\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    ");
-                    });
-                    return [2 /*return*/];
-            }
+var express_1 = require("express");
+var constants_1 = require("../../constants");
+var route = express_1.Router();
+function Recipes(app) {
+    var _this = this;
+    app.use("/recipes", route);
+    route.post("/findByIngredients", function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+        var options;
+        var _a;
+        return __generator(this, function (_b) {
+            console.log("calling");
+            options = {
+                method: "GET",
+                url: constants_1.CONST.API_URL + "/recipes/findByIngredients",
+                params: {
+                    ingredients: (_a = req.body.ingredients) === null || _a === void 0 ? void 0 : _a.join(","),
+                    number: "5",
+                    ignorePantry: "true",
+                    ranking: "1",
+                },
+                headers: {
+                    "x-rapidapi-key": constants_1.CONST.API_KEY,
+                    "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                },
+            };
+            console.log("reqqqq", req.body);
+            return [2 /*return*/];
         });
-    });
+    }); });
 }
-startServer();
+exports.default = Recipes;

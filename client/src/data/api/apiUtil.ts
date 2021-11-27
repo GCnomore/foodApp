@@ -36,6 +36,18 @@ const ApiUtil = {
     return searchByRecipe;
   },
 
+  // searchRecipeByIngredients: async (
+  //   ingredients: string[]
+  // ): Promise<SearchByRecipe[]> => {
+  //   console.log("calling");
+  //   const result = await axios.post(
+  //     "http://localhost:3030/recipes/findByIngredients",
+  //     ingredients
+  //   );
+  //   const recipeByIngredients = await result.data;
+  //   return recipeByIngredients;
+  // },
+
   getFoodTrivia: async () => {
     console.log("get trivia");
     const trivia: string = await axios({

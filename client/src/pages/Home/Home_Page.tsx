@@ -59,8 +59,8 @@ const HomePage: React.FC = () => {
   // TODO: limit ingredients to 20
 
   const handleSearch = () => {
-    const id: string[] = recipeByIngredient!.map((item) => item.id.toString());
     dispatch(getRecipeByIngredients(ingredients));
+    const id: string[] = recipeByIngredient!.map((item) => item.id.toString());
     dispatch(getRecipeInformation(id));
     history.push(ROUTES.RESULT_PAGE, ingredients);
   };

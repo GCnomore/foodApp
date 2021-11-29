@@ -1,10 +1,13 @@
 import { Router } from "express";
+import Logger from "../loaders/logger";
+import Information from "./routes/information";
 import Recipes from "./routes/recipes";
 
-export default () => {
+export default function AppRouters() {
   const app: Router = Router();
-  console.log("api router");
   Recipes(app);
+  Information(app);
 
+  Logger.info("routers injected");
   return app;
-};
+}

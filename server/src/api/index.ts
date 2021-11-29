@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Logger from "../loaders/logger";
+
 import Information from "./routes/information";
 import Recipes from "./routes/recipes";
 

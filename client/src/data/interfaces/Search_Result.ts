@@ -1,4 +1,4 @@
-export interface SearchResultInterface {
+export default interface ISearchResult {
   id: number;
   image: string;
   imageType: string;

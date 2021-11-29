@@ -1,7 +1,6 @@
-import { AxiosResponse } from "axios";
-import { Ingredients } from "./Ingredients";
+import Ingredients from "./Ingredients";
 
-export interface SearchByRecipe {
+export default interface IRecipeByIngredient {
   id: number;
   title: string;
   image: string;
@@ -11,7 +10,7 @@ export interface SearchByRecipe {
   likes: number;
 }
 
-export const asSearchByRecipe = (data: any): SearchByRecipe => {
+export const toSearchByRecipe = (data: any): IRecipeByIngredient => {
   return {
     id: data.id,
     title: data.title,

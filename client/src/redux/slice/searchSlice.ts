@@ -1,19 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ApiUtil from "../../data/api/apiUtil";
-import { RecipeInformation } from "../../data/interfaces/Recipe_Information";
-import { SearchByRecipe } from "../../data/interfaces/Search_By_Recipe";
+import ICheckFilters from "../../data/interfaces/Check_Filters";
+import IRecipeInformation from "../../data/interfaces/Recipe_Information";
+import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
 
 export interface SearchState {
   searchBy: string;
   search: string;
   ingredients: string[];
   showFilter: boolean;
-  checkFilters: { name: string; checked: boolean }[];
+  checkFilters: ICheckFilters[];
   excludes: string[];
   foodTrivia: null | string;
   showLoading: boolean;
-  recipeByIngredient: null | SearchByRecipe[];
-  recipeInformation: null | RecipeInformation[];
+  recipeByIngredient: null | IRecipeByIngredient[];
+  recipeInformation: null | IRecipeInformation[];
 }
 
 const initialState: SearchState = {

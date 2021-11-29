@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import Routers from "../api/index";
+import AppRouters from "../api/index";
 
 export default async ({ app }: { app: express.Application }) => {
   app.get("/status", (req, res) => {
@@ -15,6 +15,6 @@ export default async ({ app }: { app: express.Application }) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  app.use(Routers());
+  app.use(AppRouters());
   return app;
 };

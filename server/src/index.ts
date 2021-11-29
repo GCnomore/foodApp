@@ -3,6 +3,7 @@ import express, { Application, Request, Response, NextFunction } from "express";
 
 import { CONST } from "./constants";
 import loaders from "./loaders/index";
+import Logger from "./loaders/logger";
 
 async function startServer() {
   const app: Application = express();
@@ -14,6 +15,11 @@ async function startServer() {
     Server is listening to port: ${CONST.PORT}
     $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     `);
+  });
+
+  app.get("/error", (req, res) => {
+    Logger.error("Error");
+    res.end();
   });
 }
 

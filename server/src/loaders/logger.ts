@@ -13,7 +13,7 @@ const logFormat = printf((info) => {
  * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
  */
 
-const logger = winston.createLogger({
+const Logger = winston.createLogger({
   format: combine(
     timestamp({
       format: "MM-DD-YYYY [at] HH:mm:ss",
@@ -41,7 +41,7 @@ const logger = winston.createLogger({
 });
 
 if (process.env.NODE_ENV !== "production") {
-  logger.add(
+  Logger.add(
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
@@ -51,4 +51,4 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-export default logger;
+export default Logger;

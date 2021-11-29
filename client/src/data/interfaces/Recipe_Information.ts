@@ -1,6 +1,6 @@
-import { Ingredients } from "./Ingredients";
+import Ingredients from "./Ingredients";
 
-export interface RecipeInformation {
+export default interface IRecipeInformation {
   id: number;
   title: string;
   image: string;
@@ -50,7 +50,7 @@ export interface RecipeInformation {
   };
 }
 
-export const toRecipeInformation = (data: any): RecipeInformation => {
+export const toRecipeInformation = (data: any): IRecipeInformation => {
   return {
     id: data.id,
     title: data.title,

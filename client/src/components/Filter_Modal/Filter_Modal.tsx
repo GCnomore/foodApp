@@ -14,6 +14,7 @@ import {
   setCheckFilters,
   setShowFilter,
 } from "../../redux/slice/searchSlice";
+import ICheckFilters from "../../data/interfaces/Check_Filters";
 
 const FilterModal: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -27,7 +28,7 @@ const FilterModal: React.FC = () => {
   });
 
   const renderFilter = (
-    filter: { name: string; checked: boolean },
+    filter: ICheckFilters,
     variant: string
   ): JSX.Element => {
     return (

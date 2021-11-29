@@ -1,8 +1,8 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Spinner } from "react-bootstrap";
-import { RecipeInformation } from "../../data/interfaces/Recipe_Information";
-import { SearchByRecipe } from "../../data/interfaces/Search_By_Recipe";
+import IRecipeInformation from "../../data/interfaces/Recipe_Information";
+import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
 import {
   CardBody,
   MissingIngredientsContainer,
@@ -10,16 +10,15 @@ import {
 } from "./Result_Card_Styled";
 
 interface ResultCardProps {
-  recipeByIngredient: SearchByRecipe;
-  recipeInformation: RecipeInformation;
+  recipeByIngredient: IRecipeByIngredient;
+  recipeInformation: IRecipeInformation;
 }
 
 const ResultCard = ({
   recipeByIngredient,
   recipeInformation,
 }: ResultCardProps): JSX.Element => {
-  const renderMissingIngreds = () => {
-    console.log(recipeByIngredient?.missedIngredients);
+  const renderMissingIngreds = (recipeByIngredient: IRecipeByIngredient) => {
     return (
       <MissingIngredientsContainer>
         <span>Missing ingredients</span>
@@ -46,7 +45,7 @@ const ResultCard = ({
           <section>
             {recipeByIngredient?.missedIngredients.length === 0
               ? "You've got all you need!"
-              : renderMissingIngreds()}
+              : renderMissingIngreds(recipeByIngredient)}
           </section>
         </CardBody>
         <Button variant="primary">See details</Button>

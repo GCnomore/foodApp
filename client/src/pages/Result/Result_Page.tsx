@@ -9,8 +9,8 @@ import {
   SearchResultContainer,
   ResultIngredientsContainer,
 } from "./Result_Page_Styled";
-import { SearchResultInterface } from "../../data/interfaces/Search_Result";
-import LoadingComponent from "../../components/Loading_Component";
+import ISearchResult from "../../data/interfaces/Search_Result";
+import LoadingComponent from "../../components/Loading/Loading_Component";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SearchState,
@@ -23,6 +23,8 @@ import {
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import { AppDispatch, RootState } from "../../redux/store";
+import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
+import IRecipeInformation from "../../data/interfaces/Recipe_Information";
 
 const ResultPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -31,9 +33,21 @@ const ResultPage: React.FC = () => {
 
   const userInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-  useEffect(() => {}, []);
+  const handleAddIngredients = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      e.key === "Enter" &&
+      !ingredients.includes(userInputRef.current.value)
+    ) {
+      userInputRef.current?.value &&
+        dispatch(addIngredients(userInputRef.current.value));
+      userInputRef.current.value = "";
+    }
+  };
 
-  const renderResult = () => {
+  const renderResult = (
+    recipeByIngredient: IRecipeByIngredient[],
+    recipeInformation: IRecipeInformation[]
+  ) => {
     if (recipeByIngredient && recipeInformation) {
       for (let i = 0; recipeInformation!.length > i; i++) {
         return (
@@ -48,17 +62,6 @@ const ResultPage: React.FC = () => {
     // return TTT.map((item, index) => (
     //   <ResultCard key={index} searchResult={item} />
     // ));
-  };
-
-  const handleAddIngredients = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (
-      e.key === "Enter" &&
-      !ingredients.includes(userInputRef.current.value)
-    ) {
-      userInputRef.current?.value &&
-        dispatch(addIngredients(userInputRef.current.value));
-      userInputRef.current.value = "";
-    }
   };
 
   return (
@@ -89,7 +92,11 @@ const ResultPage: React.FC = () => {
       </SearchBarSection>
 
       <ResultSection>
-        {recipeByIngredient ? renderResult() : <LoadingComponent />}
+        {recipeByIngredient && recipeInformation ? (
+          renderResult(recipeByIngredient, recipeInformation)
+        ) : (
+          <LoadingComponent />
+        )}
       </ResultSection>
     </SearchResultContainer>
   );
@@ -97,7 +104,7 @@ const ResultPage: React.FC = () => {
 
 export default ResultPage;
 
-const TTT: SearchResultInterface[] = [
+const TTT: ISearchResult[] = [
   {
     id: 1,
     image: "https://source.unsplash.com/user/c_v_r/100x100",

@@ -39,25 +39,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var constants_1 = require("./constants");
-var index_1 = __importDefault(require("./loaders/index"));
-function startServer() {
-    return __awaiter(this, void 0, void 0, function () {
-        var app;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    app = express_1.default();
-                    return [4 /*yield*/, index_1.default({ expressApp: app })];
-                case 1:
-                    _a.sent();
-                    app.listen(constants_1.CONST.PORT, function () {
-                        console.log("\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    Server is listening to port: " + constants_1.CONST.PORT + "\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    ");
-                    });
-                    return [2 /*return*/];
-            }
+var cors_1 = __importDefault(require("cors"));
+exports.default = (function (_a) {
+    var app = _a.app;
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_b) {
+            app.get("/status", function (req, res) {
+                console.log("222222222");
+                res.send("ddddddd");
+                res.status(200).end();
+            });
+            app.head("/status", function (req, res) {
+                res.status(200).end();
+            });
+            app.enable("trust proxy");
+            app.use(cors_1.default());
+            //   app.use(require("morgan")("dev"));
+            app.post("/dd", function (req, res) {
+                console.log("qqqqqqqq", req);
+                res.status(200).end();
+            });
+            return [2 /*return*/, app];
         });
     });
-}
-startServer();
+});

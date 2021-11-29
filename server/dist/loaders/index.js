@@ -39,25 +39,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var constants_1 = require("./constants");
-var index_1 = __importDefault(require("./loaders/index"));
-function startServer() {
-    return __awaiter(this, void 0, void 0, function () {
-        var app;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    app = express_1.default();
-                    return [4 /*yield*/, index_1.default({ expressApp: app })];
+var express_1 = __importDefault(require("./express"));
+exports.default = (function (_a) {
+    var expressApp = _a.expressApp;
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, express_1.default({ app: expressApp })];
                 case 1:
-                    _a.sent();
-                    app.listen(constants_1.CONST.PORT, function () {
-                        console.log("\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    Server is listening to port: " + constants_1.CONST.PORT + "\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    ");
-                    });
+                    _b.sent();
+                    console.log("Express Intialized");
                     return [2 /*return*/];
             }
         });
     });
-}
-startServer();
+});

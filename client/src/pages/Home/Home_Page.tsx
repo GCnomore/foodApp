@@ -3,7 +3,6 @@ import { Link, useHistory } from "react-router-dom";
 import {
   BottomSection,
   ContentsContainer,
-  DeleteIngredButtonContainer,
   DropDownMenu,
   DropDownToggle,
   FoodTriviaContainer,
@@ -26,17 +25,17 @@ import {
   setFoodTrivia,
   setSearchBy,
   setShowFilter,
+  getRecipeByIngredients,
+  getRecipeInformation,
 } from "../../redux/slice/searchSlice";
 import _ from "lodash";
 import { AppDispatch, RootState } from "../../redux/store";
+import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 
 const HomePage: React.FC = () => {
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [filterUserInput, setFilterUserInput] = useState("");
-  const [ingredientsDelete, setIngredientsDelete] = useState({
-    show: false,
-    index: 0,
-  });
+
   const dispatch: AppDispatch = useDispatch();
   const {
     search,
@@ -46,6 +45,7 @@ const HomePage: React.FC = () => {
     checkFilters,
     excludes,
     foodTrivia,
+    recipeByIngredient,
   } = useSelector((state: RootState) => state.search);
 
   const history = useHistory();
@@ -58,29 +58,18 @@ const HomePage: React.FC = () => {
 
   // TODO: limit ingredients to 20
 
-  // const getFilters = (): string => {
-  //   const filterQuery: string[] = [];
-  //   state.checked.filter((item) => {
-  //     if (item.checked && filterQuery.length === 0) {
-  //       filterQuery.push(item.name.replace(/\s+/g, ""), "=", `${item.checked}`);
-  //     } else if (item.checked && filterQuery.length > 2) {
-  //       filterQuery.push(
-  //         "&",
-  //         item.name.replace(/\s+/g, ""),
-  //         "=",
-  //         `${item.checked}`
-  //       );
-  //     }
-  //   });
-  //   return filterQuery.join("").trim().toLowerCase();
-  // };
-
   const handleSearch = () => {
+    dispatch(getRecipeByIngredients(ingredients));
+    const id: string[] = recipeByIngredient!.map((item) => item.id.toString());
+    dispatch(getRecipeInformation(id));
     history.push(ROUTES.RESULT_PAGE, ingredients);
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (
+      e.key === "Enter" &&
+      !ingredients.includes(searchInputRef.current.value)
+    ) {
       dispatch(addIngredients(searchInputRef.current.value));
       searchInputRef.current.value = "";
     }
@@ -154,27 +143,11 @@ const HomePage: React.FC = () => {
                 <span>Your ingredients:</span>
                 <ul>
                   {ingredients?.map((item, index) => (
-                    <li
-                      key={index}
-                      onMouseEnter={() => {
-                        setIngredientsDelete({ show: true, index });
-                      }}
-                      onMouseLeave={() => {
-                        setIngredientsDelete({ show: false, index: 0 });
-                      }}
-                    >
-                      {ingredientsDelete.show === true &&
-                      ingredientsDelete.index === index ? (
-                        <DeleteIngredButtonContainer
-                          onClick={() => dispatch(removeIngredients(item))}
-                        >
-                          <span>x</span>
-                        </DeleteIngredButtonContainer>
-                      ) : (
-                        <></>
-                      )}
-                      <span>{item.toLowerCase()}</span>
-                    </li>
+                    <IngredientBox
+                      key={`h${index}`}
+                      index={index}
+                      item={item}
+                    />
                   ))}
                 </ul>
               </IngredientsContainer>

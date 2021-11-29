@@ -1,4 +1,5 @@
 import styled from "styled-components/macro";
+import { IngredientsContainer } from "../Home/Home_Styled";
 
 export const SearchResultContainer = styled.main`
   margin-top: 5%;
@@ -27,7 +28,7 @@ export const SearchBarSection = styled.section`
     > button {
       height: 100%;
       border-radius: 5px;
-      width: 15%;
+      width: 30%;
       outline: none;
     }
   }
@@ -40,45 +41,10 @@ export const SearchBarSection = styled.section`
   }
 `;
 
-export const IngredientsContainer = styled.div`
-  display: flex;
-  padding: 1rem 0;
-
-  > ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-
-    > li {
-      margin: 0 0.5rem;
-
-      &:hover {
-        transition: 0.5s ease-in-out;
-        background-color: white;
-        cursor: pointer;
-      }
-    }
-  }
-`;
-
-export const ToggleFilterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  > div:nth-child(2) {
-    display: flex;
-  }
-`;
-
 export const ResultSection = styled.section`
   display: flex;
-  padding: 0 25rem;
+  flex-wrap: wrap;
+  padding: 0 20%;
 `;
 
 export const FilterButton = styled.button<{ $selected: boolean }>`
@@ -88,4 +54,10 @@ export const FilterButton = styled.button<{ $selected: boolean }>`
   padding: 0.25rem 0.5rem;
   margin: 0.5rem 0.1rem;
   border: none;
+`;
+
+export const ResultIngredientsContainer = styled(IngredientsContainer)`
+  text-shadow: none;
+  justify-content: center;
+  align-items: center;
 `;

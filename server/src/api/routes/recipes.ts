@@ -9,8 +9,6 @@ export default function Recipes(app: Router) {
   app.use("/recipes", route);
 
   route.post("/findByIngredients", (req: Request, res: Response) => {
-    console.log("calling");
-    console.log("reqqqq", req.body.join(","));
     const config: AxiosRequestConfig = {
       method: "GET",
       url: `${CONST.API_URL}/recipes/findByIngredients`,
@@ -31,12 +29,10 @@ export default function Recipes(app: Router) {
     axios(config)
       .then(function (response) {
         Logger.info("received recipes by ingredients");
-        console.log(response.data);
         res.status(200).send(response.data);
       })
       .catch(function (error) {
         Logger.error("error getting recipes by ingredients");
-        console.log(error);
         res.end();
       });
   });
@@ -45,25 +41,22 @@ export default function Recipes(app: Router) {
     const config: AxiosRequestConfig = {
       method: "GET",
       url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk",
-      params: req.body.id,
+      params: { ids: req.body.ids },
       headers: {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": process.env.REACT_APP_KEY ?? "",
+        "x-rapidapi-key": CONST.API_KEY ?? "",
       },
     };
-
-    Logger.info("get recipe information");
+    Logger.info("get recipe information", req.body.ids);
 
     axios(config)
       .then(function (response) {
         Logger.info("received recipe information");
-        console.log(response.data);
         res.status(200).send(response.data);
       })
       .catch(function (error) {
         Logger.error("error getting recipe information");
-        console.log(error);
         res.end();
       });
   });

@@ -25,6 +25,7 @@ import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import { AppDispatch, RootState } from "../../redux/store";
 import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
+import { isFulfilled } from "@reduxjs/toolkit";
 
 const ResultPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -32,6 +33,21 @@ const ResultPage: React.FC = () => {
     useSelector((state: RootState) => state.search);
 
   const userInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  useEffect(() => {
+    getResult();
+  }, [dispatch]);
+
+  const getResult = async () => {
+    let action;
+    if (!recipeByIngredient) {
+      action = await dispatch(getRecipeByIngredients(ingredients));
+    }
+    if (isFulfilled(action)) {
+      const id = action.payload.map((item) => item.id.toString());
+      dispatch(getRecipeInformation(id ?? []));
+    }
+  };
 
   const handleAddIngredients = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -49,19 +65,17 @@ const ResultPage: React.FC = () => {
     recipeInformation: IRecipeInformation[]
   ) => {
     if (recipeByIngredient && recipeInformation) {
-      for (let i = 0; recipeInformation!.length > i; i++) {
+      const cards = recipeInformation.map((item, index) => {
         return (
           <ResultCard
-            key={`resultC${i}`}
-            recipeByIngredient={recipeByIngredient[i]}
-            recipeInformation={recipeInformation[i]}
+            key={`resultC${index}`}
+            recipeByIngredient={recipeByIngredient[index]}
+            recipeInformation={item}
           />
         );
-      }
+      });
+      return cards;
     }
-    // return TTT.map((item, index) => (
-    //   <ResultCard key={index} searchResult={item} />
-    // ));
   };
 
   return (

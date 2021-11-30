@@ -29,12 +29,12 @@ import {
   getRecipeInformation,
 } from "../../redux/slice/searchSlice";
 import _ from "lodash";
-import { AppDispatch, RootState } from "../../redux/store";
+import store, { AppDispatch, RootState } from "../../redux/store";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 
 const HomePage: React.FC = () => {
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const [filterUserInput, setFilterUserInput] = useState("");
+  const [searchReady, setSearchReady] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
   const {
@@ -57,13 +57,11 @@ const HomePage: React.FC = () => {
   }, []);
 
   // TODO: limit ingredients to 20
-
   const handleSearch = () => {
-    dispatch(getRecipeByIngredients(ingredients));
-    const id: string[] = recipeByIngredient!.map((item) => item.id.toString());
-    dispatch(getRecipeInformation(id));
     history.push(ROUTES.RESULT_PAGE, ingredients);
   };
+
+  console.log("recipeByIngredient", recipeByIngredient);
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (

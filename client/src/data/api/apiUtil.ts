@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
+import CONST from "../../constants";
 import IRecipeInformation, {
   toRecipeInformation,
 } from "../interfaces/Recipe_Information";
@@ -12,7 +13,7 @@ const ApiUtil = {
   ): Promise<IRecipeByIngredient[]> => {
     console.log("calling");
     const result = await axios.post(
-      "http://localhost:3030/recipes/findByIngredients",
+      `${CONST.API_URL}/recipes/findByIngredients`,
       ingredients
     );
     const recipeByIngredients = await result.data;
@@ -21,9 +22,7 @@ const ApiUtil = {
 
   getFoodTrivia: async () => {
     console.log("get trivia");
-    const response = await axios.get(
-      "http://localhost:3030/information/foodTrivia"
-    );
+    const response = await axios.get(`${CONST.API_URL}/information/foodTrivia`);
     sessionStorage.setItem("trivia", response.data);
 
     return response.data;
@@ -32,8 +31,8 @@ const ApiUtil = {
   getRecipeInformation: async (id: string[]): Promise<IRecipeInformation[]> => {
     const ids = id.join(",");
     const response = await axios.post(
-      "http://localhost:3030/recipes/recipeInformation",
-      ids
+      `${CONST.API_URL}/recipes/recipeInformation`,
+      { ids }
     );
     const recipeInformation: IRecipeInformation[] = response.data.map(
       (data: any) => toRecipeInformation(data)

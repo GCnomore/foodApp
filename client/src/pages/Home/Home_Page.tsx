@@ -1,18 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  BottomSection,
-  ContentsContainer,
-  DropDownMenu,
-  DropDownToggle,
-  FoodTriviaContainer,
-  HomeContainer,
-  IngredientsContainer,
-  RankingContainer,
-  SearchContainer,
-  TitleContainer,
-  TopSection,
-} from "./Home_Styled";
+import * as Home from "./Home_Styled";
 import { Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
@@ -34,6 +22,7 @@ import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 
 const HomePage: React.FC = () => {
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const history = useHistory();
   const [searchReady, setSearchReady] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
@@ -48,8 +37,6 @@ const HomePage: React.FC = () => {
     recipeByIngredient,
   } = useSelector((state: RootState) => state.search);
 
-  const history = useHistory();
-
   useEffect(() => {
     sessionStorage.getItem("trivia")
       ? dispatch(setFoodTrivia(sessionStorage.getItem("trivia")))
@@ -60,8 +47,6 @@ const HomePage: React.FC = () => {
   const handleSearch = () => {
     history.push(ROUTES.RESULT_PAGE, ingredients);
   };
-
-  console.log("recipeByIngredient", recipeByIngredient);
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -79,23 +64,23 @@ const HomePage: React.FC = () => {
       : false;
 
   return (
-    <HomeContainer>
-      <ContentsContainer>
-        <TopSection>
-          <TitleContainer>
+    <Home.HomeContainer>
+      <Home.ContentsContainer>
+        <Home.TopSection>
+          <Home.TitleContainer>
             <h1>App Title</h1>
-          </TitleContainer>
-          <SearchContainer>
+          </Home.TitleContainer>
+          <Home.SearchContainer>
             <Dropdown drop="up">
-              <DropDownToggle variant="secondary" id="dropdown-basic">
+              <Home.DropDownToggle variant="secondary" id="dropdown-basic">
                 {searchBy === "" ? (
                   <span>Search By</span>
                 ) : (
                   <span>Search by {_.capitalize(searchBy)}</span>
                 )}
-              </DropDownToggle>
+              </Home.DropDownToggle>
 
-              <DropDownMenu>
+              <Home.DropDownMenu>
                 <Dropdown.Item
                   href="#/ingredients"
                   onSelect={(e) => {
@@ -112,7 +97,7 @@ const HomePage: React.FC = () => {
                 >
                   by Name
                 </Dropdown.Item>
-              </DropDownMenu>
+              </Home.DropDownMenu>
             </Dropdown>
 
             <div>
@@ -137,7 +122,7 @@ const HomePage: React.FC = () => {
             {searchBy === "name" ? (
               <></>
             ) : (
-              <IngredientsContainer>
+              <Home.IngredientsContainer>
                 <span>Your ingredients:</span>
                 <ul>
                   {ingredients?.map((item, index) => (
@@ -148,19 +133,19 @@ const HomePage: React.FC = () => {
                     />
                   ))}
                 </ul>
-              </IngredientsContainer>
+              </Home.IngredientsContainer>
             )}
 
             <button disabled={isSearchDisabled} onClick={handleSearch}>
               Search
             </button>
             <button>Get random</button>
-          </SearchContainer>
-          <FoodTriviaContainer>
+          </Home.SearchContainer>
+          <Home.FoodTriviaContainer>
             <h2>Did you know?</h2>
             <span>{foodTrivia ? `"${foodTrivia}"` : "..."}</span>
-          </FoodTriviaContainer>
-        </TopSection>
+          </Home.FoodTriviaContainer>
+        </Home.TopSection>
         {/*//! Need DB to implement this  */}
         {/* <BottomSection>
           <RankingContainer>
@@ -172,8 +157,8 @@ const HomePage: React.FC = () => {
             </div>
           </RankingContainer>
         </BottomSection> */}
-      </ContentsContainer>
-    </HomeContainer>
+      </Home.ContentsContainer>
+    </Home.HomeContainer>
   );
 };
 

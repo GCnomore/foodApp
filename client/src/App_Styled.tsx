@@ -12,7 +12,8 @@ export const NavBar = styled.nav`
   width: 100%;
   height: 2.5rem;
   background-color: rgba(0, 0, 0, 0.6);
-  position: absolute;
+  position: sticky;
+  top: 0;
 
   > div {
     display: flex;

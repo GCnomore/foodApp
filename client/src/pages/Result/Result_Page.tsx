@@ -2,13 +2,7 @@ import ResultCard from "../../components/Result_Card/ResultCard";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Button, Modal, ModalBody, ModalTitle } from "react-bootstrap";
-import {
-  FilterButton,
-  ResultSection,
-  SearchBarSection,
-  SearchResultContainer,
-  ResultIngredientsContainer,
-} from "./Result_Page_Styled";
+import * as Result from "./Result_Page_Styled";
 import ISearchResult from "../../data/interfaces/Search_Result";
 import LoadingComponent from "../../components/Loading/Loading_Component";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,10 +73,10 @@ const ResultPage: React.FC = () => {
   };
 
   return (
-    <SearchResultContainer>
+    <Result.SearchResultContainer>
       <FilterModal />
 
-      <SearchBarSection>
+      <Result.SearchBarSection>
         <div>
           <input
             ref={userInputRef}
@@ -93,87 +87,27 @@ const ResultPage: React.FC = () => {
           />
           <Button onClick={() => dispatch(setShowFilter(true))}>Filter</Button>
         </div>
-        <ResultIngredientsContainer>
+        <Result.ResultIngredientsContainer>
           <span>Your ingredients:</span>
           <ul>
             {ingredients?.map((item, index) => (
               <IngredientBox key={`r${index}`} index={index} item={item} />
             ))}
           </ul>
-        </ResultIngredientsContainer>
+        </Result.ResultIngredientsContainer>
 
         <Button variant="primary">Search</Button>
-      </SearchBarSection>
+      </Result.SearchBarSection>
 
-      <ResultSection>
+      <Result.ResultSection>
         {recipeByIngredient && recipeInformation ? (
           renderResult(recipeByIngredient, recipeInformation)
         ) : (
           <LoadingComponent />
         )}
-      </ResultSection>
-    </SearchResultContainer>
+      </Result.ResultSection>
+    </Result.SearchResultContainer>
   );
 };
 
 export default ResultPage;
-
-const TTT: ISearchResult[] = [
-  {
-    id: 1,
-    image: "https://source.unsplash.com/user/c_v_r/100x100",
-    imageType: "jpg",
-    likes: 10,
-    missedIngredientCount: 1,
-    missedIngredients: [{ name: "a" }],
-    title: "JJin Ramen",
-    usedIngredientCount: 3,
-    usedIngredients: ["ramen noodle", "water", "ramen powder"],
-  },
-  {
-    id: 2,
-    image: "https://source.unsplash.com/user/c_v_r/100x100",
-    imageType: "jpg",
-    likes: 2,
-    missedIngredientCount: 3,
-    missedIngredients: [{ name: "soda" }, { name: "garlic" }, { name: "egg" }],
-    title: "Shin Ramen",
-    usedIngredientCount: 4,
-    usedIngredients: ["ramen noodle", "water", "ramen powder", "gun duh gi"],
-  },
-  {
-    id: 10102,
-    image: "https://source.unsplash.com/user/c_v_r/100x100",
-    imageType: "jpg",
-    likes: 102,
-    missedIngredientCount: 0,
-    missedIngredients: [],
-    title: "Jjam pong",
-    usedIngredientCount: 6,
-    usedIngredients: [
-      "noodle",
-      "water",
-      "jjam pong",
-      "noodle",
-      "water",
-      "jjam pong",
-    ],
-  },
-  {
-    id: 3453,
-    image: "https://source.unsplash.com/user/c_v_r/100x100",
-    imageType: "jpg",
-    likes: 0,
-    missedIngredientCount: 3,
-    missedIngredients: [
-      { name: "noodle" },
-      { name: "water" },
-      { name: "jjam pong" },
-    ],
-    title: "Hong Ramen",
-    usedIngredientCount: 0,
-    usedIngredients: [],
-  },
-];
-
-const INGRE = ["potato", "tomato", "oninon", "salt"];

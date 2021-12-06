@@ -1,8 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import CONST from "../../constants";
-import IRecipeInformation, {
-  toRecipeInformation,
-} from "../interfaces/Recipe_Information";
+import IRecipeInformation from "../interfaces/Recipe_Information";
 import IRecipeByIngredient, {
   toSearchByRecipe,
 } from "../interfaces/Search_By_Recipe";
@@ -29,15 +27,14 @@ const ApiUtil = {
   },
 
   getRecipeInformation: async (id: string[]): Promise<IRecipeInformation[]> => {
+    console.log("call getinfo");
     const ids = id.join(",");
     const response = await axios.post(
       `${CONST.API_URL}/recipes/recipeInformation`,
       { ids }
     );
-    const recipeInformation: IRecipeInformation[] = response.data.map(
-      (data: any) => toRecipeInformation(data)
-    );
-    return recipeInformation;
+
+    return response.data;
   },
 };
 

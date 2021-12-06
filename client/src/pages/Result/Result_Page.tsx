@@ -72,6 +72,8 @@ const ResultPage: React.FC = () => {
     }
   };
 
+  console.log("result page", recipeInformation, recipeByIngredient);
+
   return (
     <Result.SearchResultContainer>
       <FilterModal />

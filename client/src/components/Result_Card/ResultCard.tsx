@@ -43,6 +43,7 @@ const ResultCard = ({
     history.push({
       pathname: ROUTES.RECIPE_PAGE,
       search: `?id=${recipeByIngredient.id}`,
+      state: { recipeInformation },
     });
   };
 

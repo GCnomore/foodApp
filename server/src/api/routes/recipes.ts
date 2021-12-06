@@ -2,6 +2,8 @@ import { NextFunction, Request, Response, Router } from "express";
 import axios, { AxiosRequestConfig } from "axios";
 import { CONST } from "../../constants";
 import Logger from "../../loaders/logger";
+import IRecipeInformation from "../../interfaces/Recipe_Information";
+import { toRecipeInformation } from "../../models/Recipe_Information";
 
 const route = Router();
 
@@ -32,7 +34,7 @@ export default function Recipes(app: Router) {
         res.status(200).send(response.data);
       })
       .catch(function (error) {
-        Logger.error("error getting recipes by ingredients");
+        Logger.error("error getting recipes by ingredients", error);
         res.end();
       });
   });
@@ -53,10 +55,13 @@ export default function Recipes(app: Router) {
     axios(config)
       .then(function (response) {
         Logger.info("received recipe information");
-        res.status(200).send(response.data);
+        const recipeInformation: IRecipeInformation[] = response.data.map(
+          (data: any) => toRecipeInformation(data)
+        );
+        res.status(200).send(recipeInformation);
       })
       .catch(function (error) {
-        Logger.error("error getting recipe information");
+        Logger.error("error getting recipe information", error);
         res.end();
       });
   });

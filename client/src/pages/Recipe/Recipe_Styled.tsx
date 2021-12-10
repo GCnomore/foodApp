@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export const RecipePageContainer = styled.div`
   display: flex;
@@ -7,6 +7,10 @@ export const RecipePageContainer = styled.div`
 
   ul {
     padding: 0;
+    margin: 0;
+    li {
+      list-style: none;
+    }
   }
 `;
 
@@ -33,49 +37,59 @@ export const MetaContainer = styled.section`
   display: flex;
   flex-direction: column;
 
-  > h1 {
+  h1 {
     font-size: 2rem;
+  }
+
+  > div:nth-child(2) {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: column;
   }
 `;
 
 export const InformationContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  margin-top: 3rem;
 
   > div {
+    display: flex;
+    margin-bottom: 1rem;
+
+    span {
+      margin-right: 1rem;
+    }
+
     ul {
       display: flex;
       list-style: none;
 
-      span {
-        display: flex;
-
-        &:first-child {
+      &:first-child {
+        margin-right: 0.5rem;
+      }
+      &:last-child {
+        li {
           margin-right: 0.5rem;
-        }
-        &:last-child {
-          li {
-            margin-right: 0.5rem;
-            text-decoration: underline;
-          }
+          text-decoration: underline;
         }
       }
     }
-    ul:first-child {
+  }
+`;
+
+export const AdditionalInfoContainer = styled(InformationContainer)`
+  margin-top: 0;
+`;
+
+export const InstructionContainer = styled.section`
+  ol {
+    li {
+      font-size: 1.2rem;
+      margin: 2rem 0;
     }
   }
 `;
-
-export const AdditionalInfoContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  > div {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-
-export const InstructionContainer = styled.section``;
 
 export const WinePairing = styled.section``;

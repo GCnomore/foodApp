@@ -22,6 +22,14 @@ const RecipePage: React.FC<RouteComponentProps> = (props) => {
     return <li>{_.upperFirst(item)}</li>;
   });
 
+  const occasions = recipeInformation.occasions.map((item) => {
+    return <li>{_.upperFirst(item)}</li>;
+  });
+
+  const cusines = recipeInformation.cusines
+    ? recipeInformation.cusines.map((item) => <li>{_.upperFirst(item)}</li>)
+    : "N/A";
+
   console.log(recipeInformation);
 
   const renderInstuctions = () => {
@@ -46,39 +54,45 @@ const RecipePage: React.FC<RouteComponentProps> = (props) => {
         </Recipe.ImageContainer>
         <Recipe.MetaContainer>
           <h1>{recipeInformation.title}</h1>
+          <div>
+            <div>
+              <span>Time: {recipeInformation.readyInMinutes} min.</span>
+            </div>
+            <div>
+              <button>
+                <a href={recipeInformation.sourceUrl}>Go to original</a>
+              </button>
+            </div>
+          </div>
           <Recipe.InformationContainer>
             <div>
-              <ul>
-                <span>Ingredients:</span>
-                <span>{ingredients}</span>
-              </ul>
-              <ul>
-                <span>Equipments:</span>
-                <span>{equipments}</span>
-              </ul>
+              <span>Ingredients:</span>
+              <ul>{ingredients}</ul>
+            </div>
+            <div>
+              <span>Equipments:</span>
+              <ul>{equipments}</ul>
             </div>
           </Recipe.InformationContainer>
           <Recipe.AdditionalInfoContainer>
             <div>
-              <ul>
-                <span>Diets:</span>
-                <span>{recipeInformation.diets}</span>
-              </ul>
-              <span>Cuisine: {recipeInformation.cusines ?? "N/A"}</span>
+              <span>Diets:</span>
+              <ul>{diets}</ul>
             </div>
             <div>
-              <span>
-                Spoonacular score: {recipeInformation.spoonacularScore}
-              </span>
-              <span>{recipeInformation.occasions}</span>
+              <span>Occasions: </span>
+              <ul>{occasions}</ul>
             </div>
             <div>
-              <span>{recipeInformation.readyInMinutes} min.</span>
-              <span>
-                <button>
-                  <a href={recipeInformation.sourceUrl}>Go to original</a>
-                </button>
-              </span>
+              <span>Cuisine:</span>
+              <ul>{cusines}</ul>
+            </div>
+            <div>
+              <div>
+                <span>
+                  Spoonacular score: {recipeInformation.spoonacularScore}
+                </span>
+              </div>
             </div>
           </Recipe.AdditionalInfoContainer>
         </Recipe.MetaContainer>

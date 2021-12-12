@@ -22,9 +22,10 @@ const RecipePage: React.FC<RouteComponentProps> = (props) => {
     return <li>{_.upperFirst(item)}</li>;
   });
 
-  const occasions = recipeInformation.occasions.map((item) => {
-    return <li>{_.upperFirst(item)}</li>;
-  });
+  const occasions =
+    recipeInformation.occasions.length > 0
+      ? recipeInformation.occasions.map((item) => <li>{_.upperFirst(item)}</li>)
+      : "N/A";
 
   const cusines = recipeInformation.cusines
     ? recipeInformation.cusines.map((item) => <li>{_.upperFirst(item)}</li>)
@@ -52,8 +53,10 @@ const RecipePage: React.FC<RouteComponentProps> = (props) => {
         <Recipe.ImageContainer>
           <img src={recipeInformation.image} />
         </Recipe.ImageContainer>
-        <Recipe.MetaContainer>
+        <Recipe.TitleContainer>
           <h1>{recipeInformation.title}</h1>
+        </Recipe.TitleContainer>
+        <Recipe.MetaContainer>
           <div>
             <div>
               <span>Time: {recipeInformation.readyInMinutes} min.</span>

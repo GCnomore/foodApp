@@ -1,22 +1,24 @@
-import Ingredients from "./Ingredients";
+import { IIngredients } from "./Ingredients";
 
 export interface IAnalyzedInstructions {
-  number: number;
-  step: string;
-  ingredients: {
-    id: number;
-    name: string;
-    image: string;
-  }[];
-  equipment: {
-    id: number;
-    name: string;
-    image: string;
-  }[];
-  length?: {
+  steps: {
     number: number;
-    unit: string;
-  };
+    stepTitle: string;
+    ingredients: {
+      id: number;
+      name: string;
+      image: string;
+    }[];
+    equipment: {
+      id: number;
+      name: string;
+      image: string;
+    }[];
+    length?: {
+      number: number;
+      unit: string;
+    };
+  }[];
 }
 
 export default interface IRecipeInformation {
@@ -37,16 +39,16 @@ export default interface IRecipeInformation {
   sourceUrl: string;
   spoonacularSourceUrl: string;
   spoonacularScore: number;
-  extendedIngredients: Ingredients[];
+  extendedIngredients: IIngredients[];
   summary: string;
   dishTypes: string[];
   diets: string[];
   occasions: string[];
-  equipments: string[];
+  equipments: null | string[];
   winePairing: {
     pairedWines: string[];
     pairingText: string;
   };
   instructions: string;
-  analyzedInstructions: null | IAnalyzedInstructions[];
+  analyzedInstructions: null | IAnalyzedInstructions;
 }

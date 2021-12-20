@@ -1,7 +1,7 @@
 const ROUTES = {
   HOME_PAGE: "/",
   RESULT_PAGE: "/result",
-  RECIPE_PAGE: "/result/:query/:id",
+  RECIPE_PAGE: "/recipe",
   PROFILE_PAGE: "/profile",
   LOGIN_PAGE: "/login",
   REGISTER_PAGE: "/register",

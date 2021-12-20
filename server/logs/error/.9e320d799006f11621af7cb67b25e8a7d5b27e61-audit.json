@@ -26,9 +26,15 @@
             "hash": "a236432f7788fa0317ddf20986a00181"
         },
         {
+<<<<<<< HEAD
             "date": 1640010883575,
             "name": "logs/error/12-20-2021.error.log",
             "hash": "7537da1c0c160c6d6f54772a14bf8c70"
+=======
+            "date": 1639291404742,
+            "name": "logs/error/12-11-2021.error.log",
+            "hash": "7543a565868cb812da032ae8a1855154"
+>>>>>>> 0e1e6df5e09acf7fc2cd06153d1356d42680534b
         }
     ]
 }

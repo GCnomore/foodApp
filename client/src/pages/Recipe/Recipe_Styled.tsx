@@ -15,7 +15,9 @@ export const RecipePageContainer = styled.div`
 `;
 
 export const AdSection = styled.section`
-  width: 10%;
+  height: 100%;
+  width: 30%;
+  margin: 0 2rem;
   display: flex;
   justify-content: center;
 `;
@@ -24,27 +26,26 @@ export const ContentsContainer = styled.main`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 80%;
-
-  margin: 5% 0;
+  margin: 5% 5rem;
 `;
 
 export const ImageContainer = styled.section`
   margin-bottom: 5%;
 `;
 
-export const MetaContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-
+export const TitleContainer = styled.div`
   h1 {
     font-size: 2rem;
   }
+`;
+
+export const MetaContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 
   > div:nth-child(2) {
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
     flex-direction: column;
   }
 `;

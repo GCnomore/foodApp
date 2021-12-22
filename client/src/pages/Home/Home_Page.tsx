@@ -19,11 +19,15 @@ import {
 import _ from "lodash";
 import store, { AppDispatch, RootState } from "../../redux/store";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
+import SearchByModal from "../../components/Search_By_Modal/Search_By_Modal";
+import { isFulfilled } from "@reduxjs/toolkit";
+import LoadingComponent from "../../components/Loading/Loading_Component";
 
 const HomePage: React.FC = () => {
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const history = useHistory();
-  const [searchReady, setSearchReady] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
   const {
@@ -44,8 +48,18 @@ const HomePage: React.FC = () => {
   }, []);
 
   // TODO: limit ingredients to 20
-  const handleSearch = () => {
-    history.push(ROUTES.RESULT_PAGE, ingredients);
+  const handleSearch = async () => {
+    setShowLoading(true);
+    const action = await dispatch(getRecipeByIngredients(ingredients));
+    if (isFulfilled(action)) {
+      const id = action.payload.map((item) => item.id.toString());
+      const recipeInfo = await dispatch(getRecipeInformation(id ?? []));
+      if (isFulfilled(recipeInfo)) {
+        console.log("fullfilled");
+        setShowLoading(false);
+        history.push(ROUTES.RESULT_PAGE, ingredients);
+      }
+    }
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -65,40 +79,23 @@ const HomePage: React.FC = () => {
 
   return (
     <Home.HomeContainer>
+      <SearchByModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        setSearchBy={setSearchBy}
+      />
       <Home.ContentsContainer>
         <Home.TopSection>
           <Home.TitleContainer>
             <h1>App Title</h1>
           </Home.TitleContainer>
           <Home.SearchContainer>
-            <Dropdown drop="up">
-              <Home.DropDownToggle variant="secondary" id="dropdown-basic">
-                {searchBy === "" ? (
-                  <span>Search By</span>
-                ) : (
-                  <span>Search by {_.capitalize(searchBy)}</span>
-                )}
-              </Home.DropDownToggle>
-
-              <Home.DropDownMenu>
-                <Dropdown.Item
-                  href="#/ingredients"
-                  onSelect={(e) => {
-                    dispatch(setSearchBy(e?.substring(2) || ""));
-                  }}
-                >
-                  by Ingredient
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href="#/name"
-                  onSelect={(e) => {
-                    dispatch(setSearchBy(e?.substring(2) || ""));
-                  }}
-                >
-                  by Name
-                </Dropdown.Item>
-              </Home.DropDownMenu>
-            </Dropdown>
+            <div>
+              <span>Search by: </span>
+              <button onClick={() => setIsModalOpen(true)}>
+                {_.upperFirst(searchBy)}
+              </button>
+            </div>
 
             <div>
               <input
@@ -158,6 +155,7 @@ const HomePage: React.FC = () => {
           </RankingContainer>
         </BottomSection> */}
       </Home.ContentsContainer>
+      {showLoading && <LoadingComponent />}
     </Home.HomeContainer>
   );
 };

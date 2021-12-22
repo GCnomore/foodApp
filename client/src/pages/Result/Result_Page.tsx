@@ -23,21 +23,22 @@ import { isFulfilled } from "@reduxjs/toolkit";
 
 const ResultPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { ingredients, showLoading, recipeByIngredient, recipeInformation } =
-    useSelector((state: RootState) => state.search);
+  const [showLoading, setShowLoading] = useState(false);
+  const { ingredients, recipeByIngredient, recipeInformation } = useSelector(
+    (state: RootState) => state.search
+  );
 
   const userInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   useEffect(() => {
-    getResult();
+    // getResult();
   }, [dispatch]);
 
   const getResult = async () => {
-    let action;
-    if (!recipeByIngredient) {
-      action = await dispatch(getRecipeByIngredients(ingredients));
-    }
+    setShowLoading(true);
+    const action = await dispatch(getRecipeByIngredients(ingredients));
     if (isFulfilled(action)) {
+      setShowLoading(false);
       const id = action.payload.map((item) => item.id.toString());
       dispatch(getRecipeInformation(id ?? []));
     }
@@ -58,18 +59,16 @@ const ResultPage: React.FC = () => {
     recipeByIngredient: IRecipeByIngredient[],
     recipeInformation: IRecipeInformation[]
   ) => {
-    if (recipeByIngredient && recipeInformation) {
-      const cards = recipeInformation.map((item, index) => {
-        return (
-          <ResultCard
-            key={`resultC${index}`}
-            recipeByIngredient={recipeByIngredient[index]}
-            recipeInformation={item}
-          />
-        );
-      });
-      return cards;
-    }
+    const cards = recipeInformation.map((item, index) => {
+      return (
+        <ResultCard
+          key={`resultC${index}`}
+          recipeByIngredient={recipeByIngredient[index]}
+          recipeInformation={item}
+        />
+      );
+    });
+    return cards;
   };
 
   console.log("result page", recipeInformation, recipeByIngredient);
@@ -102,7 +101,7 @@ const ResultPage: React.FC = () => {
       </Result.SearchBarSection>
 
       <Result.ResultSection>
-        {recipeByIngredient && recipeInformation ? (
+        {recipeByIngredient && recipeInformation && !showLoading ? (
           renderResult(recipeByIngredient, recipeInformation)
         ) : (
           <LoadingComponent />

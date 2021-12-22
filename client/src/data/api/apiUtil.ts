@@ -10,31 +10,53 @@ const ApiUtil = {
     ingredients: string[]
   ): Promise<IRecipeByIngredient[]> => {
     console.log("calling");
-    const result = await axios.post(
-      `${CONST.API_URL}/recipes/findByIngredients`,
-      ingredients
-    );
-    const recipeByIngredients = await result.data;
+    let recipeByIngredients;
+
+    try {
+      const result = await axios.post(
+        `${CONST.API_URL}/recipes/findByIngredients`,
+        ingredients
+      );
+      recipeByIngredients = await result.data;
+    } catch (e) {
+      console.log(e);
+      alert("Please check your input");
+    }
     return recipeByIngredients;
   },
 
   getFoodTrivia: async () => {
     console.log("get trivia");
-    const response = await axios.get(`${CONST.API_URL}/information/foodTrivia`);
-    sessionStorage.setItem("trivia", response.data);
+    let trivia;
+    try {
+      const response = await axios.get(
+        `${CONST.API_URL}/information/foodTrivia`
+      );
+      trivia = response.data;
+    } catch (e) {
+      trivia = "...";
+    }
+    sessionStorage.setItem("trivia", trivia);
 
-    return response.data;
+    return trivia;
   },
 
   getRecipeInformation: async (id: string[]): Promise<IRecipeInformation[]> => {
     console.log("call getinfo");
+    let recipeInfo;
     const ids = id.join(",");
-    const response = await axios.post(
-      `${CONST.API_URL}/recipes/recipeInformation`,
-      { ids }
-    );
+    try {
+      const response = await axios.post(
+        `${CONST.API_URL}/recipes/recipeInformation`,
+        { ids }
+      );
+      recipeInfo = response.data;
+    } catch (e) {
+      console.log(e);
+      alert("Please check your input");
+    }
 
-    return response.data;
+    return recipeInfo;
   },
 };
 

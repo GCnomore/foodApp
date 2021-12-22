@@ -4,7 +4,6 @@ import styled from "styled-components/macro";
 import main_bg1 from "../../assets/img/main_bg/main_bg1.webp";
 import main_bg2 from "../../assets/img/main_bg/main_bg2.webp";
 import main_bg3 from "../../assets/img/main_bg/main_bg3.webp";
-import main_bg4 from "../../assets/img/main_bg/main_bg4.webp";
 import main_bg5 from "../../assets/img/main_bg/main_bg5.webp";
 
 export const HomeContainer = styled.main``;
@@ -14,7 +13,6 @@ export const ContentsContainer = styled.div``;
 const bg1 = `background-image: url(${main_bg1}); background-size: cover; background-position: top;`;
 const bg2 = `background-image: url(${main_bg2}); background-size: cover; background-position: bottom;`;
 const bg3 = `background-image: url(${main_bg3}); background-size: cover; background-position: center;`;
-const bg4 = `background-image: url(${main_bg4}); background-size: cover; background-position: bottom;`;
 const bg5 = `background-image: url(${main_bg5}); background-size: cover; background-position: bottom;`;
 
 export const TopSection = styled.section`
@@ -62,14 +60,14 @@ export const SearchContainer = styled.div`
   max-height: 20rem;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
-
   margin-top: 10rem;
-  padding: 0.5rem 1rem;
+  padding: 1rem 3rem;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  border-radius: 2rem;
 
   > input {
     height: 2rem;
@@ -86,8 +84,17 @@ export const SearchContainer = styled.div`
   }
 
   > div:nth-child(1) {
+    > span {
+      font-size: 1.2rem;
+    }
+
     > button {
-      height: 2rem;
+      background: none;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 1.8rem;
+      text-decoration: underline;
     }
   }
 

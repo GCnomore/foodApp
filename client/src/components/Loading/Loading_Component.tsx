@@ -1,12 +1,13 @@
 import { Spinner } from "react-bootstrap";
+import * as LoadingComp from "./Loading_Component_Styled";
 
 const LoadingComponent = () => {
   return (
-    <div>
+    <LoadingComp.LoadingCompCont>
       <Spinner animation="border" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
-    </div>
+    </LoadingComp.LoadingCompCont>
   );
 };
 

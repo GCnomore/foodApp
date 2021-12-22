@@ -28,7 +28,7 @@ export default function Information(app: Router) {
       .catch(function (error) {
         Logger.error("error getting trivia");
         console.log(error);
-        res.end();
+        res.status(400).send(new Error(error));
       });
   });
 }

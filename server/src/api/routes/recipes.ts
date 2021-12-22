@@ -35,7 +35,7 @@ export default function Recipes(app: Router) {
       })
       .catch(function (error) {
         Logger.error("error getting recipes by ingredients", error);
-        res.end();
+        res.status(400).send(new Error(error));
       });
   });
 
@@ -62,7 +62,7 @@ export default function Recipes(app: Router) {
       })
       .catch(function (error) {
         Logger.error("error getting recipe information", error);
-        res.end();
+        res.status(400).send(new Error(error));
       });
   });
 }

@@ -1,26 +1,26 @@
 import { Dropdown } from "react-bootstrap";
 import styled from "styled-components/macro";
 
-import main_bg1 from "../../assets/img/main_bg/main_bg1.webp";
+// import main_bg1 from "../../assets/img/main_bg/main_bg1.webp";
 import main_bg2 from "../../assets/img/main_bg/main_bg2.webp";
-import main_bg3 from "../../assets/img/main_bg/main_bg3.webp";
-import main_bg5 from "../../assets/img/main_bg/main_bg5.webp";
+// import main_bg3 from "../../assets/img/main_bg/main_bg3.webp";
+// import main_bg5 from "../../assets/img/main_bg/main_bg5.webp";
 
 export const HomeContainer = styled.main``;
 
 export const ContentsContainer = styled.div``;
 
-const bg1 = `background-image: url(${main_bg1}); background-size: cover; background-position: top;`;
+// const bg1 = `background-image: url(${main_bg1}); background-size: cover; background-position: top;`;
 const bg2 = `background-image: url(${main_bg2}); background-size: cover; background-position: bottom;`;
-const bg3 = `background-image: url(${main_bg3}); background-size: cover; background-position: center;`;
-const bg5 = `background-image: url(${main_bg5}); background-size: cover; background-position: bottom;`;
+// const bg3 = `background-image: url(${main_bg3}); background-size: cover; background-position: center;`;
+// const bg5 = `background-image: url(${main_bg5}); background-size: cover; background-position: bottom;`;
+
+const boxShadow = "5px 6px 6px 1px rgba(0, 0, 0, 0.6)";
 
 export const TopSection = styled.section`
   ${bg2}
   height: 100vh;
   min-height: 30rem;
-  background-color: darkslategrey;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,18 +69,24 @@ export const SearchContainer = styled.div`
   text-align: center;
   border-radius: 2rem;
 
-  > input {
-    height: 2rem;
-  }
-
   > * {
     margin: 0.25rem 0;
   }
 
-  > a > button,
   > button {
     width: 100%;
     height: 2rem;
+    border: none;
+    border-radius: 1rem;
+    box-shadow: ${boxShadow};
+  }
+
+  > button:nth-child(4) {
+    &:disabled {
+      background-color: white;
+      opacity: 0.3;
+    }
+    background-color: #57f057;
   }
 
   > div:nth-child(1) {
@@ -93,7 +99,7 @@ export const SearchContainer = styled.div`
       border: none;
       outline: none;
       color: white;
-      font-size: 1.8rem;
+      font-size: 1.3rem;
       text-decoration: underline;
     }
   }
@@ -106,9 +112,15 @@ export const SearchContainer = styled.div`
       flex: 3;
       padding: 0.5rem;
       outline: none;
+      border: none;
+      box-shadow: ${boxShadow};
     }
     > button {
       flex: 1;
+      border: none;
+      background-color: white;
+      margin-left: 0.25rem;
+      box-shadow: ${boxShadow};
     }
   }
 `;

@@ -1,14 +1,11 @@
 import ResultCard from "../../components/Result_Card/ResultCard";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { Button, Modal, ModalBody, ModalTitle } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import * as Result from "./Result_Page_Styled";
-import ISearchResult from "../../data/interfaces/Search_Result";
 import LoadingComponent from "../../components/Loading/Loading_Component";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  SearchState,
-  removeIngredients,
   setShowFilter,
   addIngredients,
   getRecipeByIngredients,

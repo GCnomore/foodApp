@@ -116,7 +116,7 @@ export const searchSlice = createSlice({
       state.excludes = state.excludes.filter((item) => item !== action.payload);
     },
     setCheckFilters: (state, action) => {
-      state.checkFilters.map((item) => {
+      state.checkFilters.forEach((item) => {
         if (item.name === action.payload.name) {
           item.checked = !item.checked;
         }

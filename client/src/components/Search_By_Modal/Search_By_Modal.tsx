@@ -32,10 +32,11 @@ const SearchByModal: React.FC<ISearchByModal> = ({
   };
 
   return (
-    <Modal
+    <SBModal.ModalContainer
       centered={true}
       show={isModalOpen}
       onEscapeKeyDown={() => setIsModalOpen(false)}
+      onBackdropClick={() => setIsModalOpen(false)}
       size="xl"
     >
       <SBModal.Body>
@@ -56,7 +57,7 @@ const SearchByModal: React.FC<ISearchByModal> = ({
           <div />
         </div>
       </SBModal.Body>
-    </Modal>
+    </SBModal.ModalContainer>
   );
 };
 

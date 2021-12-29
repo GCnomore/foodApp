@@ -1,11 +1,9 @@
 import { RouteComponentProps, useLocation } from "react-router";
 import _ from "lodash";
-import IRecipeInformation, {
-  IAnalyzedInstructions,
-} from "../../data/interfaces/Recipe_Information";
+import IRecipeInformation from "../../data/interfaces/Recipe_Information";
 import * as Recipe from "./Recipe_Styled";
 
-const RecipePage: React.FC<RouteComponentProps> = (props) => {
+const RecipePage: React.FC<RouteComponentProps> = () => {
   const location = useLocation<{ recipeInformation: IRecipeInformation }>();
   const recipeInformation: IRecipeInformation =
     location?.state.recipeInformation;
@@ -51,7 +49,7 @@ const RecipePage: React.FC<RouteComponentProps> = (props) => {
       <Recipe.AdSection>ad</Recipe.AdSection>
       <Recipe.ContentsContainer>
         <Recipe.ImageContainer>
-          <img src={recipeInformation.image} />
+          <img src={recipeInformation.image} alt="recipe" />
         </Recipe.ImageContainer>
         <Recipe.TitleContainer>
           <h1>{recipeInformation.title}</h1>

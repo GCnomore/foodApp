@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as Home from "./Home_Styled";
-import { Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 import ROUTES from "../../routers/Routers";
 import {
   addIngredients,
   getFoodTrivia,
-  SearchState,
-  removeIngredients,
   setFoodTrivia,
   setSearchBy,
   setShowFilter,
@@ -17,7 +14,7 @@ import {
   getRecipeInformation,
 } from "../../redux/slice/searchSlice";
 import _ from "lodash";
-import store, { AppDispatch, RootState } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import SearchByModal from "../../components/Search_By_Modal/Search_By_Modal";
 import { isFulfilled } from "@reduxjs/toolkit";
@@ -30,22 +27,16 @@ const HomePage: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
-  const {
-    search,
-    searchBy,
-    showFilter,
-    ingredients,
-    checkFilters,
-    excludes,
-    foodTrivia,
-    recipeByIngredient,
-  } = useSelector((state: RootState) => state.search);
+  const { searchBy, ingredients, foodTrivia } = useSelector(
+    (state: RootState) => state.search
+  );
 
   useEffect(() => {
-    sessionStorage.getItem("trivia")
+    sessionStorage.getItem("trivia") &&
+    sessionStorage.getItem("trivia") !== "..."
       ? dispatch(setFoodTrivia(sessionStorage.getItem("trivia")))
       : dispatch(getFoodTrivia());
-  }, []);
+  }, [dispatch]);
 
   // TODO: limit ingredients to 20
   const handleSearch = async () => {

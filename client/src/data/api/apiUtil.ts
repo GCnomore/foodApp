@@ -1,9 +1,7 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import CONST from "../../constants";
 import IRecipeInformation from "../interfaces/Recipe_Information";
-import IRecipeByIngredient, {
-  toSearchByRecipe,
-} from "../interfaces/Search_By_Recipe";
+import IRecipeByIngredient from "../interfaces/Search_By_Recipe";
 
 const ApiUtil = {
   searchRecipeByIngredients: async (

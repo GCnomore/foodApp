@@ -1,6 +1,7 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, Spinner } from "react-bootstrap";
+import _ from "lodash";
+import { Button, Card } from "react-bootstrap";
 import { useHistory } from "react-router";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
 import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
@@ -31,7 +32,7 @@ const ResultCard = ({
             <li key={index}>
               <FontAwesomeIcon icon={faTimes} />
               &nbsp;
-              {`${ingred.name[0].toUpperCase()}` + `${ingred.name.slice(1)}`}
+              {_.upperFirst(ingred.name[0])}
             </li>
           ))}
         </ul>

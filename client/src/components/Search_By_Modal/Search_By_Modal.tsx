@@ -33,10 +33,9 @@ const SearchByModal: React.FC<ISearchByModal> = ({
 
   return (
     <SBModal.ModalContainer
-      centered={true}
+      centered
       show={isModalOpen}
-      onEscapeKeyDown={() => setIsModalOpen(false)}
-      onBackdropClick={() => setIsModalOpen(false)}
+      onHide={() => setIsModalOpen(false)}
       size="xl"
     >
       <SBModal.Body>

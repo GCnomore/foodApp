@@ -4,7 +4,7 @@ import _ from "lodash";
 import { Button, Card } from "react-bootstrap";
 import { useHistory } from "react-router";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
-import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
+import { IRecipeByIngredient } from "../../data/interfaces/Search";
 import ROUTES from "../../routers/Routers";
 import {
   CardBody,
@@ -32,7 +32,7 @@ const ResultCard = ({
             <li key={index}>
               <FontAwesomeIcon icon={faTimes} />
               &nbsp;
-              {_.upperFirst(ingred.name[0])}
+              {_.upperFirst(ingred.name)}
             </li>
           ))}
         </ul>

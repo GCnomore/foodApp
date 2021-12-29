@@ -1,6 +1,23 @@
 import Ingredients from "./Ingredients";
 
-export default interface IRecipeByIngredient {
+export interface ISearchByIngredParam {
+  ingredients: string[];
+  excludes: string[];
+}
+
+export default interface ISearchResult {
+  id: number;
+  image: string;
+  imageType: string;
+  likes: number;
+  missedIngredientCount: number;
+  missedIngredients: any[];
+  title: string;
+  usedIngredientCount: number;
+  usedIngredients: Object[];
+}
+
+export interface IRecipeByIngredient {
   id: number;
   title: string;
   image: string;

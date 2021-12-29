@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
-  const { searchBy, ingredients, foodTrivia } = useSelector(
+  const { searchBy, ingredients, foodTrivia, excludes } = useSelector(
     (state: RootState) => state.search
   );
 
@@ -41,7 +41,9 @@ const HomePage: React.FC = () => {
   // TODO: limit ingredients to 20
   const handleSearch = async () => {
     setShowLoading(true);
-    const action = await dispatch(getRecipeByIngredients(ingredients));
+    const action = await dispatch(
+      getRecipeByIngredients({ ingredients, excludes })
+    );
     if (isFulfilled(action)) {
       const id = action.payload.map((item) => item.id.toString());
       const recipeInfo = await dispatch(getRecipeInformation(id ?? []));
@@ -98,14 +100,6 @@ const HomePage: React.FC = () => {
                   handleEnter(e);
                 }}
               />
-              {searchBy === "name" ? (
-                <></>
-              ) : (
-                <button onClick={() => dispatch(setShowFilter(true))}>
-                  Filter
-                </button>
-              )}
-              <FilterModal />
             </div>
             {searchBy === "name" ? (
               <></>

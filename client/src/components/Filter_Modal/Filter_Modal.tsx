@@ -1,5 +1,4 @@
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { Modal, Button } from "react-bootstrap";
 import { useRef, useState } from "react";
 import {
   CustomToggleButton,
@@ -13,6 +12,8 @@ import {
   removeExcludes,
   setCheckFilters,
   setShowFilter,
+  resetIngredients,
+  resetFilters,
 } from "../../redux/slice/searchSlice";
 import ICheckFilters from "../../data/interfaces/Check_Filters";
 
@@ -21,7 +22,9 @@ const FilterModal: React.FC = () => {
   const { showFilter, excludes, checkFilters } = useSelector(
     (state: RootState) => state.search
   );
+
   const excludesRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const [localExcludes, setLocalExcludes] = useState<string[]>([]);
   const [ingredientsDelete, setIngredientsDelete] = useState({
     show: false,
     index: 0,
@@ -50,17 +53,28 @@ const FilterModal: React.FC = () => {
     );
   };
 
+  const handleSaveAndClose = () => {
+    dispatch(addExcludes(localExcludes));
+    setLocalExcludes([]);
+    dispatch(setShowFilter(false));
+  };
+
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      dispatch(addExcludes(excludesRef.current.value));
+      setLocalExcludes([...localExcludes, excludesRef.current.value]);
       excludesRef.current.value = "";
     }
+  };
+
+  const onHide = () => {
+    dispatch(setShowFilter(false));
+    setLocalExcludes([]);
   };
 
   return (
     <Modal
       show={showFilter}
-      onHide={() => setShowFilter(false)}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -102,6 +116,30 @@ const FilterModal: React.FC = () => {
                   ) : (
                     <></>
                   )}
+                  {console.log("itemmmmmm", item)}
+                  <span>{item.toLowerCase()}</span>
+                </li>
+              ))}
+              {localExcludes?.map((item, index) => (
+                <li
+                  key={index}
+                  onMouseEnter={() => {
+                    setIngredientsDelete({ show: true, index });
+                  }}
+                  onMouseLeave={() => {
+                    setIngredientsDelete({ show: false, index: 0 });
+                  }}
+                >
+                  {ingredientsDelete.show === true &&
+                  ingredientsDelete.index === index ? (
+                    <DeleteIngredButtonContainer
+                      onClick={() => dispatch(removeExcludes(item))}
+                    >
+                      <span>x</span>
+                    </DeleteIngredButtonContainer>
+                  ) : (
+                    <></>
+                  )}
                   <span>{item.toLowerCase()}</span>
                 </li>
               ))}
@@ -115,13 +153,12 @@ const FilterModal: React.FC = () => {
               {renderFilter(checkFilters[2], "outline-danger")}
               {renderFilter(checkFilters[3], "outline-danger")}
             </div>
-            <div>{renderFilter(checkFilters[5], "outline-success")}</div>
-            <div>{renderFilter(checkFilters[6], "outline-success")}</div>
           </section>
         </FilterContainer>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => dispatch(setShowFilter(false))}>Close</Button>
+        <Button onClick={() => dispatch(resetFilters())}>Reset Filters</Button>
+        <Button onClick={handleSaveAndClose}>Save & Close</Button>
       </Modal.Footer>
     </Modal>
   );

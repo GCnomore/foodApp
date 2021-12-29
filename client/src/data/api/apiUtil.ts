@@ -1,12 +1,16 @@
 import axios from "axios";
 import CONST from "../../constants";
 import IRecipeInformation from "../interfaces/Recipe_Information";
-import IRecipeByIngredient from "../interfaces/Search_By_Recipe";
+import {
+  IRecipeByIngredient,
+  ISearchByIngredParam,
+} from "../interfaces/Search";
 
 const ApiUtil = {
-  searchRecipeByIngredients: async (
-    ingredients: string[]
-  ): Promise<IRecipeByIngredient[]> => {
+  searchRecipeByIngredients: async ({
+    ingredients,
+    excludes,
+  }: ISearchByIngredParam): Promise<IRecipeByIngredient[]> => {
     console.log("calling");
     let recipeByIngredients;
 

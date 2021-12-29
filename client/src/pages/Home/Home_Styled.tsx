@@ -109,18 +109,13 @@ export const SearchContainer = styled.div`
     width: 100%;
     height: 2.5rem;
     > input {
-      flex: 3;
+      width: 100%;
       padding: 0.5rem;
       outline: none;
       border: none;
       box-shadow: ${boxShadow};
-    }
-    > button {
-      flex: 1;
-      border: none;
-      background-color: white;
-      margin-left: 0.25rem;
-      box-shadow: ${boxShadow};
+      border-radius: 1.5rem;
+      padding: 0 1.5rem;
     }
   }
 `;

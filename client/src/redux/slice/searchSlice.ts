@@ -2,7 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ApiUtil from "../../data/api/apiUtil";
 import ICheckFilters from "../../data/interfaces/Check_Filters";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
-import IRecipeByIngredient from "../../data/interfaces/Search_By_Recipe";
+import {
+  IRecipeByIngredient,
+  ISearchByIngredParam,
+} from "../../data/interfaces/Search";
 
 export interface SearchState {
   searchBy: string;
@@ -69,8 +72,11 @@ export const getFoodTrivia = createAsyncThunk(
 
 export const getRecipeByIngredients = createAsyncThunk(
   "search/getRecipeByIngredientsStatus",
-  async (ingredients: string[]) => {
-    const result = await ApiUtil.searchRecipeByIngredients(ingredients);
+  async ({ ingredients, excludes }: ISearchByIngredParam) => {
+    const result = await ApiUtil.searchRecipeByIngredients({
+      ingredients,
+      excludes,
+    });
     return result;
   }
 );
@@ -101,19 +107,27 @@ export const searchSlice = createSlice({
         (item) => item !== action.payload
       );
     },
+    resetIngredients: (state) => {
+      state.ingredients = [];
+    },
     setShowFilter: (state, action) => {
       state.showFilter = action.payload;
     },
-    addExcludes: (state, action) => {
-      if (!state.excludes.includes(action.payload)) {
-        state.excludes = [...state.excludes, action.payload];
-      }
-    },
-    setFoodTrivia: (state, action) => {
-      state.foodTrivia = action.payload;
+    addExcludes: (state, action: { type: string; payload: string[] }) => {
+      action.payload.forEach((item: string) => {
+        if (!state.excludes.includes(item)) {
+          state.excludes = [...state.excludes, item];
+        }
+      });
     },
     removeExcludes: (state, action) => {
       state.excludes = state.excludes.filter((item) => item !== action.payload);
+    },
+    resetExcludes: (state) => {
+      state.excludes = [];
+    },
+    setFoodTrivia: (state, action) => {
+      state.foodTrivia = action.payload;
     },
     setCheckFilters: (state, action) => {
       state.checkFilters.forEach((item) => {
@@ -121,6 +135,15 @@ export const searchSlice = createSlice({
           item.checked = !item.checked;
         }
       });
+    },
+    resetCheckFilters: (state) => {
+      state.checkFilters.forEach((item) => {
+        item.checked = false;
+      });
+    },
+    resetFilters: function (state) {
+      this.resetExcludes(state);
+      this.resetCheckFilters(state);
     },
     setShowLoading: (state, action) => {
       state.showLoading = action.payload;
@@ -146,11 +169,14 @@ export const {
   setCheckFilters,
   addExcludes,
   removeExcludes,
+  resetExcludes,
   addIngredients,
   removeIngredients,
+  resetIngredients,
   setFoodTrivia,
   setShowFilter,
   setShowLoading,
+  resetFilters,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

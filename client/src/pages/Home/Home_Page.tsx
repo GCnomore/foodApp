@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import * as Home from "./Home_Styled";
 import { useDispatch, useSelector } from "react-redux";
-import FilterModal from "../../components/Filter_Modal/Filter_Modal";
-import ROUTES from "../../routers/Routers";
+import _ from "lodash";
 import {
   addIngredients,
   getFoodTrivia,
@@ -13,7 +12,9 @@ import {
   getRecipeByIngredients,
   getRecipeInformation,
 } from "../../redux/slice/searchSlice";
-import _ from "lodash";
+
+import FilterModal from "../../components/Filter_Modal/Filter_Modal";
+import { ROUTES } from "../../routers/Routers";
 import { AppDispatch, RootState } from "../../redux/store";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import SearchByModal from "../../components/Search_By_Modal/Search_By_Modal";
@@ -50,7 +51,10 @@ const HomePage: React.FC = () => {
       if (isFulfilled(recipeInfo)) {
         console.log("fullfilled");
         setShowLoading(false);
-        history.push(ROUTES.RESULT_PAGE, ingredients);
+        history.push(
+          `${ROUTES.RESULT_PAGE}?ingreds=${ingredients.toString()}`,
+          ingredients
+        );
       }
     }
   };

@@ -43,8 +43,13 @@ export const SearchBarSection = styled.section`
 
 export const ResultSection = styled.section`
   display: flex;
+  /* justify-content: center; */
   flex-wrap: wrap;
   padding: 0 20%;
+
+  @media (max-width: 1386px) {
+    justify-content: center;
+  }
 `;
 
 export const FilterButton = styled.button<{ $selected: boolean }>`

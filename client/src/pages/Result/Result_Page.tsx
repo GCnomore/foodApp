@@ -1,39 +1,53 @@
-import ResultCard from "../../components/Result_Card/ResultCard";
-import { useEffect, useRef } from "react";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { isFulfilled } from "@reduxjs/toolkit";
 import { Button } from "react-bootstrap";
-import * as Result from "./Result_Page_Styled";
-import LoadingComponent from "../../components/Loading/Loading_Component";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import _ from "lodash";
+
 import {
   setShowFilter,
   addIngredients,
   getRecipeByIngredients,
   getRecipeInformation,
 } from "../../redux/slice/searchSlice";
+import * as Result from "./Result_Page_Styled";
+import LoadingComponent from "../../components/Loading/Loading_Component";
+import ResultCard from "../../components/Result_Card/ResultCard";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import { AppDispatch, RootState } from "../../redux/store";
 import { IRecipeByIngredient } from "../../data/interfaces/Search";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
-import { isFulfilled } from "@reduxjs/toolkit";
+import { useQuery } from "../../util/Utils";
 
-const ResultPage: React.FC = () => {
+const ResultPage: React.FC = (props) => {
   const dispatch: AppDispatch = useDispatch();
   const [showLoading, setShowLoading] = useState(false);
   const { ingredients, recipeByIngredient, recipeInformation, excludes } =
     useSelector((state: RootState) => state.search);
 
   const userInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const query = useQuery().get("ingreds")?.toLowerCase();
+  const [_ingredients, _setIngredients] = useState<string[]>([]);
 
   useEffect(() => {
-    // getResult();
+    if (ingredients.length == 0 && query) {
+      query.split(",").map((item: string) => {
+        _setIngredients((prev) => [...prev, _.upperFirst(item)]);
+      });
+      getResult(query);
+    } else {
+      _setIngredients(ingredients);
+    }
   }, [dispatch]);
 
-  const getResult = async () => {
+  const getResult = async (ingreds: string) => {
+    console.log("search from result page");
+    const _ingreds = ingreds.split(",");
     setShowLoading(true);
     const action = await dispatch(
-      getRecipeByIngredients({ ingredients, excludes })
+      getRecipeByIngredients({ ingredients: _ingreds, excludes })
     );
     if (isFulfilled(action)) {
       setShowLoading(false);
@@ -42,10 +56,12 @@ const ResultPage: React.FC = () => {
     }
   };
 
-  const handleAddIngredients = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleAddIngredientsAdd = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (
       e.key === "Enter" &&
-      !ingredients.includes(userInputRef.current.value)
+      !_ingredients.includes(userInputRef.current.value)
     ) {
       userInputRef.current?.value &&
         dispatch(addIngredients(userInputRef.current.value));
@@ -72,14 +88,13 @@ const ResultPage: React.FC = () => {
   return (
     <Result.SearchResultContainer>
       <FilterModal />
-
       <Result.SearchBarSection>
         <div>
           <input
             ref={userInputRef}
             placeholder="Add ingredients"
             onKeyPress={(e) => {
-              handleAddIngredients(e);
+              handleAddIngredientsAdd(e);
             }}
           />
           <Button onClick={() => dispatch(setShowFilter(true))}>Filter</Button>
@@ -87,7 +102,7 @@ const ResultPage: React.FC = () => {
         <Result.ResultIngredientsContainer>
           <span>Your ingredients:</span>
           <ul>
-            {ingredients?.map((item, index) => (
+            {_ingredients?.map((item, index) => (
               <IngredientBox key={`r${index}`} index={index} item={item} />
             ))}
           </ul>

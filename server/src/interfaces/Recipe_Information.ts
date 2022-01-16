@@ -51,4 +51,5 @@ export default interface IRecipeInformation {
   };
   instructions: string;
   analyzedInstructions: null | IAnalyzedInstructions;
+  cuisines: string[];
 }

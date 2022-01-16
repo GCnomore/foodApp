@@ -61,7 +61,7 @@ const FilterModal: React.FC = () => {
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      setLocalExcludes([...localExcludes, excludesRef.current.value]);
+      setLocalExcludes((prev) => [...prev, excludesRef.current.value]);
       excludesRef.current.value = "";
     }
   };

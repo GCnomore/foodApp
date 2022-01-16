@@ -57,5 +57,6 @@ export const toRecipeInformation = (data: any): IRecipeInformation => {
     },
     instructions: data.instructions,
     analyzedInstructions,
+    cuisines: data.cuisines,
   };
 };

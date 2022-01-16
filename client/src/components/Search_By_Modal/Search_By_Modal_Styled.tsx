@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Modal, ModalBody } from "react-bootstrap";
 import ingredient from "../../assets/img/ingredients.webp";
 import dish from "../../assets/img/dish1.jpg";
@@ -15,7 +15,7 @@ to {
 export const ModalContainer = styled(Modal)`
   > div {
     > .modal-content {
-      border-radius: 6vh;
+      border-radius: 1vh;
     }
   }
 `;
@@ -25,8 +25,8 @@ export const Body = styled(ModalBody)`
   justify-content: space-evenly;
   align-items: center;
   height: 50vh;
-  background-color: #dddddd;
-  border-radius: 6vh;
+  background-color: #eeeeee;
+  border-radius: 1vh;
 
   div:nth-child(1) {
     div {
@@ -64,7 +64,7 @@ export const Body = styled(ModalBody)`
       background-position: center;
 
       &:hover {
-        animation: ${zoomIn} 0.5s ease-out;
+        animation: ${zoomIn} 0.5s linear;
         animation-fill-mode: forwards;
       }
 

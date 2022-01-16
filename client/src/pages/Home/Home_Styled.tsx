@@ -57,7 +57,7 @@ export const SearchContainer = styled.div`
   width: 40vw;
   min-width: 45rem;
   height: fit-content;
-  max-height: 20rem;
+  max-height: 40%;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   margin-top: 10rem;
@@ -67,7 +67,7 @@ export const SearchContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  border-radius: 2rem;
+  border-radius: calc(40vw * 0.015);
 
   > * {
     margin: 0.25rem 0;
@@ -77,16 +77,22 @@ export const SearchContainer = styled.div`
     width: 100%;
     height: 2rem;
     border: none;
-    border-radius: 1rem;
+    border-radius: 4px;
     box-shadow: ${boxShadow};
+
+    &:active {
+      transform: scale(0.98);
+      transition: transform 0.15s linear;
+    }
   }
 
   > button:nth-child(4) {
+    background-color: #57f057;
+
     &:disabled {
       background-color: white;
       opacity: 0.3;
     }
-    background-color: #57f057;
   }
 
   > div:nth-child(1) {
@@ -105,17 +111,17 @@ export const SearchContainer = styled.div`
   }
 
   > div:nth-child(2) {
+    margin-bottom: 1rem;
     display: flex;
     width: 100%;
     height: 2.5rem;
     > input {
       width: 100%;
-      padding: 0.5rem;
       outline: none;
       border: none;
       box-shadow: ${boxShadow};
-      border-radius: 1.5rem;
-      padding: 0 1.5rem;
+      border-radius: 4px;
+      padding: 0 1rem;
     }
   }
 `;
@@ -147,6 +153,7 @@ export const IngredientsContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-shadow: 2px 2px 8px black;
+  margin-bottom: 1rem;
 
   > ul {
     list-style: none;

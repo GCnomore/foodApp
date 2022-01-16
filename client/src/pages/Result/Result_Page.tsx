@@ -43,7 +43,7 @@ const ResultPage: React.FC = (props) => {
   }, [dispatch]);
 
   const getResult = async (ingreds: string) => {
-    console.log("search from result page");
+    console.log("search from result page!!");
     const _ingreds = ingreds.split(",");
     setShowLoading(true);
     const action = await dispatch(

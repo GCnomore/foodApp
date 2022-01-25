@@ -125,7 +125,6 @@ const HomePage: React.FC = () => {
             <button disabled={isSearchDisabled} onClick={handleSearch}>
               Search
             </button>
-            <button>Get random</button>
           </Home.SearchContainer>
           <Home.FoodTriviaContainer>
             <h2>Did you know?</h2>

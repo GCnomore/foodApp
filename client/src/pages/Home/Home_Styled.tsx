@@ -79,6 +79,7 @@ export const SearchContainer = styled.div`
     border: none;
     border-radius: 4px;
     box-shadow: ${boxShadow};
+    margin-top: 1rem;
 
     &:active {
       transform: scale(0.98);

@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 
 export const ResultCardContainer = styled.div`
   width: 25rem;
-  height: 35rem;
+  height: 40rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   margin-bottom: 2rem;
@@ -17,13 +17,14 @@ export const CardBody = styled.main`
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 
   > div {
     display: flex;
     flex-direction: column;
     padding: 0 0.5rem;
-    flex-grow: 1;
-    margin-bottom: auto;
+    /* flex-grow: 1; */
+    /* margin-bottom: auto; */
   }
 
   h2 {
@@ -33,7 +34,10 @@ export const CardBody = styled.main`
   }
 
   button {
-    justify-self: flex-end;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
     > a {
       color: white;
       text-decoration: none;
@@ -63,21 +67,57 @@ export const AdditionalInfo = styled.section`
   display: flex;
   flex-grow: 1;
   margin-bottom: auto;
-  margin-top: 1rem;
+  margin-top: 0.25rem;
   > div {
     margin-right: 1.5rem;
+  }
+`;
+
+export const EquipmentsContainer = styled.section`
+  margin: 1rem 0 0 0;
+
+  > ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0 0;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: auto;
+
+    > li {
+      margin: 0 1rem 0 0;
+    }
+
+    &::-webkit-scrollbar {
+      height: 4px;
+      background-color: #eee;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #2c2c2c8d;
+      border-radius: 10px;
+    }
   }
 `;
 
 export const MissingIngredientsContainer = styled.section`
   display: flex;
   flex-direction: column;
-  margin-top: auto;
+  margin-top: 0.75rem;
   padding: 0.25rem;
 
   > span {
     font-weight: bold;
-    margin-bottom: 1rem;
+  }
+
+  > label {
+    > svg {
+      color: red;
+      margin-right: 0.25rem;
+    }
   }
 
   > ul {
@@ -85,13 +125,24 @@ export const MissingIngredientsContainer = styled.section`
     flex-wrap: wrap;
     list-style: none;
     padding: 0;
-    margin: 0;
-    > li {
-      margin: 0.5rem 1rem 0 0;
+    margin: 0.25rem 0 0 0;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: auto;
 
-      > svg {
-        color: red;
-      }
+    > li {
+      margin: 0 1rem 0 0;
+    }
+
+    &::-webkit-scrollbar {
+      height: 4px;
+      background-color: #eee;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #2c2c2c8d;
+      border-radius: 10px;
     }
   }
 `;

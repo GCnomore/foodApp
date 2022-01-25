@@ -38,19 +38,31 @@ const ResultCard: React.FC<ResultCardProps> = ({
           <span>✅ You've got all you need!</span>
         ) : (
           <>
-            <label>Missing ingredients</label>
+            <label>
+              <FontAwesomeIcon icon={faTimes} />
+              Missing ingredients:
+            </label>
             <ul>
               {recipeByIngredient?.missedIngredients.map((ingred, index) => (
-                <li key={index}>
-                  <FontAwesomeIcon icon={faTimes} />
-                  &nbsp;
-                  {_.upperFirst(ingred.name)}
-                </li>
+                <li key={index}>&bull; {_.upperFirst(ingred.name)}</li>
               ))}
             </ul>
           </>
         )}
       </Styled.MissingIngredientsContainer>
+    );
+  };
+
+  const renderEquipments = () => {
+    return (
+      <Styled.EquipmentsContainer>
+        <label>👨‍🍳 Equipments you need:</label>
+        <ul>
+          {recipeInformation.equipments.map((item: string) => (
+            <li>&bull; {_.upperFirst(item)}</li>
+          ))}
+        </ul>
+      </Styled.EquipmentsContainer>
     );
   };
 
@@ -90,11 +102,9 @@ const ResultCard: React.FC<ResultCardProps> = ({
               <span> {recipeInformation.servings}</span>
             </div>
           </Styled.AdditionalInfo>
+          {renderEquipments()}
           {renderMissingIngreds(recipeByIngredient)}
         </div>
-        {/* <Button variant="primary" onClick={routeToRecipe}>
-          See details
-        </Button> */}
         <Button variant="primary">
           <a href={recipeInformation.sourceUrl} target="_blank">
             See details

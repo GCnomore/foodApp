@@ -14,3 +14,16 @@ export const DeleteIngredButtonContainer = styled.div`
     }
   }
 `;
+
+export const IngredientBoxContainer = styled.li`
+  > span {
+    color: white;
+    background-color: #191919df;
+    padding: 0.25rem 1rem;
+    border-radius: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;

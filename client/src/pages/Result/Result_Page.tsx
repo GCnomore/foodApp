@@ -11,7 +11,7 @@ import {
   getRecipeByIngredients,
   getRecipeInformation,
 } from "../../redux/slice/searchSlice";
-import * as Result from "./Result_Page_Styled";
+import * as Styled from "./Result_Page_Styled";
 import LoadingComponent from "../../components/Loading/Loading_Component";
 import ResultCard from "../../components/Result_Card/ResultCard";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
@@ -69,6 +69,17 @@ const ResultPage: React.FC = (props) => {
     }
   };
 
+  const removeIngredient = (item: string) => {
+    if (_ingredients.includes(item)) {
+      const newIngredients = _ingredients.filter(
+        (ing: string) => ing.toLowerCase() !== item.toLowerCase()
+      );
+      _setIngredients(newIngredients);
+    } else {
+      return;
+    }
+  };
+
   const renderResult = (
     recipeByIngredient: IRecipeByIngredient[],
     recipeInformation: IRecipeInformation[]
@@ -86,9 +97,9 @@ const ResultPage: React.FC = (props) => {
   };
 
   return (
-    <Result.SearchResultContainer>
+    <Styled.SearchResultContainer>
       <FilterModal />
-      <Result.SearchBarSection>
+      <Styled.SearchBarSection>
         <div>
           <input
             ref={userInputRef}
@@ -99,26 +110,31 @@ const ResultPage: React.FC = (props) => {
           />
           <Button onClick={() => dispatch(setShowFilter(true))}>Filter</Button>
         </div>
-        <Result.ResultIngredientsContainer>
+        <Styled.ResultIngredientsContainer>
           <span>Your ingredients:</span>
           <ul>
             {_ingredients?.map((item, index) => (
-              <IngredientBox key={`r${index}`} index={index} item={item} />
+              <IngredientBox
+                key={`r${index}`}
+                index={index}
+                item={item}
+                removeIngredient={removeIngredient}
+              />
             ))}
           </ul>
-        </Result.ResultIngredientsContainer>
+        </Styled.ResultIngredientsContainer>
 
         <Button variant="primary">Search</Button>
-      </Result.SearchBarSection>
+      </Styled.SearchBarSection>
 
-      <Result.ResultSection>
+      <Styled.ResultSection>
         {recipeByIngredient && recipeInformation && !showLoading ? (
           renderResult(recipeByIngredient, recipeInformation)
         ) : (
           <LoadingComponent />
         )}
-      </Result.ResultSection>
-    </Result.SearchResultContainer>
+      </Styled.ResultSection>
+    </Styled.SearchResultContainer>
   );
 };
 

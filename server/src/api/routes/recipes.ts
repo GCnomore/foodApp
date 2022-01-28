@@ -16,7 +16,7 @@ export default function Recipes(app: Router) {
       url: `${CONST.API_URL}/recipes/findByIngredients`,
       params: {
         ingredients: req.body?.join(","),
-        number: "5",
+        number: "50",
         ignorePantry: "true",
         ranking: "1",
       },

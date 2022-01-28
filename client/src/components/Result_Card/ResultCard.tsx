@@ -10,6 +10,7 @@ import { ROUTES } from "../../routers/Routers";
 import * as Styled from "./Result_Card_Styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
+import Ingredients from "../../data/interfaces/Ingredients";
 
 interface ResultCardProps {
   recipeByIngredient: IRecipeByIngredient;
@@ -21,12 +22,12 @@ const ResultCard: React.FC<ResultCardProps> = ({
   recipeInformation,
 }) => {
   const history = useHistory();
-  const [isVegan, setIsVegan] = useState<boolean>(false);
+  const [_isVegan, _setIsVegan] = useState<boolean>(false);
 
   useEffect(() => {
     recipeInformation?.diets.map((item) => {
       if (item.includes("veg")) {
-        setIsVegan(true);
+        _setIsVegan(true);
       }
     });
   }, [recipeInformation]);
@@ -43,9 +44,11 @@ const ResultCard: React.FC<ResultCardProps> = ({
               Missing ingredients:
             </label>
             <ul>
-              {recipeByIngredient?.missedIngredients.map((ingred, index) => (
-                <li key={index}>&bull; {_.upperFirst(ingred.name)}</li>
-              ))}
+              {recipeByIngredient?.missedIngredients.map(
+                (ingred: Ingredients, index: number) => (
+                  <li key={index}>&bull; {_.upperFirst(ingred.name)}</li>
+                )
+              )}
             </ul>
           </>
         )}
@@ -58,8 +61,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
       <Styled.EquipmentsContainer>
         <label>👨‍🍳 Equipments you need:</label>
         <ul>
-          {recipeInformation.equipments.map((item: string) => (
-            <li>&bull; {_.upperFirst(item)}</li>
+          {recipeInformation.equipments.map((item: string, index: number) => (
+            <li key={`${item}${index}`}>&bull; {_.upperFirst(item)}</li>
           ))}
         </ul>
       </Styled.EquipmentsContainer>
@@ -89,7 +92,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
         <div>
           <h2>
             {recipeByIngredient?.title}
-            {isVegan ? "🥗" : ""}
+            {_isVegan ? "🥗" : ""}
           </h2>
           <Styled.Diet>{renderDiets()}</Styled.Diet>
           <Styled.AdditionalInfo>

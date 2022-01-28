@@ -21,9 +21,16 @@ export const IngredientBoxContainer = styled.li`
     background-color: #191919df;
     padding: 0.25rem 1rem;
     border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
       cursor: pointer;
+    }
+
+    > * {
+      margin: 0 0 0 0.5rem;
     }
   }
 `;

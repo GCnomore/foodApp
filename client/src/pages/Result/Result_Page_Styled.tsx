@@ -38,12 +38,17 @@ export const SearchBarSection = styled.section`
     height: 3rem;
     width: 30%;
     margin-top: 1rem;
+
+    &:active {
+      transform: scale(0.99);
+      transition: transform 0.1s linear;
+    }
   }
 `;
 
 export const ResultSection = styled.section`
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   flex-wrap: wrap;
   padding: 0 20%;
 

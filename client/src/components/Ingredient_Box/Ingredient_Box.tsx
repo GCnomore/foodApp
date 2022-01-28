@@ -1,3 +1,5 @@
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeIngredients } from "../../redux/slice/searchSlice";
@@ -16,6 +18,7 @@ const IngredientBox: React.FC<IngredientBoxProps> = ({
   removeIngredient,
 }) => {
   const dispatch: AppDispatch = useDispatch();
+  const [_isMouseOver, _setIsMouseOver] = useState(false);
 
   return (
     <Styled.IngredientBoxContainer
@@ -23,8 +26,13 @@ const IngredientBox: React.FC<IngredientBoxProps> = ({
         dispatch(removeIngredients(item));
         removeIngredient && removeIngredient(item);
       }}
+      onMouseEnter={() => _setIsMouseOver(true)}
+      onMouseLeave={() => _setIsMouseOver(false)}
     >
-      <span>{item.toLowerCase()}</span>
+      <span>
+        {item.toLowerCase()}
+        {_isMouseOver ? <FontAwesomeIcon icon={faTimes} /> : <></>}
+      </span>
     </Styled.IngredientBoxContainer>
   );
 };

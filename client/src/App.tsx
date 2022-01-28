@@ -13,8 +13,8 @@ export default function App() {
         <AppStyled.NavBar>
           <div>
             <Link to={ROUTES.HOME_PAGE}>Home</Link>
-            <Link to={ROUTES.REGISTER_PAGE}>Register</Link>
-            <Link to={ROUTES.LOGIN_PAGE}>Login</Link>
+            {/* <Link to={ROUTES.REGISTER_PAGE}>Register</Link> */}
+            {/* <Link to={ROUTES.LOGIN_PAGE}>Login</Link> */}
             <Link to={ROUTES.SAVE_EARTH}>
               Save <FontAwesomeIcon icon={faGlobeAmericas} />
             </Link>

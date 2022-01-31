@@ -3,7 +3,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import _ from "lodash";
+import _, { filter } from "lodash";
 
 import {
   setShowFilter,
@@ -21,19 +21,27 @@ import { IRecipeByIngredient } from "../../data/interfaces/Search";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
 import { useQuery } from "../../util/Utils";
 import Search_Button from "../../components/searchButton/Search_Button";
-import InfiniteScroll from "react-infinite-scroll-component";
+import ICheckFilters from "../../data/interfaces/Check_Filters";
 
 const ResultPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { ingredients, recipeByIngredient, recipeInformation, excludes } =
-    useSelector((state: RootState) => state.search);
-  const query = useQuery().get("ingreds")?.toLowerCase();
+  const {
+    ingredients,
+    recipeByIngredient,
+    recipeInformation,
+    excludes,
+    checkFilters,
+  } = useSelector((state: RootState) => state.search);
+  const query: string | undefined = useQuery().get("ingreds")?.toLowerCase();
 
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [_showLoading, _setShowLoading] = useState<boolean>(false);
   const [_ingredients, _setIngredients] = useState<string[]>([]);
-  const [_page, _setPage] = useState<number>(0);
-  const [_results, _setResults] = useState<IRecipeByIngredient[][]>([]);
+  const [_page, _setPage] = useState<number>(1);
+  const [_filteredResult, _setFilteredResult] =
+    useState<IRecipeByIngredient[]>();
+
+  const scrollIndicator = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (ingredients.length == 0 && query) {
@@ -47,21 +55,54 @@ const ResultPage: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (recipeByIngredient) {
-      let container: IRecipeByIngredient[][] = [];
-      let result: IRecipeByIngredient[] = [];
-      for (let i = 0; i < recipeByIngredient.length; i++) {
-        result.push(recipeByIngredient[i]);
-        if (result.length !== 0 && result.length === 15) {
-          container.push(result);
-          result = [];
-        } else if (result.length !== 0 && recipeByIngredient.length - 1 === i) {
-          container.push(result);
+    window.addEventListener("scroll", scrollHandler);
+    return () => {
+      window.removeEventListener("scroll", scrollHandler);
+    };
+  }, [_page]);
+
+  useEffect(() => {
+    let filteredList: IRecipeInformation[] = [];
+    const filters: ICheckFilters[] = checkFilters.filter(
+      (item: ICheckFilters) => item.checked
+    );
+    let res: boolean[] = [];
+
+    filters.forEach((i: ICheckFilters, index: number) => {
+      console.log("index", index, filters.length);
+      recipeInformation?.forEach((ii: IRecipeInformation) => {
+        if (ii.diets.includes(i.name.toLowerCase())) {
+          res.push(true);
+        } else {
+          res.push(false);
         }
+        if (index === filters.length - 1) {
+          if (!res.includes(false)) {
+            filteredList.push(ii);
+            res = [];
+          } else {
+            res = [];
+          }
+        }
+      });
+    });
+
+    const result = Array.from(new Set(filteredList));
+    console.log("filtered", result);
+  }, [checkFilters]);
+
+  const scrollHandler = (): void => {
+    if (
+      recipeByIngredient &&
+      scrollIndicator.current &&
+      scrollIndicator.current?.getBoundingClientRect().y < 1000
+    ) {
+      if (_page < Math.ceil(recipeByIngredient.length / 15)) {
+        _setPage(_page + 1);
+        window.removeEventListener("scroll", scrollHandler);
       }
-      _setResults(container);
     }
-  }, [recipeByIngredient]);
+  };
 
   const getResult = async (ingreds: string): Promise<void> => {
     const _ingreds = ingreds.split(",");
@@ -103,35 +144,26 @@ const ResultPage: React.FC = () => {
   };
 
   const renderResult = (
-    _recipeByIngredient: IRecipeByIngredient[][],
+    _recipeByIngredient: IRecipeByIngredient[],
     _recipeInformation: IRecipeInformation[]
-  ): (JSX.Element | undefined)[][] => {
-    console.log(_recipeByIngredient);
+  ): (JSX.Element | undefined)[] => {
     const cards = _recipeInformation.map(
       (info: IRecipeInformation, i: number) => {
-        return _recipeByIngredient[_page].map(
-          (recipe: IRecipeByIngredient, ii: number) => {
-            if (recipe.id === info.id) {
-              return (
-                <ResultCard
-                  key={`resultC${i}`}
-                  recipeByIngredient={recipe}
-                  recipeInformation={info}
-                />
-              );
-            }
-          }
-        );
+        if (i < _page * 15) {
+          return (
+            <ResultCard
+              key={`resultC${i}`}
+              recipeByIngredient={_recipeByIngredient[i]}
+              recipeInformation={info}
+            />
+          );
+        }
       }
     );
     return cards;
   };
 
-  const loadNextPage = (): void => {
-    _setPage(_page + 1);
-  };
-
-  const isSearchDisabled =
+  const isSearchDisabled: boolean =
     ingredients?.length === 0 && searchInputRef.current?.value === ""
       ? true
       : false;
@@ -172,21 +204,11 @@ const ResultPage: React.FC = () => {
 
       <Styled.ResultSection>
         {recipeByIngredient && recipeInformation && !_showLoading ? (
-          <InfiniteScroll
-            dataLength={recipeByIngredient.length}
-            next={loadNextPage}
-            hasMore={_page + 1 !== Math.ceil(recipeByIngredient.length / 15)}
-            loader={<h2>loading...</h2>}
-          >
-            {_results.length !== 0 ? (
-              renderResult(_results, recipeInformation)
-            ) : (
-              <></>
-            )}
-          </InfiniteScroll>
+          renderResult(recipeByIngredient, recipeInformation)
         ) : (
           <LoadingComponent />
         )}
+        <Styled.ScrollIndicator ref={scrollIndicator} />
       </Styled.ResultSection>
     </Styled.SearchResultContainer>
   );

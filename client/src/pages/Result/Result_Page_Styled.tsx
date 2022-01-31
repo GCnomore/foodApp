@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 import { IngredientsContainer } from "../Home/Home_Styled";
 
 export const SearchResultContainer = styled.main`
-  margin-top: 5%;
+  padding-top: 5%;
 `;
 
 export const SearchBarSection = styled.section`
@@ -51,6 +51,8 @@ export const ResultSection = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   padding: 0 20%;
+  height: fit-content;
+  position: relative;
 
   @media (max-width: 1386px) {
     justify-content: center;
@@ -70,4 +72,11 @@ export const ResultIngredientsContainer = styled(IngredientsContainer)`
   text-shadow: none;
   justify-content: center;
   align-items: center;
+`;
+
+export const ScrollIndicator = styled.div`
+  position: absolute;
+  height: 1000px;
+  width: 100px;
+  bottom: 0;
 `;

@@ -24,8 +24,11 @@ const FilterModal: React.FC = () => {
   );
 
   const excludesRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const [localExcludes, setLocalExcludes] = useState<string[]>([]);
-  const [ingredientsDelete, setIngredientsDelete] = useState({
+  const [_excludes, _setExcludes] = useState<string[]>([]);
+  const [_ingredientsDelete, _setIngredientsDelete] = useState<{
+    show: boolean;
+    index: number;
+  }>({
     show: false,
     index: 0,
   });
@@ -53,22 +56,22 @@ const FilterModal: React.FC = () => {
     );
   };
 
-  const handleSaveAndClose = () => {
-    dispatch(addExcludes(localExcludes));
-    setLocalExcludes([]);
+  const handleSaveAndClose = (): void => {
+    dispatch(addExcludes(_excludes));
+    _setExcludes([]);
     dispatch(setShowFilter(false));
   };
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === "Enter") {
-      setLocalExcludes((prev) => [...prev, excludesRef.current.value]);
+      _setExcludes((prev) => [...prev, excludesRef.current.value]);
       excludesRef.current.value = "";
     }
   };
 
-  const onHide = () => {
+  const onHide = (): void => {
     dispatch(setShowFilter(false));
-    setLocalExcludes([]);
+    _setExcludes([]);
   };
 
   return (
@@ -100,14 +103,14 @@ const FilterModal: React.FC = () => {
                 <li
                   key={index}
                   onMouseEnter={() => {
-                    setIngredientsDelete({ show: true, index });
+                    _setIngredientsDelete({ show: true, index });
                   }}
                   onMouseLeave={() => {
-                    setIngredientsDelete({ show: false, index: 0 });
+                    _setIngredientsDelete({ show: false, index: 0 });
                   }}
                 >
-                  {ingredientsDelete.show === true &&
-                  ingredientsDelete.index === index ? (
+                  {_ingredientsDelete.show === true &&
+                  _ingredientsDelete.index === index ? (
                     <DeleteIngredButtonContainer
                       onClick={() => dispatch(removeExcludes(item))}
                     >
@@ -116,22 +119,21 @@ const FilterModal: React.FC = () => {
                   ) : (
                     <></>
                   )}
-                  {console.log("itemmmmmm", item)}
                   <span>{item.toLowerCase()}</span>
                 </li>
               ))}
-              {localExcludes?.map((item, index) => (
+              {_excludes?.map((item, index) => (
                 <li
                   key={index}
                   onMouseEnter={() => {
-                    setIngredientsDelete({ show: true, index });
+                    _setIngredientsDelete({ show: true, index });
                   }}
                   onMouseLeave={() => {
-                    setIngredientsDelete({ show: false, index: 0 });
+                    _setIngredientsDelete({ show: false, index: 0 });
                   }}
                 >
-                  {ingredientsDelete.show === true &&
-                  ingredientsDelete.index === index ? (
+                  {_ingredientsDelete.show === true &&
+                  _ingredientsDelete.index === index ? (
                     <DeleteIngredButtonContainer
                       onClick={() => dispatch(removeExcludes(item))}
                     >

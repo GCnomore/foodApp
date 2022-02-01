@@ -3,7 +3,7 @@ import { isFulfilled } from "@reduxjs/toolkit";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import _, { filter } from "lodash";
+import _ from "lodash";
 
 import {
   setShowFilter,
@@ -43,6 +43,7 @@ const ResultPage: React.FC = () => {
 
   const scrollIndicator = useRef<HTMLDivElement>(null);
 
+  //* Refresh / direct access to result page
   useEffect(() => {
     if (ingredients.length == 0 && query) {
       query.split(",").map((item: string) => {
@@ -54,6 +55,7 @@ const ResultPage: React.FC = () => {
     }
   }, [dispatch]);
 
+  //* Infinite scroll listener
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler);
     return () => {
@@ -61,34 +63,27 @@ const ResultPage: React.FC = () => {
     };
   }, [_page]);
 
+  //* get filtered list
   useEffect(() => {
-    let filteredList: IRecipeInformation[] = [];
-    const filters: ICheckFilters[] = checkFilters.filter(
-      (item: ICheckFilters) => item.checked
-    );
-    let res: boolean[] = [];
-
-    filters.forEach((i: ICheckFilters, index: number) => {
-      console.log("index", index, filters.length);
-      recipeInformation?.forEach((ii: IRecipeInformation) => {
-        if (ii.diets.includes(i.name.toLowerCase())) {
-          res.push(true);
-        } else {
-          res.push(false);
-        }
-        if (index === filters.length - 1) {
-          if (!res.includes(false)) {
-            filteredList.push(ii);
-            res = [];
-          } else {
-            res = [];
-          }
-        }
-      });
+    const filters: string[] = [];
+    checkFilters.forEach((item) => {
+      if (item.checked) {
+        filters.push(item.name);
+      }
     });
 
-    const result = Array.from(new Set(filteredList));
-    console.log("filtered", result);
+    const filteredList = recipeInformation?.filter(
+      (recipe: IRecipeInformation) => {
+        if (filters.length !== 0) {
+          return filters.every((filter: string) =>
+            recipe.diets.includes(filter.toLocaleLowerCase())
+          );
+        }
+      }
+    );
+
+    console.log(filters);
+    console.log("filtered", filteredList);
   }, [checkFilters]);
 
   const scrollHandler = (): void => {

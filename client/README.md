@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# THE FOOD APP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Problems people have!! (At least I have)
 
-## Available Scripts
+One day I feel like Gordon Ramsay and want to make Spaghetti for dinner. I go to grocery store and grab all the ingredients that will help my THING look like Spaghetti. I came back home with:</br>
 
-In the project directory, you can run:
+1. noodles
+2. tomato sauces
+3. garlics
+4. bunch of meatballs
+5. basil
+6. mushrooms
+7. 8, 9 10 other stuffs...
+   </br>
+   </br>
+   Somehow, Spaghetti looking thing came out and my dinner was taken care of. Even after I dumped half of what I bought, I still have a lot of leftover that are ready to be shoved into the shelves and waiting for the end date of my apartment lease.
+   </br>
+   </br>
 
-### `npm start`
+## Solution?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+With {APP_NAME}, search what you can make with all the leftover ingredients!
+</br>
+</br>
+</br>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Features
 
-### `npm test`
+- Search by ingredients
+- Search by recipe (name)
+- Join and save your search histories
+- See what other people are searching
+  </br>
+  </br>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+</br>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Techs used for this project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Frontend
 
-### `npm run eject`
+- Typescript
+- React
+- Styled components
+- React router dom
+- **_Redux toolkit / Redux thunk_**
+  </br>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Backend
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Nodejs
+- Express
+- Winston
+  </br>
+  </br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+**I am using Flutter with Bloc pattern for my side project team and I love how it works and wanted to try to implement it to a React project. I haven't looked into Redux after react came up with its own context api. But when I visited its documentation and read about the slice from toolkit, I thought this could bring similar effect as Flutter's Bloc pattern to React**

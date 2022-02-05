@@ -1,28 +1,13 @@
-import IIngredients from "./Ingredients";
+import { IIngredients } from "./Ingredients";
+import { IAnalyzedInstructions } from "./Recipe_Information";
 
-export interface IAnalyzedInstructions {
-  number: number;
-  step: string;
-  ingredients: {
-    id: number;
-    name: string;
-    image: string;
-  }[];
-  equipment: {
-    id: number;
-    name: string;
-    image: string;
-  }[];
-  length?: {
-    number: number;
-    unit: string;
-  };
-}
-
-export default interface IRecipeInformation {
+export interface IRecipeByIngredients {
   id: number;
   title: string;
   image: string;
+  missedIngredients: IIngredients[];
+  usedIngredients: IIngredients[];
+  unusedIngredients: IIngredients[];
   cusines: string[];
   readyInMinutes: number;
   vegitarian: boolean;
@@ -42,11 +27,12 @@ export default interface IRecipeInformation {
   dishTypes: string[];
   diets: string[];
   occasions: string[];
-  equipments: string[];
+  equipments: null | string[];
   winePairing: {
     pairedWines: string[];
     pairingText: string;
   };
   instructions: string;
-  analyzedInstructions: null | IAnalyzedInstructions[];
+  analyzedInstructions: null | IAnalyzedInstructions;
+  cuisines: string[];
 }

@@ -2,7 +2,7 @@ const CONST = {
   API_URL: "http://localhost:3030",
   DIET_FILTERS: [
     {
-      name: "Vegitarian",
+      name: "Vegan",
       selected: false,
     },
     {

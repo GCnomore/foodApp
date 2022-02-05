@@ -16,7 +16,7 @@ async function startServer() {
     $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     `);
   });
-  Logger.info(`server run on port ${CONST.PORT}`);
+  Logger.info(`server running on port ${CONST.PORT}`);
 
   app.get("/error", (req, res) => {
     Logger.error("Error");

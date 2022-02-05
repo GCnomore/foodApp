@@ -27,18 +27,15 @@ const Search_Button: React.FC<ISearchButton> = (props) => {
   const handleSearch = async () => {
     setShowLoading(true);
     const action = await dispatch(
-      getRecipeByIngredients({ ingredients, excludes })
+      getRecipeByIngredients({ ingredients, number: "2" })
     );
     if (isFulfilled(action)) {
-      const id = action.payload.map((item) => item.id.toString());
-      const recipeInfo = await dispatch(getRecipeInformation(id ?? []));
-      if (isFulfilled(recipeInfo)) {
-        setShowLoading(false);
-        history.push(
-          `${ROUTES.RESULT_PAGE}?ingreds=${ingredients.toString()}`,
-          ingredients
-        );
-      }
+      console.log("actionnnnnnn", action.payload);
+      setShowLoading(false);
+      history.push(
+        `${ROUTES.RESULT_PAGE}?ingreds=${ingredients.toString()}`,
+        ingredients
+      );
     }
   };
 

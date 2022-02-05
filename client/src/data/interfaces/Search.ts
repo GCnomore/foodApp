@@ -1,8 +1,8 @@
-import Ingredients from "./Ingredients";
+import IIngredients from "./Ingredients";
 
 export interface ISearchByIngredParam {
   ingredients: string[];
-  excludes: string[];
+  number: string;
 }
 
 export default interface ISearchResult {
@@ -21,9 +21,9 @@ export interface IRecipeByIngredient {
   id: number;
   title: string;
   image: string;
-  missedIngredients: Ingredients[];
-  usedIngredients: Ingredients[];
-  unusedIngredients: Ingredients[];
+  missedIngredients: IIngredients[];
+  usedIngredients: IIngredients[];
+  unusedIngredients: IIngredients[];
   likes: number;
 }
 

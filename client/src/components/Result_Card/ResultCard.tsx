@@ -5,34 +5,30 @@ import { Button, Card } from "react-bootstrap";
 import { useHistory } from "react-router";
 
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
-import { IRecipeByIngredient } from "../../data/interfaces/Search";
 import { ROUTES } from "../../routers/Routers";
 import * as Styled from "./Result_Card_Styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
-import Ingredients from "../../data/interfaces/Ingredients";
+import IIngredients from "../../data/interfaces/Ingredients";
+import { IRecipeByIngredients } from "../../data/interfaces/Recipe_By_Ingredients";
 
 interface ResultCardProps {
-  recipeByIngredient: IRecipeByIngredient;
-  recipeInformation: IRecipeInformation;
+  recipeByIngredient: IRecipeByIngredients;
 }
 
-const ResultCard: React.FC<ResultCardProps> = ({
-  recipeByIngredient,
-  recipeInformation,
-}) => {
+const ResultCard: React.FC<ResultCardProps> = ({ recipeByIngredient }) => {
   const history = useHistory();
   const [_isVegan, _setIsVegan] = useState<boolean>(false);
 
   useEffect(() => {
-    recipeInformation?.diets.map((item) => {
+    recipeByIngredient?.diets.map((item) => {
       if (item.includes("veg")) {
         _setIsVegan(true);
       }
     });
-  }, [recipeInformation]);
+  }, [recipeByIngredient]);
 
-  const renderMissingIngreds = (recipeByIngredient: IRecipeByIngredient) => {
+  const renderMissingIngreds = (recipeByIngredient: IRecipeByIngredients) => {
     return (
       <Styled.MissingIngredientsContainer>
         {recipeByIngredient?.missedIngredients.length === 0 ? (
@@ -45,7 +41,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </label>
             <ul>
               {recipeByIngredient?.missedIngredients.map(
-                (ingred: Ingredients, index: number) => (
+                (ingred: IIngredients, index: number) => (
                   <li key={index}>&bull; {_.upperFirst(ingred.name)}</li>
                 )
               )}
@@ -56,12 +52,12 @@ const ResultCard: React.FC<ResultCardProps> = ({
     );
   };
 
-  const renderEquipments = () => {
+  const renderEquipments = (_recipe: IRecipeByIngredients) => {
     return (
       <Styled.EquipmentsContainer>
         <label>👨‍🍳 Equipments you need:</label>
         <ul>
-          {recipeInformation.equipments.map((item: string, index: number) => (
+          {_recipe.equipments?.map((item: string, index: number) => (
             <li key={`${item}${index}`}>&bull; {_.upperFirst(item)}</li>
           ))}
         </ul>
@@ -77,8 +73,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
   //   });
   // };
 
-  const renderDiets = () =>
-    recipeInformation.diets.map((item, index) => (
+  const renderDiets = (_recipe: IRecipeByIngredients) =>
+    _recipe.diets.map((item, index) => (
       <li key={`diets${index}`}>
         <span>&bull;</span>
         {_.upperFirst(item)}
@@ -94,22 +90,22 @@ const ResultCard: React.FC<ResultCardProps> = ({
             {recipeByIngredient?.title}
             {_isVegan ? "🥗" : ""}
           </h2>
-          <Styled.Diet>{renderDiets()}</Styled.Diet>
+          <Styled.Diet>{renderDiets(recipeByIngredient)}</Styled.Diet>
           <Styled.AdditionalInfo>
             <div>
               <label>⏳Time:</label>
-              <span> {recipeInformation.readyInMinutes} min.</span>
+              <span> {recipeByIngredient.readyInMinutes} min.</span>
             </div>
             <div>
               <label>🍽Servings:</label>
-              <span> {recipeInformation.servings}</span>
+              <span> {recipeByIngredient.servings}</span>
             </div>
           </Styled.AdditionalInfo>
-          {renderEquipments()}
+          {renderEquipments(recipeByIngredient)}
           {renderMissingIngreds(recipeByIngredient)}
         </div>
         <Button variant="primary">
-          <a href={recipeInformation.sourceUrl} target="_blank">
+          <a href={recipeByIngredient.sourceUrl} target="_blank">
             See details
           </a>
         </Button>

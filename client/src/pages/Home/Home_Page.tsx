@@ -20,11 +20,10 @@ import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import SearchByModal from "../../components/Search_By_Modal/Search_By_Modal";
 import { isFulfilled } from "@reduxjs/toolkit";
 import LoadingComponent from "../../components/Loading/Loading_Component";
-import Search_Button from "../../components/searchButton/Search_Button";
+import Search_Button from "../../components/Search_Button/Search_Button";
 
 const HomePage: React.FC = () => {
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const history = useHistory();
   const [_isModalOpen, _setIsModalOpen] = useState(false);
   const [_showLoading, _setShowLoading] = useState(false);
 
@@ -39,26 +38,6 @@ const HomePage: React.FC = () => {
       ? dispatch(setFoodTrivia(sessionStorage.getItem("trivia")))
       : dispatch(getFoodTrivia());
   }, [dispatch]);
-
-  // TODO: limit ingredients to 20
-  const handleSearch = async () => {
-    _setShowLoading(true);
-    const action = await dispatch(
-      getRecipeByIngredients({ ingredients, excludes })
-    );
-    if (isFulfilled(action)) {
-      const id = action.payload.map((item) => item.id.toString());
-      const recipeInfo = await dispatch(getRecipeInformation(id ?? []));
-      if (isFulfilled(recipeInfo)) {
-        console.log("fullfilled");
-        _setShowLoading(false);
-        history.push(
-          `${ROUTES.RESULT_PAGE}?ingreds=${ingredients.toString()}`,
-          ingredients
-        );
-      }
-    }
-  };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (

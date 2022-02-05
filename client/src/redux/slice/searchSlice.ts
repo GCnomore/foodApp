@@ -1,11 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ApiUtil from "../../data/api/apiUtil";
 import ICheckFilters from "../../data/interfaces/Check_Filters";
+import { IRecipeByIngredients } from "../../data/interfaces/Recipe_By_Ingredients";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
-import {
-  IRecipeByIngredient,
-  ISearchByIngredParam,
-} from "../../data/interfaces/Search";
+import { ISearchByIngredParam } from "../../data/interfaces/Search";
 
 export interface SearchState {
   searchBy: string;
@@ -16,7 +14,7 @@ export interface SearchState {
   excludes: string[];
   foodTrivia: null | string;
   showLoading: boolean;
-  recipeByIngredient: null | IRecipeByIngredient[];
+  recipeByIngredient: null | IRecipeByIngredients[];
   recipeInformation: null | IRecipeInformation[];
 }
 
@@ -33,10 +31,6 @@ const initialState: SearchState = {
   checkFilters: [
     {
       name: "Vegan",
-      checked: false,
-    },
-    {
-      name: "Vegitarian",
       checked: false,
     },
     {
@@ -72,10 +66,10 @@ export const getFoodTrivia = createAsyncThunk(
 
 export const getRecipeByIngredients = createAsyncThunk(
   "search/getRecipeByIngredientsStatus",
-  async ({ ingredients, excludes }: ISearchByIngredParam) => {
+  async ({ ingredients, number }: ISearchByIngredParam) => {
     const result = await ApiUtil.searchRecipeByIngredients({
       ingredients,
-      excludes,
+      number,
     });
     return result;
   }

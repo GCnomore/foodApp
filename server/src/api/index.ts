@@ -1,8 +1,8 @@
 import { Router } from "express";
 import Logger from "../loaders/logger";
 
-import Information from "./routes/information";
-import Recipes from "./routes/recipes";
+import Information from "./routes/Information";
+import Recipes from "./routes/Recipes";
 
 export default function AppRouters() {
   const app: Router = Router();

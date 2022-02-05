@@ -17,11 +17,11 @@ import ResultCard from "../../components/Result_Card/ResultCard";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import { AppDispatch, RootState } from "../../redux/store";
-import { IRecipeByIngredient } from "../../data/interfaces/Search";
 import IRecipeInformation from "../../data/interfaces/Recipe_Information";
 import { useQuery } from "../../util/Utils";
-import Search_Button from "../../components/searchButton/Search_Button";
+import Search_Button from "../../components/Search_Button/Search_Button";
 import ICheckFilters from "../../data/interfaces/Check_Filters";
+import { IRecipeByIngredients } from "../../data/interfaces/Recipe_By_Ingredients";
 
 const ResultPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -39,11 +39,11 @@ const ResultPage: React.FC = () => {
   const [_ingredients, _setIngredients] = useState<string[]>([]);
   const [_page, _setPage] = useState<number>(1);
   const [_filteredResult, _setFilteredResult] =
-    useState<IRecipeByIngredient[]>();
+    useState<{ recipe: IRecipeByIngredients[] }>();
 
   const scrollIndicator = useRef<HTMLDivElement>(null);
 
-  //* Refresh / direct access to result page
+  //* Refresh & direct access to result page
   useEffect(() => {
     if (ingredients.length == 0 && query) {
       query.split(",").map((item: string) => {
@@ -72,18 +72,23 @@ const ResultPage: React.FC = () => {
       }
     });
 
-    const filteredList = recipeInformation?.filter(
-      (recipe: IRecipeInformation) => {
-        if (filters.length !== 0) {
-          return filters.every((filter: string) =>
-            recipe.diets.includes(filter.toLocaleLowerCase())
-          );
+    if (recipeByIngredient) {
+      const filteredRecipe: IRecipeByIngredients[] = recipeByIngredient?.filter(
+        (recipe: IRecipeByIngredients) => {
+          if (filters.length !== 0) {
+            return filters.every((filter: string) =>
+              recipe.diets.includes(filter.toLocaleLowerCase())
+            );
+          } else {
+            return recipe;
+          }
         }
-      }
-    );
+      );
 
-    console.log(filters);
-    console.log("filtered", filteredList);
+      _setFilteredResult({
+        recipe: filteredRecipe,
+      });
+    }
   }, [checkFilters]);
 
   const scrollHandler = (): void => {
@@ -103,7 +108,7 @@ const ResultPage: React.FC = () => {
     const _ingreds = ingreds.split(",");
     _setShowLoading(true);
     const action = await dispatch(
-      getRecipeByIngredients({ ingredients: _ingreds, excludes })
+      getRecipeByIngredients({ ingredients: _ingreds, number: "50" })
     );
     if (isFulfilled(action)) {
       _setShowLoading(false);
@@ -139,22 +144,13 @@ const ResultPage: React.FC = () => {
   };
 
   const renderResult = (
-    _recipeByIngredient: IRecipeByIngredient[],
-    _recipeInformation: IRecipeInformation[]
+    recipe: IRecipeByIngredients[]
   ): (JSX.Element | undefined)[] => {
-    const cards = _recipeInformation.map(
-      (info: IRecipeInformation, i: number) => {
-        if (i < _page * 15) {
-          return (
-            <ResultCard
-              key={`resultC${i}`}
-              recipeByIngredient={_recipeByIngredient[i]}
-              recipeInformation={info}
-            />
-          );
-        }
+    const cards = recipe.map((item: IRecipeByIngredients, i: number) => {
+      if (i < _page * 15) {
+        return <ResultCard key={`resultC${i}`} recipeByIngredient={item} />;
       }
-    );
+    });
     return cards;
   };
 
@@ -198,8 +194,8 @@ const ResultPage: React.FC = () => {
       </Styled.SearchBarSection>
 
       <Styled.ResultSection>
-        {recipeByIngredient && recipeInformation && !_showLoading ? (
-          renderResult(recipeByIngredient, recipeInformation)
+        {_filteredResult && !_showLoading ? (
+          renderResult(_filteredResult.recipe)
         ) : (
           <LoadingComponent />
         )}

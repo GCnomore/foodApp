@@ -1,6 +1,5 @@
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setSearchBy } from "../../redux/slice/searchSlice";
 import { AppDispatch } from "../../redux/store";

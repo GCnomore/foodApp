@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 import { Button, Card } from "react-bootstrap";
-import { useHistory } from "react-router";
 
-import IRecipeInformation from "../../data/interfaces/Recipe_Information";
-import { ROUTES } from "../../routers/Routers";
 import * as Styled from "./Result_Card_Styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import IIngredients from "../../data/interfaces/Ingredients";
 import { IRecipeByIngredients } from "../../data/interfaces/Recipe_By_Ingredients";
 
@@ -17,11 +13,10 @@ interface ResultCardProps {
 }
 
 const ResultCard: React.FC<ResultCardProps> = ({ recipeByIngredient }) => {
-  const history = useHistory();
   const [_isVegan, _setIsVegan] = useState<boolean>(false);
 
   useEffect(() => {
-    recipeByIngredient?.diets.map((item) => {
+    recipeByIngredient?.diets.forEach((item) => {
       if (item.includes("veg")) {
         _setIsVegan(true);
       }
@@ -105,7 +100,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ recipeByIngredient }) => {
           {renderMissingIngreds(recipeByIngredient)}
         </div>
         <Button variant="primary">
-          <a href={recipeByIngredient.sourceUrl} target="_blank">
+          <a href={recipeByIngredient.sourceUrl} target="_blank" rel='noreferrer' >
             See details
           </a>
         </Button>

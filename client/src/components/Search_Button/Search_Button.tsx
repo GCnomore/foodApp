@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   getRecipeByIngredients,
-  getRecipeInformation,
 } from "../../redux/slice/searchSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import { ROUTES } from "../../routers/Routers";
@@ -14,20 +13,22 @@ interface ISearchButton {
   isSearchDisabled: boolean;
 }
 
-const Search_Button: React.FC<ISearchButton> = (props) => {
+const SEARCH_BUTTON: React.FC<ISearchButton> = (props) => {
   const { setShowLoading, isSearchDisabled } = props;
 
   const history = useHistory();
   const dispatch: AppDispatch = useDispatch();
-  const { ingredients, excludes } = useSelector(
+  const { ingredients } = useSelector(
     (state: RootState) => state.search
   );
+
+  console.log('ingredients', ingredients)
 
   // TODO: limit ingredients to 20
   const handleSearch = async () => {
     setShowLoading(true);
     const action = await dispatch(
-      getRecipeByIngredients({ ingredients, number: "2" })
+      getRecipeByIngredients({ ingredients, number: "50" })
     );
     if (isFulfilled(action)) {
       console.log("actionnnnnnn", action.payload);
@@ -46,4 +47,4 @@ const Search_Button: React.FC<ISearchButton> = (props) => {
   );
 };
 
-export default Search_Button;
+export default SEARCH_BUTTON;

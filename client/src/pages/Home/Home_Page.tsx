@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
 import * as Home from "./Home_Styled";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
@@ -8,19 +7,13 @@ import {
   getFoodTrivia,
   setFoodTrivia,
   setSearchBy,
-  setShowFilter,
-  getRecipeByIngredients,
-  getRecipeInformation,
 } from "../../redux/slice/searchSlice";
 
-import FilterModal from "../../components/Filter_Modal/Filter_Modal";
-import { ROUTES } from "../../routers/Routers";
 import { AppDispatch, RootState } from "../../redux/store";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import SearchByModal from "../../components/Search_By_Modal/Search_By_Modal";
-import { isFulfilled } from "@reduxjs/toolkit";
 import LoadingComponent from "../../components/Loading/Loading_Component";
-import Search_Button from "../../components/Search_Button/Search_Button";
+import SEARCH_BUTTON from "../../components/Search_Button/Search_Button";
 
 const HomePage: React.FC = () => {
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -28,7 +21,7 @@ const HomePage: React.FC = () => {
   const [_showLoading, _setShowLoading] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
-  const { searchBy, ingredients, foodTrivia, excludes } = useSelector(
+  const { searchBy, ingredients, foodTrivia } = useSelector(
     (state: RootState) => state.search
   );
 
@@ -102,7 +95,7 @@ const HomePage: React.FC = () => {
               </Home.IngredientsContainer>
             )}
 
-            <Search_Button
+            <SEARCH_BUTTON
               isSearchDisabled={isSearchDisabled}
               setShowLoading={_setShowLoading}
             />

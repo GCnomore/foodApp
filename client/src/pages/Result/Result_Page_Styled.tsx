@@ -79,4 +79,5 @@ export const ScrollIndicator = styled.div`
   height: 1000px;
   width: 100px;
   bottom: 0;
+  z-index: -100;
 `;

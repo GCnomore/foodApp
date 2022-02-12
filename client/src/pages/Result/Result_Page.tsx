@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { isFulfilled } from "@reduxjs/toolkit";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import _ from "lodash";
 
 import {
@@ -17,10 +16,8 @@ import ResultCard from "../../components/Result_Card/ResultCard";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import { AppDispatch, RootState } from "../../redux/store";
-import IRecipeInformation from "../../data/interfaces/Recipe_Information";
 import { useQuery } from "../../util/Utils";
-import Search_Button from "../../components/Search_Button/Search_Button";
-import ICheckFilters from "../../data/interfaces/Check_Filters";
+import SEARCH_BUTTON from "../../components/Search_Button/Search_Button";
 import { IRecipeByIngredients } from "../../data/interfaces/Recipe_By_Ingredients";
 
 const ResultPage: React.FC = () => {
@@ -28,8 +25,6 @@ const ResultPage: React.FC = () => {
   const {
     ingredients,
     recipeByIngredient,
-    recipeInformation,
-    excludes,
     checkFilters,
   } = useSelector((state: RootState) => state.search);
   const query: string | undefined = useQuery().get("ingreds")?.toLowerCase();
@@ -43,10 +38,11 @@ const ResultPage: React.FC = () => {
 
   const scrollIndicator = useRef<HTMLDivElement>(null);
 
+
   //* Refresh & direct access to result page
   useEffect(() => {
-    if (ingredients.length == 0 && query) {
-      query.split(",").map((item: string) => {
+    if (ingredients.length === 0 && query) {
+      query.split(",").forEach((item: string) => {
         _setIngredients((prev) => [...prev, _.upperFirst(item)]);
       });
       getResult(query);
@@ -89,7 +85,7 @@ const ResultPage: React.FC = () => {
         recipe: filteredRecipe,
       });
     }
-  }, [checkFilters]);
+  }, [checkFilters, recipeByIngredient]);
 
   const scrollHandler = (): void => {
     if (
@@ -149,6 +145,8 @@ const ResultPage: React.FC = () => {
     const cards = recipe.map((item: IRecipeByIngredients, i: number) => {
       if (i < _page * 15) {
         return <ResultCard key={`resultC${i}`} recipeByIngredient={item} />;
+      } else {
+        return <>No Results found</>;
       }
     });
     return cards;
@@ -187,7 +185,7 @@ const ResultPage: React.FC = () => {
           </ul>
         </Styled.ResultIngredientsContainer>
 
-        <Search_Button
+        <SEARCH_BUTTON
           isSearchDisabled={isSearchDisabled}
           setShowLoading={_setShowLoading}
         />

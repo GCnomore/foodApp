@@ -12,7 +12,6 @@ import {
   removeExcludes,
   setCheckFilters,
   setShowFilter,
-  resetIngredients,
   resetFilters,
 } from "../../redux/slice/searchSlice";
 import ICheckFilters from "../../data/interfaces/Check_Filters";

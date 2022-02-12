@@ -58,4 +58,4 @@ With {APP_NAME}, search what you can make with all the leftover ingredients!
   </br>
   </br>
 
-**I am using Flutter with Bloc pattern for my side project team and I love how it works and wanted to try to implement it to a React project. I haven't looked into Redux after react came up with its own context api. But when I visited its documentation and read about the slice from toolkit, I thought this could bring similar effect as Flutter's Bloc pattern to React**
+**I haven't looked into Redux after react came up with its own context api. But when I visited its documentation and read about the slice from toolkit, I thought this could bring a different aspect of code base from regular redux/react pattern**

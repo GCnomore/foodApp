@@ -8,7 +8,7 @@ import Logger from "./logger";
 export default async ({ app }: { app: express.Application }) => {
   const limiter = rateLimit({
     windowMs: 24 * 60 * 60 * 1000, // 15 minutes
-    max: 5,
+    max: 20,
     standardHeaders: true,
     legacyHeaders: false,
     handler: function (req, res) {

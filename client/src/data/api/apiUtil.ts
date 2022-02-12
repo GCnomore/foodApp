@@ -1,7 +1,6 @@
 import axios from "axios";
 import CONST from "../../constants";
 import { IRecipeByIngredients } from "../interfaces/Recipe_By_Ingredients";
-import IRecipeInformation from "../interfaces/Recipe_Information";
 import { ISearchByIngredParam } from "../interfaces/Search";
 // import recipeByIngredients from "../Recipe_By_Ingredients_Sample.json";
 // import recipeInfo from "../Recipe_Info_Smaple.json";

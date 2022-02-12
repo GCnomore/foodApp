@@ -28,7 +28,7 @@ const SEARCH_BUTTON: React.FC<ISearchButton> = (props) => {
   const handleSearch = async () => {
     setShowLoading(true);
     const action = await dispatch(
-      getRecipeByIngredients({ ingredients, number: "20" })
+      getRecipeByIngredients({ ingredients, number: "50" })
     );
     if (isFulfilled(action)) {
       console.log("actionnnnnnn", action.payload);

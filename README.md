@@ -1,3 +1,9 @@
+### I am no longer working on this app  
+  
+1. API cost is too expensive for users to freely browse through.  
+2. Chose to open up a direct link to the recipe to help authors' of the recipes rather than rendering on my site. But many links proivded by the api are not up to date.
+
+
 # THE FOOD APP
 
 ## Problems people have!! (At least I have)

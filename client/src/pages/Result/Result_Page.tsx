@@ -16,28 +16,26 @@ import ResultCard from "../../components/Result_Card/ResultCard";
 import FilterModal from "../../components/Filter_Modal/Filter_Modal";
 import IngredientBox from "../../components/Ingredient_Box/Ingredient_Box";
 import { AppDispatch, RootState } from "../../redux/store";
-import { useQuery } from "../../util/Utils";
+import { useQuery } from "../../hooks/useQuery";
 import SEARCH_BUTTON from "../../components/Search_Button/Search_Button";
 import { IRecipeByIngredients } from "../../data/interfaces/Recipe_By_Ingredients";
 
 const ResultPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const {
-    ingredients,
-    recipeByIngredient,
-    checkFilters,
-  } = useSelector((state: RootState) => state.search);
+  const { ingredients, recipeByIngredient, checkFilters } = useSelector(
+    (state: RootState) => state.search
+  );
   const query: string | undefined = useQuery().get("ingreds")?.toLowerCase();
 
   const searchInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [_showLoading, _setShowLoading] = useState<boolean>(false);
   const [_ingredients, _setIngredients] = useState<string[]>([]);
   const [_page, _setPage] = useState<number>(1);
-  const [_filteredResult, _setFilteredResult] =
-    useState<{ recipe: IRecipeByIngredients[] }>();
+  const [_filteredResult, _setFilteredResult] = useState<{
+    recipe: IRecipeByIngredients[];
+  }>();
 
   const scrollIndicator = useRef<HTMLDivElement>(null);
-
 
   //* Refresh & direct access to result page
   useEffect(() => {
@@ -87,6 +85,7 @@ const ResultPage: React.FC = () => {
     }
   }, [checkFilters, recipeByIngredient]);
 
+  // Infinite scroll trigger
   const scrollHandler = (): void => {
     if (
       recipeByIngredient &&
@@ -113,7 +112,7 @@ const ResultPage: React.FC = () => {
     }
   };
 
-  const handleAddIngredientsAdd = (
+  const handleAddIngredients = (
     e: React.KeyboardEvent<HTMLInputElement>
   ): void => {
     if (
@@ -166,7 +165,7 @@ const ResultPage: React.FC = () => {
             ref={searchInputRef}
             placeholder="Add ingredients"
             onKeyPress={(e) => {
-              handleAddIngredientsAdd(e);
+              handleAddIngredients(e);
             }}
           />
           <Button onClick={() => dispatch(setShowFilter(true))}>Filter</Button>

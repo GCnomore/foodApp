@@ -39,14 +39,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
+var express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+var index_1 = __importDefault(require("../api/index"));
+var logger_1 = __importDefault(require("./logger"));
 exports.default = (function (_a) {
     var app = _a.app;
     return __awaiter(void 0, void 0, void 0, function () {
+        var limiter;
         return __generator(this, function (_b) {
+            limiter = express_rate_limit_1.default({
+                windowMs: 24 * 60 * 60 * 1000,
+                max: 20,
+                standardHeaders: true,
+                legacyHeaders: false,
+                handler: function (req, res) {
+                    logger_1.default.info("Search limit ::: " + req);
+                    return res.status(429).json({
+                        error: "Search limit triggered.",
+                    });
+                },
+            });
             app.get("/status", function (req, res) {
-                console.log("222222222");
-                res.send("ddddddd");
                 res.status(200).end();
             });
             app.head("/status", function (req, res) {
@@ -54,11 +69,11 @@ exports.default = (function (_a) {
             });
             app.enable("trust proxy");
             app.use(cors_1.default());
-            //   app.use(require("morgan")("dev"));
-            app.post("/dd", function (req, res) {
-                console.log("qqqqqqqq", req);
-                res.status(200).end();
-            });
+            app.use(express_1.default.json());
+            app.use(express_1.default.urlencoded({ extended: true }));
+            app.use("/recipes", limiter);
+            app.use("/information", limiter);
+            app.use(index_1.default());
             return [2 /*return*/, app];
         });
     });

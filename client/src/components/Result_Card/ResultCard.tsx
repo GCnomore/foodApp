@@ -100,7 +100,11 @@ const ResultCard: React.FC<ResultCardProps> = ({ recipeByIngredient }) => {
           {renderMissingIngreds(recipeByIngredient)}
         </div>
         <Button variant="primary">
-          <a href={recipeByIngredient.sourceUrl} target="_blank" rel='noreferrer' >
+          <a
+            href={recipeByIngredient.sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             See details
           </a>
         </Button>

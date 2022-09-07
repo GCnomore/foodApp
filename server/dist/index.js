@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var constants_1 = require("./constants");
 var index_1 = __importDefault(require("./loaders/index"));
+var logger_1 = __importDefault(require("./loaders/logger"));
 function startServer() {
     return __awaiter(this, void 0, void 0, function () {
         var app;
@@ -54,6 +55,11 @@ function startServer() {
                     _a.sent();
                     app.listen(constants_1.CONST.PORT, function () {
                         console.log("\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    Server is listening to port: " + constants_1.CONST.PORT + "\n    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n    ");
+                    });
+                    logger_1.default.info("server running on port " + constants_1.CONST.PORT);
+                    app.get("/error", function (req, res) {
+                        logger_1.default.error("Error");
+                        res.end();
                     });
                     return [2 /*return*/];
             }

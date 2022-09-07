@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("./express"));
+var logger_1 = __importDefault(require("./logger"));
 exports.default = (function (_a) {
     var expressApp = _a.expressApp;
     return __awaiter(void 0, void 0, void 0, function () {
@@ -48,6 +49,7 @@ exports.default = (function (_a) {
                 case 0: return [4 /*yield*/, express_1.default({ app: expressApp })];
                 case 1:
                     _b.sent();
+                    logger_1.default.info("express initialized");
                     console.log("Express Intialized");
                     return [2 /*return*/];
             }

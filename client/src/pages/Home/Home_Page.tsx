@@ -25,6 +25,7 @@ const HomePage: React.FC = () => {
     (state: RootState) => state.search
   );
 
+  // Calling getFoodTrivia once per session
   useEffect(() => {
     sessionStorage.getItem("trivia") &&
     sessionStorage.getItem("trivia") !== "..."
